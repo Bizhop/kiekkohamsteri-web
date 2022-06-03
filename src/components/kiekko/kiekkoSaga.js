@@ -31,7 +31,9 @@ import {
   FOUND_REQUEST,
   getLost,
   CHOOSE_IMAGE,
-  updateImageDimensions
+  updateImageDimensions,
+  chooseImageSuccess,
+  CHOOSE_IMAGE_SUCCESS
 } from "./kiekkoActions"
 import { logout } from "../user/userActions"
 import { getDropdownsByValmistaja } from "../dropdown/dropdownActions"
@@ -89,6 +91,14 @@ const loadImage = base64 =>
     img.onload = () => resolve(img)
     img.onerror = reject
     img.src = base64
+  })
+
+const base64Reader = file =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = () => resolve(reader.result)
+    reader.onerror = reject
+    reader.readAsDataURL(file)
   })
 
 function* getKiekotSaga(action) {
@@ -243,8 +253,21 @@ function* foundSaga(action) {
 
 function* updateImageDimensionsSaga(action) {
   try {
-    const loadedImage = yield call(loadImage, action.image.base64)
+    const loadedImage = yield call(loadImage, action.base64)
     yield put(updateImageDimensions(loadedImage.naturalWidth + " x " + loadedImage.naturalHeight))
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+function* readImageBase64(action) {
+  try {
+    if(action.acceptedFiles.length == 1) {
+      const base64 = yield call(base64Reader, action.acceptedFiles[0])
+      yield put(chooseImageSuccess(base64))
+    } else {
+      console.log("Zero or more than one file sent")
+    }
   } catch (e) {
     console.log(e)
   }
@@ -263,7 +286,8 @@ function* kiekkoSaga() {
     takeEvery(JULKISET_REQUEST, getJulkisetSaga),
     takeEvery(LOST_REQUEST, getLostSaga),
     takeEvery(FOUND_REQUEST, foundSaga),
-    takeEvery(CHOOSE_IMAGE, updateImageDimensionsSaga)
+    takeEvery(CHOOSE_IMAGE, readImageBase64),
+    takeEvery(CHOOSE_IMAGE_SUCCESS, updateImageDimensionsSaga)
   ])
 }
 

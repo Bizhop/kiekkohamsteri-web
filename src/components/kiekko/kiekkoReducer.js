@@ -3,7 +3,7 @@ import { filter, allPass, keys, prop, uniq, append, without } from "ramda"
 import {
   KIEKOT_SUCCESS,
   TOGGLE_KIEKKO_EDIT_MODAL,
-  CHOOSE_IMAGE,
+  CHOOSE_IMAGE_SUCCESS,
   UPDATE_IMAGE_DIMENSIONS,
   UPLOAD_SUCCESS,
   APPLY_PREDICATES,
@@ -125,10 +125,10 @@ const kiekkoReducer = (state = initialState, action) => {
         isEditOpen: !state.isEditOpen,
         kiekkoInEdit: action.kiekko
       }
-    case CHOOSE_IMAGE:
+    case CHOOSE_IMAGE_SUCCESS:
       return {
         ...state,
-        image: action.image
+        image: action.base64
       }
     case UPDATE_IMAGE_DIMENSIONS:
       return {

@@ -2,7 +2,7 @@ import React from "react"
 import { path, pathOr, length } from "ramda"
 import { connect } from "react-redux"
 import { Redirect } from "react-router-dom"
-import FileBase64 from "react-file-base64"
+import Dropzone from "react-dropzone"
 import ReactCrop from "react-image-crop"
 import "react-image-crop/dist/ReactCrop.css"
 
@@ -48,7 +48,7 @@ const KiekkoContainer = props => (
     <h1>Kuvan valinta</h1>
     <div className="row mb-10">
       <div className="col-md-3">
-        <FileBase64 multiple={false} onDone={props.chooseImage} />
+        <Dropzone onDrop={props.chooseImage}>{imageDropzone}</Dropzone>
       </div>
       <div className="col-md-2">
         <button
@@ -80,7 +80,7 @@ const KiekkoContainer = props => (
           onComplete={props.completeCrop}
           aspect={1}
         >
-          <img src={props.image.base64} />
+          <img src={props.image} />
         </ReactCrop>
       </div>
     )}
@@ -99,6 +99,13 @@ const KiekkoContainer = props => (
       image={props.croppedImage}
       editable={true}
     />
+  </div>
+)
+
+const imageDropzone = ({getRootProps, getInputProps}) => (
+  <div {...getRootProps()}>
+    <input {...getInputProps()} />
+    <p className="choose-file">Raahaa tiedosto tähän tai klikkaa...</p>
   </div>
 )
 
@@ -143,7 +150,7 @@ const mapDispatchToProps = dispatch => ({
   getDropdownsByValmistaja: valmId => dispatch(getDropdownsByValmistaja(valmId)),
   updateDisc: kiekko => dispatch(updateDisc(kiekko)),
   toggleEditModal: kiekko => dispatch(toggleEditModal(kiekko)),
-  chooseImage: image => dispatch(chooseImage(image)),
+  chooseImage: acceptedFiles => dispatch(chooseImage(acceptedFiles)),
   uploadImage: data => dispatch(uploadImage(data)),
   deleteDisc: id => dispatch(deleteDisc(id)),
   applyPredicates: form => dispatch(applyPredicates(form)),

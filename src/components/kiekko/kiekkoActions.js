@@ -8,6 +8,7 @@ export const TOGGLE_KIEKKO_EDIT_MODAL = "TOGGLE_KIEKKO_EDIT_MODAL"
 export const UPDATE_KIEKKO_REQUEST = "UPDATE_KIEKKO_REQUEST"
 export const UPDATE_KIEKKO_FAILURE = "UPDATE_KIEKKO_FAILURE"
 export const CHOOSE_IMAGE = "CHOOSE_IMAGE"
+export const CHOOSE_IMAGE_SUCCESS = "CHOOSE_IMAGE_SUCCESS"
 export const UPDATE_IMAGE_DIMENSIONS = "UPDATE_IMAGE_DIMENSIONS"
 export const UPLOAD_IMAGE = "UPLOAD_IMAGE"
 export const UPLOAD_SUCCESS = "UPLOAD_SUCCESS"
@@ -76,9 +77,14 @@ export const toggleEditModal = kiekko => ({
   kiekko
 })
 
-export const chooseImage = image => ({
+export const chooseImage = acceptedFiles => ({
   type: CHOOSE_IMAGE,
-  image
+  acceptedFiles
+})
+
+export const chooseImageSuccess = base64 => ({
+  type: CHOOSE_IMAGE_SUCCESS,
+  base64
 })
 
 export const updateImageDimensions = imageDimensions => ({

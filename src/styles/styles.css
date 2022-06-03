@@ -39,3 +39,9 @@ img.image100 {
 .mb-10 {
     margin-bottom: 10px;
 }
+
+p.choose-file {
+    color: black;
+    background-color: #d3d3d3;
+    padding: 3px;
+}
