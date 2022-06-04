@@ -1,12 +1,12 @@
 import React from "react"
 import { path, pathOr } from "ramda"
 import { connect } from "react-redux"
-import { Redirect } from "react-router-dom"
+import { Navigate } from "react-router-dom"
 
 import {
   getUsers,
   toggleEditModal,
-  requestUpdateUser,
+  updateUser,
   promoteUser,
   demoteUser
 } from "./userActions"
@@ -19,6 +19,7 @@ const UserContainer = props => (
       toggleModal={props.toggleEditModal}
       user={props.userInEdit}
       editUser={props.editUser}
+      fromDash={false}
       label="Muokkaa käyttäjää"
     />
     <h1>Käyttäjät</h1>
@@ -49,7 +50,7 @@ const UserContainer = props => (
         ))}
       </tbody>
     </table>
-    {!props.loggedIn && <Redirect to="/" />}
+    {!props.loggedIn && <Navigate to="/" />}
   </div>
 )
 
@@ -99,7 +100,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getUsers: dispatch(getUsers()),
   toggleEditModal: user => dispatch(toggleEditModal(user)),
-  editUser: user => dispatch(requestUpdateUser(user)),
+  editUser: user => dispatch(updateUser(user)),
   promote: userId => dispatch(promoteUser(userId)),
   demote: userId => dispatch(demoteUser(userId))
 })

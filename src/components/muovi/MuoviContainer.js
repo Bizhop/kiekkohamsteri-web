@@ -1,7 +1,7 @@
 import React from "react"
 import { path } from "ramda"
 import { connect } from "react-redux"
-import { Redirect } from "react-router-dom"
+import { Navigate } from "react-router-dom"
 
 import { getMuovit, getMuovitByValmistaja, toggleCreateModal, createMuovi } from "./muoviActions"
 import { getDropdowns } from "../dropdown/dropdownActions"
@@ -45,12 +45,16 @@ const MuoviContainer = props => (
       </thead>
       <tbody>{props.muovit.map(p => <Muovi key={p.id} muovi={p} />)}</tbody>
     </table>
-    {!props.loggedIn && <Redirect to="/" />}
+    {!props.loggedIn && <Navigate to="/" />}
   </div>
 )
 
 const MuoviCreateModal = props => (
-  <Modal isOpen={props.isOpen} onRequestClose={() => props.toggleModal()} contentLabel="Uusi muovi">
+  <Modal
+    isOpen={props.isOpen}
+    onRequestClose={() => props.toggleModal()}
+    contentLabel="Uusi muovi"
+  >
     <CreateMuoviForm onSubmit={props.createMuovi} initialValues={{ valmId: props.valmId }} />
   </Modal>
 )

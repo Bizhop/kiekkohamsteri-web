@@ -1,7 +1,7 @@
 import React from "react"
 import { includes, path } from "ramda"
 import { connect } from "react-redux"
-import { Redirect } from "react-router-dom"
+import { Navigate } from "react-router-dom"
 import { Spinner } from "react-activity"
 import "react-activity/dist/library.css"
 
@@ -68,7 +68,7 @@ const MuutContainer = props => (
     ) : (
       <Spinner />
     )}
-    {!props.loggedIn && <Redirect to="/" />}
+    {!props.loggedIn && <Navigate to="/" />}
   </div>
 )
 

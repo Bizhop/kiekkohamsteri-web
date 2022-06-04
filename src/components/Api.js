@@ -1,6 +1,35 @@
 import axios from 'axios'
 import { mergeLeft } from 'ramda'
 
+export const getPayload = params => ({
+  request: {
+    url: params.url,
+    headers: {
+      Authorization: localStorage.getItem('hamsteri-token')
+    }
+  }
+})
+
+export const loginPayload = params => ({
+  request: {
+    url: "api/auth/login",
+    headers: {
+      Authorization: params.tokenId
+    }
+  }
+})
+
+export const patchPayload = params => ({
+  request: {
+    url: params.url,
+    method: 'patch',
+    data: params.data,
+    headers: {
+      Authorization: localStorage.getItem('hamsteri-token')
+    }
+  }
+})
+
 axios.defaults.baseURL=process.env.API_URL
 
 const Api = {

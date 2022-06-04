@@ -1,3 +1,5 @@
+import { findIndex, propEq, prop, update } from "ramda"
+
 import {
   LOGIN_SUCCESS,
   LOGIN_FAILURE,
@@ -6,9 +8,10 @@ import {
   TOGGLE_EDIT_MODAL,
   UPDATE_FAILURE,
   LOGOUT,
-  LOGIN_ERROR,
   LEADERS_SUCCESS,
-  USER_DETAILS_SUCCESS
+  USER_DETAILS_SUCCESS,
+  GOOGLE_LOGIN_FAILURE,
+  UPDATE_SUCCESS
 } from "./userActions"
 
 const initialState = {
@@ -21,27 +24,46 @@ const initialState = {
   leaders: []
 }
 
+const updateUserArray = (users, updatedUser) => {
+  const index = findIndex(propEq("id", prop("id", updatedUser)))(users)
+  return update(index, updatedUser, users)
+}
+
+const updateCurrentUser = (currentUser, updatedUser) => {
+  return prop("id", currentUser) === prop("id", updatedUser) ? updatedUser : currentUser
+}
+
+const saveToken = user => {
+  localStorage.setItem("hamsteri-token", user.jwt)
+}
+
+const resetToken = () => {
+  localStorage.removeItem("hamsteri-token")
+}
+
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOGIN_FAILURE:
+    case GOOGLE_LOGIN_FAILURE:
       return {
         ...state,
-        error: action.error,
+        error: action.error ? "Kirjautuminen epäonnistui" : null,
         user: null,
         token: null
       }
     case LOGIN_SUCCESS:
+      saveToken(action.payload.data)
       return {
         ...state,
-        user: action.user,
-        token: localStorage.getItem("hamsteri-token"),
+        user: action.payload.data,
+        token: action.payload.data.jwt,
         error: null,
         isEditModalOpen: false
       }
     case USER_DETAILS_SUCCESS:
       return {
         ...state,
-        user: action.user,
+        user: action.payload.data,
         error: null,
         isEditModalOpen: false
       }
@@ -53,7 +75,7 @@ const userReducer = (state = initialState, action) => {
     case USERS_SUCCESS:
       return {
         ...state,
-        users: action.users,
+        users: action.payload.data,
         isEditModalOpen: false
       }
     case TOGGLE_EDIT_MODAL:
@@ -62,14 +84,21 @@ const userReducer = (state = initialState, action) => {
         isEditModalOpen: !state.isEditModalOpen,
         userInEdit: action.user
       }
+    case UPDATE_SUCCESS:
+      return {
+        ...state,
+        users: updateUserArray(state.users, action.payload.data),
+        user: updateCurrentUser(state.user, action.payload.data),
+        userInEdit: null,
+        isEditModalOpen: false
+      }
     case UPDATE_FAILURE:
       return {
         ...state,
         error: action.error
       }
     case LOGOUT:
-    case LOGIN_ERROR:
-      localStorage.removeItem("hamsteri-token")
+      resetToken()
       return {
         ...initialState,
         token: null
@@ -77,7 +106,7 @@ const userReducer = (state = initialState, action) => {
     case LEADERS_SUCCESS:
       return {
         ...state,
-        leaders: action.leaders
+        leaders: action.payload.data
       }
     default:
       return state

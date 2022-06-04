@@ -1,7 +1,7 @@
 import React from "react"
 import { path, pathOr, length } from "ramda"
 import { connect } from "react-redux"
-import { Redirect } from "react-router-dom"
+import { Navigate } from "react-router-dom"
 import Dropzone from "react-dropzone"
 import ReactCrop from "react-image-crop"
 import "react-image-crop/dist/ReactCrop.css"
@@ -88,7 +88,7 @@ const KiekkoContainer = props => (
       Kiekot ({props.totalFiltered} / {props.total})
     </h1>
     <PredicatesForm onSubmit={props.applyPredicates} />
-    {!props.loggedIn && <Redirect to="/" />}
+    {!props.loggedIn && <Navigate to="/" />}
     <KiekkoTable
       kiekot={props.kiekot}
       updateKiekot={props.updateKiekot}

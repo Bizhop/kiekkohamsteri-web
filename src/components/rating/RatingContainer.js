@@ -1,7 +1,7 @@
 import React from "react"
 import { path, pathOr } from "ramda"
 import { connect } from "react-redux"
-import { Redirect } from "react-router-dom"
+import { Navigate } from "react-router-dom"
 import { Spinner } from "react-activity"
 import "react-activity/dist/library.css"
 
@@ -52,7 +52,7 @@ const RatingContainer = props => (
       </div>
     )}
 
-    {!props.loggedIn && <Redirect to="/" />}
+    {!props.loggedIn && <Navigate to="/" />}
   </div>
 )
 

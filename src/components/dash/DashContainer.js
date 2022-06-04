@@ -3,7 +3,7 @@ import { path } from "ramda"
 import { connect } from "react-redux"
 import GoogleLogin from "react-google-login"
 
-import { login, loginError, toggleEditModal, requestUpdateMe } from "../user/userActions"
+import { login, googleLoginError, toggleEditModal, requestUpdateMe } from "../user/userActions"
 import UserEditModal from "../user/UserEditModal"
 
 const DashContainer = props => (
@@ -13,6 +13,7 @@ const DashContainer = props => (
       toggleModal={props.toggleEditModal}
       user={props.userInEdit}
       editUser={props.editUser}
+      fromDash={true}
       label="Muokkaa tietojasi"
     />
     {props.loggedIn ? (
@@ -59,10 +60,14 @@ const DashContainer = props => (
         buttonText="Kirjaudu sisään"
         className="btn btn-danger"
         onSuccess={props.login}
-        onFailure={props.loginError}
+        onFailure={props.googleLoginError}
       />
     )}
-    {props.error && console.log(props.error)}
+    {props.error && (
+      <div>
+        {props.error}
+      </div>
+    )}
   </div>
 )
 

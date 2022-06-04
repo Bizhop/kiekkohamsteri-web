@@ -22,7 +22,6 @@ const modalStyles = {
   },
 }
 
-// ReactModal: https://github.com/reactjs/react-modal
 const Modal = props => (
   <ReactModal
     contentLabel={props.contentLabel}
@@ -30,8 +29,7 @@ const Modal = props => (
     isOpen={props.isOpen}
     onRequestClose={props.onRequestClose}
     onAfterOpen={props.onAfterOpen}
-    //className={{ base: props.customClass ? props.customClass : 'modal-dialog' }}
-    //overlayClassName={{ base: '' }}
+    ariaHideApp={false}
   >
     <div className="modal-content">
       <div className="modal-header">

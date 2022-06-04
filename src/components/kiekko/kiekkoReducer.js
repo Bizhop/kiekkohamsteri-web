@@ -70,31 +70,23 @@ const processCrop = (pixelCrop, base64) => {
   return canvas.toDataURL("image/jpeg")
 }
 
-const getImageDimensions = base64 =>
-  new Promise((resolve, reject) => {
-    const img = new Image()
-    img.onload = () => resolve(img)
-    img.onerror = reject
-    img.src = base64
-  })
-
 const kiekkoReducer = (state = initialState, action) => {
   switch (action.type) {
     case KIEKOT_REQUEST:
       return {
         ...state,
         kiekot: [],
-        kiekotFiltered: null
+        kiekotFiltered: null,
+        sortColumn: action.params.newSortColumn
       }
     case KIEKOT_SUCCESS:
       return {
         ...state,
-        kiekot: action.params.kiekot,
+        kiekot: action.payload.data.content,
         kiekotFiltered:
           state.predicates === null
-            ? action.params.kiekot
-            : filter(allPass(state.predicates), action.params.kiekot),
-        sortColumn: action.params.newSortColumn,
+            ? action.payload.data.content
+            : filter(allPass(state.predicates), action.payload.data.content),
         isEditOpen: false,
         kiekkoInEdit: null,
         image: null,

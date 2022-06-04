@@ -1,7 +1,7 @@
 import React from "react"
 import { path, pathOr } from "ramda"
 import { connect } from "react-redux"
-import { Redirect } from "react-router-dom"
+import { Navigate } from "react-router-dom"
 
 import { getMyytavat } from "./myytavatActions"
 import { buyDisc, getOmat, peruutaOsto, hyvaksyOsto } from "../osto/ostoActions"
@@ -27,7 +27,7 @@ const MyytavatContainer = props => (
       />
     )}
     <h1>Myytävät</h1>
-    {!props.loggedIn && <Redirect to="/" />}
+    {!props.loggedIn && <Navigate to="/" />}
     <MyytavatTable
       updateMyytavat={props.updateMyytavat}
       sortColumn={props.sortColumn}

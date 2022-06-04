@@ -3,9 +3,6 @@ import { pick } from "ramda"
 
 import Api from "../Api"
 import {
-  KIEKOT_REQUEST,
-  kiekotSuccess,
-  kiekotError,
   UPDATE_KIEKKO_REQUEST,
   getKiekot,
   updateKiekkoFailure,
@@ -21,7 +18,6 @@ import {
   kiekkoSuccess,
   kiekkoError,
   UPDATE_IMAGE,
-  updateImageSuccess,
   updateImageFailure,
   JULKISET_REQUEST,
   julkisetSuccess,
@@ -100,24 +96,6 @@ const base64Reader = file =>
     reader.onerror = reject
     reader.readAsDataURL(file)
   })
-
-function* getKiekotSaga(action) {
-  try {
-    const response = yield call(Api.get, `api/kiekot?size=1000&sort=${action.params.sort}`)
-    yield put(
-      kiekotSuccess({
-        kiekot: response.content,
-        newSortColumn: action.params.newSortColumn
-      })
-    )
-  } catch (e) {
-    if (e.response.status === 403) {
-      yield put(logout())
-    } else {
-      yield put(kiekotError(e))
-    }
-  }
-}
 
 function* getKiekkoSaga(action) {
   try {
@@ -275,7 +253,6 @@ function* readImageBase64(action) {
 
 function* kiekkoSaga() {
   yield all([
-    takeEvery(KIEKOT_REQUEST, getKiekotSaga),
     takeEvery(UPDATE_KIEKKO_REQUEST, updateKiekkoSaga),
     takeEvery(TOGGLE_KIEKKO_EDIT_MODAL, toggleEditModalSaga),
     takeEvery(UPLOAD_IMAGE, uploadImageSaga),

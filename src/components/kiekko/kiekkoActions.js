@@ -1,6 +1,8 @@
-export const KIEKOT_REQUEST = "KIEKOT_REQUEST"
-export const KIEKOT_SUCCESS = "KIEKOT_SUCCESS"
-export const KIEKOT_FAILURE = "KIEKOT_FAILURE"
+import { getPayload } from "../Api"
+
+export const KIEKOT_REQUEST = "KIEKOT_GET"
+export const KIEKOT_SUCCESS = "KIEKOT_GET_SUCCESS"
+export const KIEKOT_FAILURE = "KIEKOT_GET_FAIL"
 export const KIEKKO_REQUEST = "KIEKKO_REQUEST"
 export const KIEKKO_SUCCESS = "KIEKKO_SUCCESS"
 export const KIEKKO_FAILURE = "KIEKKO_FAILURE"
@@ -34,17 +36,8 @@ export const FOUND_REQUEST = "FOUND_REQUEST"
 
 export const getKiekot = params => ({
   type: KIEKOT_REQUEST,
-  params
-})
-
-export const kiekotSuccess = params => ({
-  type: KIEKOT_SUCCESS,
-  params
-})
-
-export const kiekotError = error => ({
-  type: KIEKOT_FAILURE,
-  error
+  params,
+  payload: getPayload({url: `api/kiekot?size=1000&sort=${params.sort}`})
 })
 
 export const getKiekko = id => ({

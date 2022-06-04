@@ -9,20 +9,24 @@ const UserEditForm = props => (
     <Field name="etunimi" label="Etunimi" component={RenderTextInput} type="text" />
     <Field name="sukunimi" label="Sukunimi" component={RenderTextInput} type="text" />
     <Field name="pdga_num" label="PDGA numero" component={RenderTextInput} type="text" />
-    <Field
-      name="publicDiscCount"
-      label="Näytä lkm"
-      component={RenderCheckbox}
-      type="checkbox"
-      normalize={v => !!v}
-    />
-    <Field
-      name="publicList"
-      label="Julkinen listaus"
-      component={RenderCheckbox}
-      type="checkbox"
-      normalize={v => !!v}
-    />
+    {props.fromDash && (
+      <div>
+        <Field
+          name="publicDiscCount"
+          label="Näytä lkm"
+          component={RenderCheckbox}
+          type="checkbox"
+          normalize={v => !!v}
+        />
+        <Field
+          name="publicList"
+          label="Julkinen listaus"
+          component={RenderCheckbox}
+          type="checkbox"
+          normalize={v => !!v}
+        />
+      </div>
+    )}
     <button
       type="submit"
       className="btn btn-primary btn-block"

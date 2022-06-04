@@ -1,7 +1,7 @@
 import React from "react"
 import { path } from "ramda"
 import { connect } from "react-redux"
-import { Redirect } from "react-router-dom"
+import { Navigate } from "react-router-dom"
 
 import { getKiekko } from "./kiekkoActions"
 import { imageUrl, check } from "../shared/images"
@@ -9,7 +9,7 @@ import { tussit } from "../shared/text"
 
 const YksiKiekkoContainer = props => (
   <div className="container">
-    {!props.loggedIn && <Redirect to="/" />}
+    {!props.loggedIn && <Navigate to="/" />}
     {props.kiekko ? (
       <div>
         <h1>

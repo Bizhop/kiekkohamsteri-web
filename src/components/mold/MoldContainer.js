@@ -1,7 +1,7 @@
 import React from "react"
 import { pathOr, path } from "ramda"
 import { connect } from "react-redux"
-import { Redirect } from "react-router-dom"
+import { Navigate } from "react-router-dom"
 
 import { getMolds, getMoldsByValmistaja, toggleCreateModal, createMold } from "./moldActions"
 import { getDropdowns } from "../dropdown/dropdownActions"
@@ -49,12 +49,16 @@ const MoldContainer = props => (
       </thead>
       <tbody>{props.molds.map(p => <Mold key={p.id} mold={p} />)}</tbody>
     </table>
-    {!props.loggedIn && <Redirect to="/" />}
+    {!props.loggedIn && <Navigate to="/" />}
   </div>
 )
 
 const MoldCreateModal = props => (
-  <Modal isOpen={props.isOpen} onRequestClose={() => props.toggleModal()} contentLabel="Uusi moldi">
+  <Modal
+    isOpen={props.isOpen}
+    onRequestClose={() => props.toggleModal()}
+    contentLabel="Uusi moldi"
+  >
     <CreateMoldForm onSubmit={props.createMold} initialValues={{ valmId: props.valmId }} />
   </Modal>
 )
