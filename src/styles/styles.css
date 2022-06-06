@@ -45,3 +45,7 @@ p.choose-file {
     background-color: #d3d3d3;
     padding: 3px;
 }
+
+.react-confirm-alert-button-group > button.red-button {
+    background-color: darkred;
+}

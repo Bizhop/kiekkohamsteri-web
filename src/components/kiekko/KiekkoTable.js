@@ -195,9 +195,16 @@ const handleDelete = params => {
   confirmAlert({
     title: "Varoitus",
     message: "Haluatko varmasti poistaa kiekon?",
-    confirmLabel: "Poista",
-    cancelLabel: "Peruuta",
-    onConfirm: () => params.confirm(params.id)
+    buttons: [
+      {
+        label: "Poista",
+        onClick: () => params.confirm(params.id),
+        className: "red-button"
+      },
+      {
+        label: "Peruuta"
+      }
+    ]
   })
 }
 

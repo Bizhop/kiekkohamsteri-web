@@ -8,7 +8,7 @@ import { path } from "ramda"
 import rootSaga from './rootSaga'
 import rootReducer from './rootReducer'
 import { GET_MY_DETAILS, USERS_REQUEST, logout, LEADERS_REQUEST } from './components/user/userActions'
-import { KIEKOT_REQUEST } from './components/kiekko/kiekkoActions'
+import { KIEKOT_REQUEST, LOST_REQUEST, UPDATE_KIEKKO_REQUEST, JULKISET_REQUEST } from './components/kiekko/kiekkoActions'
 
 const env = process.env.NODE_ENV
 const baseURL = process.env.API_URL
@@ -21,20 +21,20 @@ const client = axios.create({
 const axiosMWConfig = {
   interceptors: {
     request: [{
-      success: function ({getState, dispatch, getSourceAction}, req) {
+      success: function (_, req) {
         return req;
       },
-      error: function ({getState, dispatch, getSourceAction}, error) {
+      error: function (_, error) {
         console.log(error)
         return error
       }
     }
     ],
     response: [{
-      success: function ({getState, dispatch, getSourceAction}, res) {
+      success: function (_, res) {
         return Promise.resolve(res);
       },
-      error: function ({getState, dispatch, getSourceAction}, error) {
+      error: function ({_getState, dispatch, _getSourceAction}, error) {
         const sourceActionType = path(["config", "reduxSourceAction", "type"], error)
         const status = path(["response", "status"], error)
         switch(sourceActionType) {
@@ -42,6 +42,9 @@ const axiosMWConfig = {
           case KIEKOT_REQUEST:
           case USERS_REQUEST:
           case LEADERS_REQUEST:
+          case UPDATE_KIEKKO_REQUEST:
+          case JULKISET_REQUEST:
+          case LOST_REQUEST:
             if(status === 403) {
               dispatch(logout())
             }

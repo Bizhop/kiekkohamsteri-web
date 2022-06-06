@@ -1,40 +1,21 @@
 import { all, call, put, takeEvery } from "redux-saga/effects"
-import { pick } from "ramda"
 
-import Api from "../Api"
 import {
-  UPDATE_KIEKKO_REQUEST,
-  getKiekot,
-  updateKiekkoFailure,
   TOGGLE_KIEKKO_EDIT_MODAL,
   UPLOAD_IMAGE,
-  uploadSuccess,
-  uploadFailure,
-  deleteKiekkoFailure,
-  DELETE_DISC,
   APPLY_PREDICATES,
   filterKiekot,
-  KIEKKO_REQUEST,
-  kiekkoSuccess,
-  kiekkoError,
   UPDATE_IMAGE,
-  updateImageFailure,
-  JULKISET_REQUEST,
-  julkisetSuccess,
-  julkisetFailure,
-  LOST_REQUEST,
-  lostSuccess,
-  FOUND_REQUEST,
-  getLost,
   CHOOSE_IMAGE,
   updateImageDimensions,
   chooseImageSuccess,
-  CHOOSE_IMAGE_SUCCESS
+  CHOOSE_IMAGE_SUCCESS,
+  uploadImageApi,
+  updateImageApi,
+  cropComplete,
+  COMPLETE_CROP
 } from "./kiekkoActions"
-import { logout } from "../user/userActions"
 import { getDropdownsByValmistaja } from "../dropdown/dropdownActions"
-import { defaultSort } from "../shared/text"
-import { reject } from "ramda"
 
 const updateFields = [
   "valmId",
@@ -60,22 +41,24 @@ const updateFields = [
 const resizeImage = image =>
   new Promise((resolve, reject) => {
     const img = new Image()
-    img.onload = () => {
+    img.onload = event => {
       try {
-        if (this.naturalWidth > 600) {
+        const loadedImage = event.target
+        if (loadedImage.naturalWidth > 600) {
           const canvas = document.createElement("canvas")
           canvas.width = 600
           canvas.height = 600
           const ctx = canvas.getContext("2d")
 
-          ctx.drawImage(this, 0, 0, 600, 600)
+          ctx.drawImage(loadedImage, 0, 0, 600, 600)
 
           resolve(canvas.toDataURL("image/jpeg"))
         } else {
-          resolve(this.src)
+          resolve(loadedImage.src)
         }
-      } catch (e) {
-        reject(e)
+      } catch (error) {
+        console.log(error)
+        reject(error)
       }
     }
     img.src = image
@@ -97,26 +80,50 @@ const base64Reader = file =>
     reader.readAsDataURL(file)
   })
 
-function* getKiekkoSaga(action) {
-  try {
-    const response = yield call(Api.get, `api/kiekot/${action.id}`)
-    yield put(kiekkoSuccess(response))
-  } catch (e) {
-    yield put(kiekkoError(e))
-  }
-}
+const processCrop = (pixelCrop, base64) => 
+  new Promise((resolve, reject) => {
+    console.log("processing")
+    console.log(pixelCrop)
+    console.log(base64)
+    var img = new Image()
 
-function* updateKiekkoSaga(action) {
-  try {
-    yield call(Api.put, `api/kiekot/${action.kiekko.id}`, pick(updateFields, action.kiekko))
-    yield put(getKiekot(defaultSort))
-  } catch (e) {
-    if (e.response.status === 403) {
-      yield put(logout())
-    } else {
-      yield put(updateKiekkoFailure(e))
+    img.onload = event => {
+      try {
+        console.log("image loaded")
+        const loadedImage = event.target
+
+        const canvas = document.createElement("canvas")
+        canvas.width = pixelCrop.width
+        canvas.height = pixelCrop.height
+        const ctx = canvas.getContext("2d")
+
+        ctx.drawImage(
+          loadedImage,
+          pixelCrop.x,
+          pixelCrop.y,
+          pixelCrop.width,
+          pixelCrop.height,
+          0,
+          0,
+          pixelCrop.width,
+          pixelCrop.height
+        )
+        
+        resolve(canvas.toDataURL("image/jpeg"))
+      }
+      catch (error) {
+        console.log(error)
+        reject(error)
+      }
     }
-  }
+
+    img.src = base64
+  })
+
+function* completeCropSaga(action) {
+  console.log("complete crop saga")
+  const croppedImage = yield call(processCrop, action.crop, action.image)
+  yield put(cropComplete(croppedImage))
 }
 
 function* toggleEditModalSaga(action) {
@@ -126,107 +133,26 @@ function* toggleEditModalSaga(action) {
 }
 
 function* uploadImageSaga(action) {
-  try {
-    const resized = yield call(resizeImage, action.data)
-    const response = yield call(Api.post, "api/kiekot", {
-      name: "",
-      data: resized
-    })
-    yield put(uploadSuccess(response))
-  } catch (e) {
-    if (e.response.status === 403) {
-      yield put(logout())
-    } else {
-      yield put(uploadFailure(e))
-    }
-  }
+  const resized = yield call(resizeImage, action.data)
+  yield put(uploadImageApi({
+    name: "",
+    data: resized
+  }))
 }
 
-function* deleteDiscSaga(action) {
-  try {
-    yield call(Api.delete, `api/kiekot/${action.id}`)
-    yield put(getKiekot(defaultSort))
-  } catch (e) {
-    if (e.response.status === 403) {
-      yield put(logout())
-    } else {
-      yield put(deleteKiekkoFailure(e))
+function* updateImageSaga(action) {
+  const resized = yield call(resizeImage, action.params.image)
+  yield put(updateImageApi({
+    id: action.params.id,
+    data: {
+      name: "",
+      data: resized
     }
-  }
+  }))
 }
 
 function* applyPredicatesSaga() {
   yield put(filterKiekot())
-}
-
-function* updateImageSaga(action) {
-  try {
-    const resized = yield call(resizeImage, action.params.image)
-    yield call(Api.patch, `api/kiekot/${action.params.id}/update-image`, {
-      name: "",
-      data: resized
-    })
-    yield put(getKiekot(defaultSort))
-  } catch (e) {
-    if (e.response.status === 403) {
-      yield put(logout())
-    } else {
-      yield put(updateImageFailure(e))
-    }
-  }
-}
-
-function* getJulkisetSaga(action) {
-  try {
-    const response = yield call(
-      Api.get,
-      `api/kiekot/public-lists?size=1000&sort=${action.params.sort}`
-    )
-    yield put(
-      julkisetSuccess({
-        julkiset: response,
-        newSortColumn: action.params.newSortColumn
-      })
-    )
-  } catch (e) {
-    if (e.response.status === 403) {
-      yield put(logout())
-    } else {
-      yield put(julkisetFailure(e))
-    }
-  }
-}
-
-function* getLostSaga(action) {
-  try {
-    const response = yield call(Api.get, `api/kiekot/lost?size=1000&sort=${action.params.sort}`)
-    yield put(
-      lostSuccess({
-        lost: response.content,
-        newSortColumn: action.params.newSortColumn
-      })
-    )
-  } catch (e) {
-    if (e.response.status === 403) {
-      yield put(logout())
-    } else {
-      yield put(lostFailure(e))
-    }
-  }
-}
-
-function* foundSaga(action) {
-  try {
-    yield call(Api.patch, `api/kiekot/${action.id}/found`)
-    yield put(
-      getLost({
-        sort: "updatedAt,desc",
-        newSortColumn: "Pvm"
-      })
-    )
-  } catch (e) {
-    console.log(e)
-  }
 }
 
 function* updateImageDimensionsSaga(action) {
@@ -253,18 +179,13 @@ function* readImageBase64(action) {
 
 function* kiekkoSaga() {
   yield all([
-    takeEvery(UPDATE_KIEKKO_REQUEST, updateKiekkoSaga),
     takeEvery(TOGGLE_KIEKKO_EDIT_MODAL, toggleEditModalSaga),
     takeEvery(UPLOAD_IMAGE, uploadImageSaga),
-    takeEvery(DELETE_DISC, deleteDiscSaga),
     takeEvery(APPLY_PREDICATES, applyPredicatesSaga),
-    takeEvery(KIEKKO_REQUEST, getKiekkoSaga),
     takeEvery(UPDATE_IMAGE, updateImageSaga),
-    takeEvery(JULKISET_REQUEST, getJulkisetSaga),
-    takeEvery(LOST_REQUEST, getLostSaga),
-    takeEvery(FOUND_REQUEST, foundSaga),
     takeEvery(CHOOSE_IMAGE, readImageBase64),
-    takeEvery(CHOOSE_IMAGE_SUCCESS, updateImageDimensionsSaga)
+    takeEvery(CHOOSE_IMAGE_SUCCESS, updateImageDimensionsSaga),
+    takeEvery(COMPLETE_CROP, completeCropSaga)
   ])
 }
 

@@ -54,7 +54,7 @@ const KiekkoContainer = props => (
         <button
           className="btn btn-primary btn-block"
           onClick={() => props.uploadImage(props.croppedImage)}
-          disabled={props.image === null}
+          disabled={props.image === null || props.imageUploading}
         >
           Luo uusi kiekko
         </button>
@@ -77,7 +77,10 @@ const KiekkoContainer = props => (
         <ReactCrop
           onChange={(crop, _) => props.updateCrop(crop)}
           crop={props.crop}
-          onComplete={props.completeCrop}
+          onComplete={(crop, _) => props.completeCrop({
+            crop: crop,
+            image: props.image
+          })}
           aspect={1}
         >
           <img src={props.image} />
@@ -140,7 +143,8 @@ const mapStateToProps = state => ({
   crop: path(["kiekko", "crop"], state),
   croppedImage: path(["kiekko", "croppedImage"], state),
   pixelCrop: path(["kiekko", "pixelCrop"], state),
-  imageDimensions: path(["kiekko", "imageDimensions"], state)
+  imageDimensions: path(["kiekko", "imageDimensions"], state),
+  imageUploading: path(["kiekko", "imageUploading"], state)
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -155,7 +159,7 @@ const mapDispatchToProps = dispatch => ({
   deleteDisc: id => dispatch(deleteDisc(id)),
   applyPredicates: form => dispatch(applyPredicates(form)),
   updateCrop: crop => dispatch(updateCrop(crop)),
-  completeCrop: (crop, pixelCrop) => dispatch(completeCrop(crop, pixelCrop)),
+  completeCrop: params => dispatch(completeCrop(params)),
   updateImage: params => dispatch(updateImage(params))
 })
 

@@ -1,11 +1,10 @@
-import { filter, allPass, keys, prop, uniq, append, without } from "ramda"
+import { filter, allPass, keys, prop, propEq, uniq, append, without, findIndex, update, path, remove } from "ramda"
 
 import {
   KIEKOT_SUCCESS,
   TOGGLE_KIEKKO_EDIT_MODAL,
   CHOOSE_IMAGE_SUCCESS,
   UPDATE_IMAGE_DIMENSIONS,
-  UPLOAD_SUCCESS,
   APPLY_PREDICATES,
   FILTER_KIEKOT,
   KIEKKO_SUCCESS,
@@ -13,15 +12,26 @@ import {
   KIEKKO_REQUEST,
   KIEKKO_FAILURE,
   UPDATE_CROP,
-  COMPLETE_CROP,
+  CROP_COMPLETE,
   JULKISET_SUCCESS,
   JULKISET_LAAJENNA,
   JULKISET_REQUEST,
   JULKISET_SUPISTA,
   LOST_REQUEST,
-  LOST_SUCCESS
+  LOST_SUCCESS,
+  UPDATE_KIEKKO_SUCCESS,
+  UPLOAD_IMAGE_API,
+  UPLOAD_IMAGE_API_SUCCESS,
+  UPLOAD_IMAGE_API_FAILURE,
+  UPDATE_IMAGE_API,
+  UPDATE_IMAGE_API_FAILURE,
+  UPDATE_IMAGE_API_SUCCESS,
+  FOUND_SUCCESS,
+  DELETE_DISC_SUCCESS
 } from "./kiekkoActions"
 import { defaultSort } from "../shared/text"
+import { prepend } from "ramda"
+import { path } from "ramda"
 
 const initialState = {
   kiekot: [],
@@ -43,32 +53,27 @@ const initialState = {
   julkiset: null,
   julkisetVisible: [],
   lost: null,
-  lostSortColumn: null
+  lostSortColumn: null,
+  imageUploading: false
 }
 
-const processCrop = (pixelCrop, base64) => {
-  const canvas = document.createElement("canvas")
-  canvas.width = pixelCrop.width
-  canvas.height = pixelCrop.height
-  const ctx = canvas.getContext("2d")
-
-  var image = new Image()
-  image.src = base64
-
-  ctx.drawImage(
-    image,
-    pixelCrop.x,
-    pixelCrop.y,
-    pixelCrop.width,
-    pixelCrop.height,
-    0,
-    0,
-    pixelCrop.width,
-    pixelCrop.height
-  )
-
-  return canvas.toDataURL("image/jpeg")
+const updateKiekotArray = (kiekot, updatedKiekko) => {
+  const index = findIndex(propEq("id", prop("id", updatedKiekko)))(kiekot)
+  return update(index, updatedKiekko, kiekot)
 }
+
+const applyFilters = (predicates, kiekot) => {
+  return predicates === null
+    ? kiekot
+    : filter(allPass(predicates), kiekot)
+}
+
+const removeFromArrayById = (lost, id) => {
+  const index = findIndex(propEq("id", id))(lost)
+  return remove(index, 1, lost)
+}
+
+const getSortColumn = action => path(["meta", "previousAction", "params", "newSortColumn"], action)
 
 const kiekkoReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -76,22 +81,20 @@ const kiekkoReducer = (state = initialState, action) => {
       return {
         ...state,
         kiekot: [],
-        kiekotFiltered: null,
-        sortColumn: action.params.newSortColumn
+        kiekotFiltered: null
       }
     case KIEKOT_SUCCESS:
       return {
         ...state,
         kiekot: action.payload.data.content,
-        kiekotFiltered:
-          state.predicates === null
-            ? action.payload.data.content
-            : filter(allPass(state.predicates), action.payload.data.content),
+        kiekotFiltered: applyFilters(state.predicates, action.payload.data.content),
+        sortColumn: getSortColumn(action),
         isEditOpen: false,
         kiekkoInEdit: null,
         image: null,
         crop: {},
-        croppedImage: null
+        croppedImage: null,
+        kiekko: null
       }
     case KIEKKO_REQUEST:
       return {
@@ -102,7 +105,7 @@ const kiekkoReducer = (state = initialState, action) => {
     case KIEKKO_SUCCESS:
       return {
         ...state,
-        kiekko: action.kiekko,
+        kiekko: action.payload.data,
         oneDiscText: ""
       }
     case KIEKKO_FAILURE:
@@ -117,22 +120,60 @@ const kiekkoReducer = (state = initialState, action) => {
         isEditOpen: !state.isEditOpen,
         kiekkoInEdit: action.kiekko
       }
+    case UPDATE_KIEKKO_SUCCESS: {
+      const kiekotUpdated = updateKiekotArray(state.kiekot, action.payload.data)
+      return {
+        ...state,
+        isEditOpen: false,
+        kiekot: kiekotUpdated,
+        kiekotFiltered: applyFilters(state.predicates, kiekotUpdated)
+      }
+    }
     case CHOOSE_IMAGE_SUCCESS:
       return {
         ...state,
-        image: action.base64
+        image: action.base64,
+        crop: {},
+        pixelCrop: {
+          width: "",
+          height: ""
+        }
       }
     case UPDATE_IMAGE_DIMENSIONS:
       return {
         ...state,
         imageDimensions: action.imageDimensions
       }
-    case UPLOAD_SUCCESS:
+    case UPLOAD_IMAGE_API:
+    case UPDATE_IMAGE_API:
       return {
         ...state,
-        kiekkoInEdit: action.response,
+        imageUploading: true
+      }
+    case UPLOAD_IMAGE_API_SUCCESS: {
+      const kiekotUpdated = prepend(action.payload.data, state.kiekot)
+      return {
+        ...state,
+        kiekkoInEdit: action.payload.data,
+        kiekot: kiekotUpdated,
+        kiekotFiltered: applyFilters(state.predicates, kiekotUpdated),
         isEditOpen: true,
-        image: null
+        image: null,
+        imageUploading: false
+      }
+    }
+    case UPDATE_IMAGE_API_SUCCESS: {
+      return {
+        ...state,
+        image: null,
+        imageUploading: false
+      }
+    }
+    case UPLOAD_IMAGE_API_FAILURE:
+    case UPDATE_IMAGE_API_FAILURE:
+      return {
+        ...state,
+        imageUploading: false
       }
     case APPLY_PREDICATES:
       return {
@@ -142,7 +183,7 @@ const kiekkoReducer = (state = initialState, action) => {
     case FILTER_KIEKOT:
       return {
         ...state,
-        kiekotFiltered: filter(allPass(state.predicates), state.kiekot)
+        kiekotFiltered: applyFilters(state.predicates, state.kiekot)
       }
     case UPDATE_CROP:
       return {
@@ -150,11 +191,10 @@ const kiekkoReducer = (state = initialState, action) => {
         crop: action.crop,
         pixelCrop: action.pixelCrop
       }
-    case COMPLETE_CROP:
+    case CROP_COMPLETE:
       return {
         ...state,
-        croppedImage: processCrop(action.pixelCrop, state.image.base64),
-        pixelCrop: action.pixelCrop
+        croppedImage: action.image,
       }
     case JULKISET_REQUEST:
       return {
@@ -164,8 +204,8 @@ const kiekkoReducer = (state = initialState, action) => {
     case JULKISET_SUCCESS:
       return {
         ...state,
-        julkiset: action.params.julkiset,
-        sortColumn: action.params.newSortColumn
+        julkiset: action.payload.data,
+        sortColumn: getSortColumn(action)
       }
     case JULKISET_LAAJENNA:
       return {
@@ -185,9 +225,22 @@ const kiekkoReducer = (state = initialState, action) => {
     case LOST_SUCCESS:
       return {
         ...state,
-        lost: action.params.lost,
-        lostSortColumn: action.params.newSortColumn
+        lost: action.payload.data.content,
+        lostSortColumn: getSortColumn(action)
       }
+    case FOUND_SUCCESS:
+      return {
+        ...state,
+        lost: removeFromArrayById(state.lost, path(["meta", "previousAction", "id"], action))
+      }
+    case DELETE_DISC_SUCCESS: {
+      const kiekotUpdated = removeFromArrayById(state.kiekot, path(["meta", "previousAction", "id"], action))
+      return {
+        ...state,
+        kiekot: kiekotUpdated,
+        kiekotFiltered: applyFilters(state.predicates, kiekotUpdated)
+      }
+    }
     default:
       return state
   }

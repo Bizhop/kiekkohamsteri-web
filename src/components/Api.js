@@ -1,29 +1,62 @@
 import axios from 'axios'
+import { prop } from 'ramda'
 import { mergeLeft } from 'ramda'
 
-export const getPayload = params => ({
+export const loginPayload = props => ({
   request: {
-    url: params.url,
+    url: "api/auth/login",
+    headers: {
+      Authorization: props.tokenId
+    }
+  }
+})
+
+export const getPayload = props => ({
+  request: {
+    url: props.url,
     headers: {
       Authorization: localStorage.getItem('hamsteri-token')
     }
   }
 })
 
-export const loginPayload = params => ({
+export const patchPayload = props => ({
   request: {
-    url: "api/auth/login",
+    url: props.url,
+    method: 'patch',
+    data: props.data,
     headers: {
-      Authorization: params.tokenId
+      Authorization: localStorage.getItem('hamsteri-token')
     }
   }
 })
 
-export const patchPayload = params => ({
+export const putPayload = props => ({
   request: {
-    url: params.url,
-    method: 'patch',
-    data: params.data,
+    url: props.url,
+    method: 'put',
+    data: props.data,
+    headers: {
+      Authorization: localStorage.getItem('hamsteri-token')
+    }
+  }
+})
+
+export const postPayload = props => ({
+  request: {
+    url: props.url,
+    method: 'post',
+    data: props.data,
+    headers: {
+      Authorization: localStorage.getItem('hamsteri-token')
+    }
+  }
+})
+
+export const deletePayload = props => ({
+  request: {
+    url: props.url,
+    method: 'delete',
     headers: {
       Authorization: localStorage.getItem('hamsteri-token')
     }

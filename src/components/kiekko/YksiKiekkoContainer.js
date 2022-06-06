@@ -1,11 +1,16 @@
 import React from "react"
 import { path } from "ramda"
 import { connect } from "react-redux"
-import { Navigate } from "react-router-dom"
+import { Navigate, useParams } from "react-router-dom"
 
 import { getKiekko } from "./kiekkoActions"
 import { imageUrl, check } from "../shared/images"
 import { tussit } from "../shared/text"
+
+const withParams = props => {
+  const params = useParams()
+  return <YksiKiekkoContainer params={params} {...props} />
+}
 
 const YksiKiekkoContainer = props => (
   <div className="container">
@@ -85,7 +90,10 @@ const YksiKiekkoContainer = props => (
         </div>
       </div>
     ) : (
-      <h1>{props.oneDiscText}</h1>
+      <div>
+        <button onClick={() => props.getKiekko(props.params.id)}>Hae kiekko</button>
+        <h1>{props.oneDiscText}</h1>
+      </div>
     )}
   </div>
 )
@@ -96,11 +104,8 @@ const mapStateToProps = state => ({
   oneDiscText: path(["kiekko", "oneDiscText"], state)
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  const kiekkoId = path(["match", "params", "id"], ownProps)
-  return {
-    getKiekko: dispatch(getKiekko(kiekkoId))
-  }
-}
+const mapDispatchToProps = dispatch => ({
+  getKiekko: id => dispatch(getKiekko(id))
+})
 
-export default connect(mapStateToProps, mapDispatchToProps)(YksiKiekkoContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(withParams)
