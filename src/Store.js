@@ -9,6 +9,7 @@ import rootSaga from './rootSaga'
 import rootReducer from './rootReducer'
 import { GET_MY_DETAILS, USERS_REQUEST, logout, LEADERS_REQUEST } from './components/user/userActions'
 import { KIEKOT_REQUEST, LOST_REQUEST, UPDATE_KIEKKO_REQUEST, JULKISET_REQUEST } from './components/kiekko/kiekkoActions'
+import { MOLDS_REQUEST } from './components/mold/moldActions'
 
 const env = process.env.NODE_ENV
 const baseURL = process.env.API_URL
@@ -45,6 +46,7 @@ const axiosMWConfig = {
           case UPDATE_KIEKKO_REQUEST:
           case JULKISET_REQUEST:
           case LOST_REQUEST:
+          case MOLDS_REQUEST:
             if(status === 403) {
               dispatch(logout())
             }

@@ -1,33 +1,28 @@
-export const MOLDS_REQUEST = 'MOLDS_REQUEST'
-export const MOLDS_SUCCESS = 'MOLDS_SUCCESS'
-export const MOLDS_FAILURE = 'MOLDS_FAILURE'
-export const MOLDS_BY_VALMISTAJA_REQUEST = 'MOLDS_BY_VALMISTAJA_REQUEST'
-export const CREATE_MOLD_REQUEST = 'CREATE_MOLD_REQUEST'
-export const CREATE_MOLD_FAILURE = 'CREATE_MOLD_FAILURE'
-export const TOGGLE_CREATE_MODAL = 'TOGGLE_CREATE_MODAL'
+import { getPayload, postPayload } from "../Api"
+
+export const MOLDS_REQUEST = 'molds/GET'
+export const MOLDS_SUCCESS = 'molds/GET_SUCCESS'
+export const MOLDS_FAILURE = 'molds/GET_FAIL'
+export const CREATE_MOLD_REQUEST = 'molds/CREATE'
+export const CREATE_MOLD_SUCCESS = 'molds/CREATE_SUCCESS'
+export const CREATE_MOLD_FAILURE = 'molds/CREATE_FAIL'
+export const TOGGLE_CREATE_MODAL = 'molds/TOGGLE_CREATE_MODAL'
 
 export const getMolds = () => ({
   type: MOLDS_REQUEST,
+  payload: getPayload({url: "api/molds?size=1000&sort=kiekko,asc"}),
+  valmId: null
 })
 
 export const getMoldsByValmistaja = valmId => ({
-  type: MOLDS_BY_VALMISTAJA_REQUEST,
-  valmId,
-})
-
-export const moldsSuccess = molds => ({
-  type: MOLDS_SUCCESS,
-  molds,
-})
-
-export const moldsFailure = error => ({
-  type: MOLDS_FAILURE,
-  error,
+  type: MOLDS_REQUEST,
+  payload: getPayload({url: `api/molds?size=1000&sort=kiekko,asc&valmId=${valmId}`}),
+  valmId
 })
 
 export const createMold = mold => ({
   type: CREATE_MOLD_REQUEST,
-  mold,
+  payload: postPayload({url: "api/molds", data: mold})
 })
 
 export const createMoldFailure = error => ({
