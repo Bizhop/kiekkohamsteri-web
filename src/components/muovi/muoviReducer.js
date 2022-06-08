@@ -1,7 +1,10 @@
+import { prepend } from 'ramda'
+
 import {
-  MUOVIT_BY_VALMISTAJA_REQUEST,
+  MUOVIT_REQUEST,
   MUOVIT_SUCCESS,
   MUOVIT_FAILURE,
+  CREATE_MUOVI_SUCCESS,
   TOGGLE_CREATE_MODAL,
 } from './muoviActions'
 
@@ -15,7 +18,7 @@ const initialState = {
 
 const muoviReducer = (state = initialState, action) => {
   switch (action.type) {
-    case MUOVIT_BY_VALMISTAJA_REQUEST:
+    case MUOVIT_REQUEST:
       return {
         ...state,
         valmId: action.valmId,
@@ -29,8 +32,18 @@ const muoviReducer = (state = initialState, action) => {
     case MUOVIT_SUCCESS:
       return {
         ...state,
-        muovit: action.muovit,
+        muovit: action.payload.data,
       }
+    case CREATE_MUOVI_SUCCESS: {
+      return {
+        ...state,
+        muovit: {
+          ...state.muovit,
+          content: prepend(action.payload.data, state.muovit.content)
+        },
+        isCreateOpen: false
+      }
+    }
     case TOGGLE_CREATE_MODAL:
       return {
         ...state,
