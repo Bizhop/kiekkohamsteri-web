@@ -1,49 +1,32 @@
-export const OMAT_OSTOT_REQUEST = "OMAT_OSTOT_REQUEST"
-export const OMAT_OSTOT_SUCCESS = "OMAT_OSTOT_SUCCESS"
-export const OMAT_OSTOT_FAILURE = "OMAT_OSTOT_FAILURE"
-export const BUY_DISC_REQUEST = "BUY_DISC_REQUEST"
-export const BUY_DISC_SUCCESS = "BUY_DISC_SUCCESS"
-export const BUY_DISC_FAILURE = "BUY_DISC_FAILURE"
-export const PERUUTA_OSTO_REQUEST = "PERUUTA_OSTO_REQUEST"
-export const PERUUTA_OSTO_FAILURE = "PERUUTA_OSTO_FAILURE"
-export const HYVAKSY_OSTO_REQUEST = "HYVAKSY_OSTO_REQUEST"
-export const HYVAKSY_OSTO_FAILURE = "HYVAKSY_OSTO_FAILURE"
+import { getPayload, postPayload } from "../Api"
+
+export const OMAT_OSTOT_REQUEST = "ostot/OMAT"
+export const OMAT_OSTOT_SUCCESS = "ostot/OMAT_SUCCESS"
+export const OMAT_OSTOT_FAILURE = "ostot/OMAT_FAIL"
+export const OSTA_REQUEST = "ostot/OSTA"
+export const OSTA_SUCCESS = "ostot/OSTA_SUCCESS"
+export const OSTA_FAILURE = "ostot/OSTA_FAIL"
+export const PERUUTA_OSTO_REQUEST = "ostot/PERUUTA"
+export const PERUUTA_OSTO_SUCCESS = "ostot/PERUUTA_SUCCESS"
+export const PERUUTA_OSTO_FAILURE = "ostot/PERUUTA_FAIL"
+export const HYVAKSY_OSTO_REQUEST = "ostot/HYVAKSY"
+export const HYVAKSY_OSTO_SUCCESS = "ostot/HYVAKSY_FAIL"
+export const HYVAKSY_OSTO_FAILURE = "ostot/HYVAKSY_FAIL"
 
 export const getOmat = () => ({
-  type: OMAT_OSTOT_REQUEST
-})
-
-export const omatSuccess = data => ({
-  type: OMAT_OSTOT_SUCCESS,
-  data
-})
-
-export const omatFailure = error => ({
-  type: OMAT_OSTOT_FAILURE,
-  error
+  type: OMAT_OSTOT_REQUEST,
+  payload: getPayload({url: "api/ostot/omat"})
 })
 
 export const buyDisc = id => ({
-  type: BUY_DISC_REQUEST,
+  type: OSTA_REQUEST,
+  payload: postPayload({url: `api/kiekot/${id}/buy`}),
   id
-})
-
-export const buyDiscSuccess = () => ({
-  type: BUY_DISC_SUCCESS
-})
-
-export const buyDiscFailure = error => ({
-  type: BUY_DISC_FAILURE,
-  error
 })
 
 export const peruutaOsto = id => ({
   type: PERUUTA_OSTO_REQUEST,
-  id
-})
-
-export const peruutaOstoFailure = id => ({
-  type: PERUUTA_OSTO_FAILURE,
+  payload: postPayload({url: `api/ostot/${id}/reject`}),
   id
 })
 

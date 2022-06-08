@@ -1,4 +1,4 @@
-import { filter, allPass, keys, prop, propEq, uniq, append, without, findIndex, update, path, remove } from "ramda"
+import { filter, allPass, keys, prop, propEq, uniq, append, without, findIndex, update, path, remove, prepend } from "ramda"
 
 import {
   KIEKOT_SUCCESS,
@@ -30,8 +30,7 @@ import {
   DELETE_DISC_SUCCESS
 } from "./kiekkoActions"
 import { defaultSort } from "../shared/text"
-import { prepend } from "ramda"
-import { path } from "ramda"
+import { getSortColumn, removeFromArrayById } from "../shared/utils"
 
 const initialState = {
   kiekot: [],
@@ -67,13 +66,6 @@ const applyFilters = (predicates, kiekot) => {
     ? kiekot
     : filter(allPass(predicates), kiekot)
 }
-
-const removeFromArrayById = (lost, id) => {
-  const index = findIndex(propEq("id", id))(lost)
-  return remove(index, 1, lost)
-}
-
-const getSortColumn = action => path(["meta", "previousAction", "params", "newSortColumn"], action)
 
 const kiekkoReducer = (state = initialState, action) => {
   switch (action.type) {

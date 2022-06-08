@@ -11,6 +11,8 @@ import { GET_MY_DETAILS, USERS_REQUEST, logout, LEADERS_REQUEST } from './compon
 import { KIEKOT_REQUEST, LOST_REQUEST, UPDATE_KIEKKO_REQUEST, JULKISET_REQUEST } from './components/kiekko/kiekkoActions'
 import { MOLDS_REQUEST } from './components/mold/moldActions'
 import { MUOVIT_REQUEST } from './components/muovi/muoviActions'
+import { MYYTAVAT_REQUEST } from './components/myytavat/myytavatActions'
+import { OMAT_OSTOT_REQUEST, OSTA_REQUEST } from './components/osto/ostoActions'
 
 const env = process.env.NODE_ENV
 const baseURL = process.env.API_URL
@@ -49,6 +51,9 @@ const axiosMWConfig = {
           case LOST_REQUEST:
           case MOLDS_REQUEST:
           case MUOVIT_REQUEST:
+          case MYYTAVAT_REQUEST:
+          case OMAT_OSTOT_REQUEST:
+          case OSTA_REQUEST:
             if(status === 403) {
               dispatch(logout())
             }

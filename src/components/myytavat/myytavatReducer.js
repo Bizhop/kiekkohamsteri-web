@@ -1,3 +1,4 @@
+import { getSortColumn } from "../shared/utils"
 import { MYYTAVAT_SUCCESS } from "./myytavatActions"
 
 const initialState = {
@@ -10,8 +11,8 @@ const myytavatReducer = (state = initialState, action) => {
     case MYYTAVAT_SUCCESS:
       return {
         ...state,
-        kiekot: action.params.myytavat,
-        sortColumn: action.params.newSortColumn
+        kiekot: action.payload.data.content,
+        sortColumn: getSortColumn(action)
       }
     default:
       return state

@@ -11,6 +11,11 @@ import MyyntiTable from "./MyyntiTable"
 
 const MyytavatContainer = props => (
   <div className="container">
+    {props.error && (
+      <div className="alert alert-warning">
+        {props.error}
+      </div>
+    )}
     <h1>Omat ostot</h1>
     {props.kaupat && (
       <OstoTable
@@ -46,7 +51,8 @@ const mapStateToProps = state => ({
   username: path(["user", "user", "username"], state),
   kiekot: pathOr([], ["myytavat", "kiekot"], state),
   sortColumn: path(["myytavat", "sortColumn"], state),
-  kaupat: path(["osto", "data"], state)
+  kaupat: path(["osto", "data"], state),
+  error: path(["osto", "error"], state)
 })
 
 const mapDispatchToProps = dispatch => ({
