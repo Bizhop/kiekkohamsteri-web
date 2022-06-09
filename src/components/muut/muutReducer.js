@@ -1,3 +1,4 @@
+import { getSortColumn } from "../shared/utils"
 import { STATS_REQUEST, STATS_SUCCESS } from "./muutActions"
 
 const initialState = {
@@ -16,8 +17,8 @@ const muutReducer = (state = initialState, action) => {
     case STATS_SUCCESS:
       return {
         ...state,
-        stats: action.params.stats,
-        sortColumn: action.params.newSortColumn
+        stats: action.payload.data.content,
+        sortColumn: getSortColumn(action)
       }
     default:
       return state
