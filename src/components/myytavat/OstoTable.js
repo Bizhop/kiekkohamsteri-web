@@ -1,5 +1,5 @@
 import React from "react"
-import ReactImageMagnify from "react-image-magnify"
+import ReactImageMagnify from "@blacklab/react-image-magnify"
 
 import ThWithButton from "../shared/ThWithButton"
 import { imageUrl, magnify, check } from "../shared/images"

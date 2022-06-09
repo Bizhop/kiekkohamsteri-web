@@ -1,5 +1,5 @@
 import React from "react"
-import ReactImageMagnify from "react-image-magnify"
+import ReactImageMagnify from "@blacklab/react-image-magnify"
 import { confirmAlert } from "react-confirm-alert"
 import "react-confirm-alert/src/react-confirm-alert.css"
 import { NavLink } from "react-router-dom"

@@ -20,31 +20,21 @@ export const minus =
 
 export const magnify = image => {
   return {
-    largeImage: {
-      alt: "",
-      src: `${imageUrl}t_kiekko/${image}`,
-      width: 600,
-      height: 600
-    },
-    smallImage: {
+    imageProps: {
       alt: "kuva",
       src: `${imageUrl}t_thumb/${image}`,
       width: 30,
       height: 30
     },
-    isHintEnabled: false,
-    enlargedImageContainerStyle: {
-      position: "absolute",
-      left: "50px",
-      top: "-150px",
-      border: "1px solid black"
-    },
-    imageStyle: {
-      border: "1px solid black"
-    },
-    enlargedImageContainerDimensions: {
+    magnifiedImageProps: {
+      alt: "",
+      src: `${imageUrl}t_kiekko/${image}`,
       width: 600,
       height: 600
+    },
+    magnifyContainerProps : {
+      height : 600,
+      width : 600
     }
   }
 }
