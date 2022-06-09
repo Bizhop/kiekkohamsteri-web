@@ -10,7 +10,7 @@ export const PERUUTA_OSTO_REQUEST = "ostot/PERUUTA"
 export const PERUUTA_OSTO_SUCCESS = "ostot/PERUUTA_SUCCESS"
 export const PERUUTA_OSTO_FAILURE = "ostot/PERUUTA_FAIL"
 export const HYVAKSY_OSTO_REQUEST = "ostot/HYVAKSY"
-export const HYVAKSY_OSTO_SUCCESS = "ostot/HYVAKSY_FAIL"
+export const HYVAKSY_OSTO_SUCCESS = "ostot/HYVAKSY_SUCCESS"
 export const HYVAKSY_OSTO_FAILURE = "ostot/HYVAKSY_FAIL"
 
 export const getOmat = () => ({
@@ -32,10 +32,8 @@ export const peruutaOsto = id => ({
 
 export const hyvaksyOsto = id => ({
   type: HYVAKSY_OSTO_REQUEST,
+  payload: postPayload({url: `api/ostot/${id}/confirm`}),
   id
 })
 
-export const hyvaksyOstoFailure = error => ({
-  type: HYVAKSY_OSTO_FAILURE,
-  error
-})
+//`api/ostot/${action.id}/confirm`

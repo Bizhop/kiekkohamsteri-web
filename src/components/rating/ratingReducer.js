@@ -38,8 +38,8 @@ const ratingReducer = (state = initialState, action) => {
     case RATING_SUCCESS:
       return {
         ...state,
-        nextRating: action.response.nextRating,
-        rounds: action.response.rounds,
+        nextRating: action.payload.data.nextRating,
+        rounds: action.payload.data.rounds,
         error: null,
         fetching: false
       }
@@ -61,7 +61,7 @@ const ratingReducer = (state = initialState, action) => {
     case CUSTOM_RATING_SUCCESS:
       return {
         ...state,
-        customRating: action.response
+        customRating: action.payload.data
       }
     default:
       return state

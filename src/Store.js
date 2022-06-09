@@ -12,7 +12,7 @@ import { KIEKOT_REQUEST, LOST_REQUEST, UPDATE_KIEKKO_REQUEST, JULKISET_REQUEST }
 import { MOLDS_REQUEST } from './components/mold/moldActions'
 import { MUOVIT_REQUEST } from './components/muovi/muoviActions'
 import { MYYTAVAT_REQUEST } from './components/myytavat/myytavatActions'
-import { OMAT_OSTOT_REQUEST, OSTA_REQUEST } from './components/osto/ostoActions'
+import { HYVAKSY_OSTO_REQUEST, OMAT_OSTOT_REQUEST, OSTA_REQUEST, PERUUTA_OSTO_REQUEST } from './components/osto/ostoActions'
 
 const env = process.env.NODE_ENV
 const baseURL = process.env.API_URL
@@ -54,6 +54,8 @@ const axiosMWConfig = {
           case MYYTAVAT_REQUEST:
           case OMAT_OSTOT_REQUEST:
           case OSTA_REQUEST:
+          case PERUUTA_OSTO_REQUEST:
+          case HYVAKSY_OSTO_REQUEST:
             if(status === 403) {
               dispatch(logout())
             }

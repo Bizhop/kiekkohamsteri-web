@@ -1,6 +1,6 @@
-import { prepend, path } from "ramda"
+import { prepend, pathOr } from "ramda"
 import { removeFromArrayById } from "../shared/utils"
-import { OMAT_OSTOT_SUCCESS, OSTA_FAILURE, OSTA_SUCCESS, PERUUTA_OSTO_SUCCESS } from "./ostoActions"
+import { HYVAKSY_OSTO_SUCCESS, OMAT_OSTOT_SUCCESS, OSTA_FAILURE, OSTA_SUCCESS, PERUUTA_OSTO_SUCCESS } from "./ostoActions"
 
 const initialState = {
   data: {
@@ -33,11 +33,12 @@ const ostoReducer = (state = initialState, action) => {
         error: "Olet jo ostamassa tätä kiekkoa"
       }
     case PERUUTA_OSTO_SUCCESS:
+    case HYVAKSY_OSTO_SUCCESS:
       return {
         ...state,
         data: {
-          ...state.data,
-          ostajana: removeFromArrayById(state.data.ostajana, path(["meta", "previousAction", "id"], action))
+          ostajana: removeFromArrayById(state.data.ostajana, pathOr(-1, ["meta", "previousAction", "id"], action)),
+          myyjana: removeFromArrayById(state.data.myyjana, pathOr(-1, ["meta", "previousAction", "id"], action))
         },
         error: null
       }

@@ -1,10 +1,12 @@
-export const INIT_RATING = "INIT_RATING"
-export const RATING_REQUEST = "RATING_REQUEST"
-export const RATING_SUCCESS = "RATING_SUCCESS"
-export const RATING_FAILURE = "RATING_FAILURE"
-export const CUSTOM_RATING_REQUEST = "CUSTOM_RATING_REQUEST"
-export const CUSTOM_RATING_SUCCESS = "CUSTOM_RATING_SUCCESS"
-export const CUSTOM_RATING_FAILURE = "CUSTOM_RATING_FAILURE"
+import { getPayload, postPayload } from "../Api"
+
+export const INIT_RATING = "rating/INIT"
+export const RATING_REQUEST = "rating/GET"
+export const RATING_SUCCESS = "rating/GET_SUCCESS"
+export const RATING_FAILURE = "rating/GET_FAIL"
+export const CUSTOM_RATING_REQUEST = "rating/CUSTOM"
+export const CUSTOM_RATING_SUCCESS = "rating/CUSTOM_SUCCESS"
+export const CUSTOM_RATING_FAILURE = "rating/CUSTOM_FAIL"
 
 export const initRating = () => ({
   type: INIT_RATING
@@ -12,30 +14,13 @@ export const initRating = () => ({
 
 export const getRating = pdga => ({
   type: RATING_REQUEST,
-  pdga
-})
-
-export const ratingSuccess = response => ({
-  type: RATING_SUCCESS,
-  response
-})
-
-export const ratingError = error => ({
-  type: RATING_FAILURE,
-  error
+  payload: getPayload({url: `api/rating/${pdga}`})
 })
 
 export const getCustomRating = form => ({
   type: CUSTOM_RATING_REQUEST,
-  form
-})
-
-export const customRatingSuccess = response => ({
-  type: CUSTOM_RATING_SUCCESS,
-  response
-})
-
-export const customRatingFailure = error => ({
-  type: CUSTOM_RATING_FAILURE,
-  error
+  payload: postPayload({
+    url: `api/rating${form.byRoundsOnly ? '?byRoundsOnly=true' : ''}`,
+    data: form.rounds
+  })
 })
