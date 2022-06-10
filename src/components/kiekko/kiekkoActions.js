@@ -22,7 +22,6 @@ export const DELETE_DISC = "kiekot/DELETE"
 export const DELETE_DISC_SUCCESS = "kiekot/DELETE_SUCCESS"
 export const DELETE_DISC_FAILURE = "kiekot/DELETE_FAIL"
 export const APPLY_PREDICATES = "kiekot/APPLY_PREDICATES"
-export const FILTER_KIEKOT = "kiekot/FILTER_KIEKOT"
 export const UPDATE_CROP = "kiekot/UPDATE_CROP"
 export const COMPLETE_CROP = "kiekot/COMPLETE_CROP"
 export const CROP_COMPLETE = "kiekot/CROP_COMPLETE"
@@ -128,10 +127,6 @@ export const deleteDisc = id => ({
 export const applyPredicates = form => ({
   type: APPLY_PREDICATES,
   form
-})
-
-export const filterKiekot = () => ({
-  type: FILTER_KIEKOT
 })
 
 export const updateCrop = crop => ({

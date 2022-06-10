@@ -119,7 +119,6 @@ const processCrop = (pixelCrop, base64) =>
   })
 
 function* completeCropSaga(action) {
-  console.log("complete crop saga")
   const croppedImage = yield call(processCrop, action.crop, action.image)
   yield put(cropComplete(croppedImage))
 }
