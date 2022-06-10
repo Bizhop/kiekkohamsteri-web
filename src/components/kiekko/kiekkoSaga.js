@@ -3,8 +3,6 @@ import { all, call, put, takeEvery } from "redux-saga/effects"
 import {
   TOGGLE_KIEKKO_EDIT_MODAL,
   UPLOAD_IMAGE,
-  APPLY_PREDICATES,
-  filterKiekot,
   UPDATE_IMAGE,
   CHOOSE_IMAGE,
   updateImageDimensions,
@@ -151,10 +149,6 @@ function* updateImageSaga(action) {
   }))
 }
 
-function* applyPredicatesSaga() {
-  yield put(filterKiekot())
-}
-
 function* updateImageDimensionsSaga(action) {
   try {
     const loadedImage = yield call(loadImage, action.base64)
@@ -181,7 +175,6 @@ function* kiekkoSaga() {
   yield all([
     takeEvery(TOGGLE_KIEKKO_EDIT_MODAL, toggleEditModalSaga),
     takeEvery(UPLOAD_IMAGE, uploadImageSaga),
-    takeEvery(APPLY_PREDICATES, applyPredicatesSaga),
     takeEvery(UPDATE_IMAGE, updateImageSaga),
     takeEvery(CHOOSE_IMAGE, readImageBase64),
     takeEvery(CHOOSE_IMAGE_SUCCESS, updateImageDimensionsSaga),

@@ -167,16 +167,14 @@ const kiekkoReducer = (state = initialState, action) => {
         ...state,
         imageUploading: false
       }
-    case APPLY_PREDICATES:
+    case APPLY_PREDICATES: {
+      const predicates = keys(filter(n => n, action.form)).map(p => d => prop(p, d))
       return {
         ...state,
-        predicates: keys(filter(n => n, action.form)).map(p => d => prop(p, d))
+        predicates: predicates,
+        kiekotFiltered: applyFilters(predicates, state.kiekot)
       }
-    case FILTER_KIEKOT:
-      return {
-        ...state,
-        kiekotFiltered: applyFilters(state.predicates, state.kiekot)
-      }
+    }
     case UPDATE_CROP:
       return {
         ...state,
