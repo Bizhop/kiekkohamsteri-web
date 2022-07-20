@@ -10,7 +10,6 @@ import { getLeaders } from "../user/userActions"
 import { getJulkiset, laajenna, supista, getLost, found } from "../kiekko/kiekkoActions"
 import KiekkoTable from "../kiekko/KiekkoTable"
 import { plus, minus } from "../shared/images"
-import { defaultSort } from "../shared/text"
 import { getStats } from "./muutActions"
 import StatsTable from "./StatsTable"
 
@@ -120,7 +119,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getLeaders: dispatch(getLeaders()),
-  getJulkiset: dispatch(getJulkiset(defaultSort)),
+  getJulkiset: dispatch(getJulkiset()),
   getStats: dispatch(
     getStats({
       sort: "year,desc&sort=month,desc",

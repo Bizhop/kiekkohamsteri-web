@@ -3,7 +3,7 @@ import { path } from "ramda"
 import { connect } from "react-redux"
 import GoogleLogin from "react-google-login"
 
-import { login, googleLoginError, toggleEditModal, requestUpdateMe } from "../user/userActions"
+import { login, toggleEditModal, requestUpdateMe } from "../user/userActions"
 import UserEditModal from "../user/UserEditModal"
 
 const DashContainer = props => (
@@ -60,7 +60,7 @@ const DashContainer = props => (
         buttonText="Kirjaudu sisään"
         className="btn btn-danger"
         onSuccess={props.login}
-        onFailure={props.googleLoginError}
+        onFailure={props.loginError}
       />
     )}
     {props.error && (

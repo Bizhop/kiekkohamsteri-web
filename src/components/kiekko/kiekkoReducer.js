@@ -193,8 +193,7 @@ const kiekkoReducer = (state = initialState, action) => {
     case JULKISET_SUCCESS:
       return {
         ...state,
-        julkiset: action.payload.data,
-        sortColumn: getSortColumn(action)
+        julkiset: action.payload.data
       }
     case JULKISET_LAAJENNA:
       return {

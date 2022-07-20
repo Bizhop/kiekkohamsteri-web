@@ -144,10 +144,9 @@ export const cropComplete = image => ({
   image
 })
 
-export const getJulkiset = params => ({
+export const getJulkiset = () => ({
   type: JULKISET_REQUEST,
-  payload: getPayload({url: `api/kiekot/public-lists?size=1000&sort=${params.sort}`}),
-  params
+  payload: getPayload({url: 'api/kiekot/public-lists'})
 })
 
 export const laajenna = username => ({
