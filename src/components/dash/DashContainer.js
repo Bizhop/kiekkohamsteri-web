@@ -3,7 +3,7 @@ import { path } from "ramda"
 import { connect } from "react-redux"
 import GoogleLogin from "react-google-login"
 
-import { login, toggleEditModal, requestUpdateMe } from "../user/userActions"
+import { login, googleLoginError, toggleEditModal, requestUpdateMe } from "../user/userActions"
 import UserEditModal from "../user/UserEditModal"
 
 const DashContainer = props => (
@@ -81,7 +81,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   login: response => dispatch(login(response)),
-  loginError: response => dispatch(loginError(response)),
+  loginError: response => dispatch(googleLoginError(response)),
   toggleEditModal: user => dispatch(toggleEditModal(user)),
   editUser: user => dispatch(requestUpdateMe(user))
 })
