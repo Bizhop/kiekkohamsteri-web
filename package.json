@@ -3,12 +3,12 @@
   "source": "src/index.html",
   "scripts": {
     "start": "parcel",
-    "build": "parcel build"
+    "build": "parcel build",
+    "heroku-postbuild": "parcel build"
   },
   "devDependencies": {
     "@parcel/transformer-sass": "^2.5.0",
     "buffer": "^6.0.3",
-    "parcel": "^2.5.0",
     "process": "^0.11.10",
     "redux-devtools-extension": "^2.13.9"
   },
@@ -16,6 +16,7 @@
     "@blacklab/react-image-magnify": "^4.1.1",
     "axios": "^0.27.2",
     "ramda": "^0.28.0",
+    "parcel": "^2.5.0",
     "react": "^18.1.0",
     "react-activity": "^2.1.3",
     "react-confirm-alert": "^3.0.2",
