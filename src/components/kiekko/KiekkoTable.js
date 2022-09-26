@@ -1,5 +1,4 @@
 import React from "react"
-import ReactImageMagnify from "@blacklab/react-image-magnify"
 import { confirmAlert } from "react-confirm-alert"
 import "react-confirm-alert/src/react-confirm-alert.css"
 import { NavLink } from "react-router-dom"
@@ -9,6 +8,7 @@ import "react-activity/dist/library.css"
 import ThWithButton from "../shared/ThWithButton"
 import { edit, del, magnify, upload, check } from "../shared/images"
 import { defaultSort } from "../shared/text"
+import ZoomImage from "../shared/ZoomImage"
 
 const KiekkoTable = props => (
   <div>
@@ -66,7 +66,7 @@ const Kiekko = props => {
   return (
     <tr>
       <td>
-        <ReactImageMagnify {...magnify(kiekko.kuva)} />
+        <ZoomImage image={kiekko.kuva} />
       </td>
       <td>
         <NavLink

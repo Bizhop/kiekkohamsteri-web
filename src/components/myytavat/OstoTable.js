@@ -1,8 +1,8 @@
 import React from "react"
-import ReactImageMagnify from "@blacklab/react-image-magnify"
 
 import ThWithButton from "../shared/ThWithButton"
-import { imageUrl, magnify, check } from "../shared/images"
+import { check } from "../shared/images"
+import ZoomImage from "../shared/ZoomImage"
 
 const OstoTable = props => (
   <table className="table table-striped">
@@ -18,7 +18,7 @@ const Osto = props => {
   return (
     <tr>
       <td>
-        <ReactImageMagnify {...magnify(kiekko.kuva)} />
+        <ZoomImage image={kiekko.kuva} />
       </td>
       <td>{props.osto.id}</td>
       <td>{props.osto.myyja.username}</td>

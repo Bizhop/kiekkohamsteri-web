@@ -1,5 +1,6 @@
 import React from "react"
 import { Route, Routes } from "react-router-dom"
+import { GoogleOAuthProvider } from "@react-oauth/google"
 
 import Header from "./shared/Header"
 import DashContainer from "./dash/DashContainer"
@@ -38,10 +39,14 @@ const MyRoutes = () => (
 )
 
 const App = () => (
-  <div className="app">
-    <Header />
-    <MyRoutes />
-  </div>
+  <GoogleOAuthProvider
+    clientId="107543052765-lfgp4lke6h51a0l4kp258anilpeegf8v.apps.googleusercontent.com"
+  >
+    <div className="app">
+      <Header />
+      <MyRoutes />
+    </div>
+  </GoogleOAuthProvider>
 )
 
 export default App

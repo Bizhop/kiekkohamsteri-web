@@ -1,9 +1,13 @@
-import { fork } from "redux-saga/effects"
+import { fork, all } from "redux-saga/effects"
 
 import kiekkoSaga from "./components/kiekko/kiekkoSaga"
+import userSaga from "./components/user/userSaga"
 
 function* rootSaga() {
-  yield fork(kiekkoSaga)
+  yield all([
+    fork(kiekkoSaga),
+    fork(userSaga)
+  ])
 }
 
 export default rootSaga

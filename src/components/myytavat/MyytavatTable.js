@@ -1,8 +1,8 @@
 import React from "react"
-import ReactImageMagnify from "@blacklab/react-image-magnify"
 
 import ThWithButton from "../shared/ThWithButton"
-import { magnify, check } from "../shared/images"
+import { check } from "../shared/images"
+import ZoomImage from "../shared/ZoomImage"
 import { tussit } from "../shared/text"
 
 const MyytavatTable = props => (
@@ -37,7 +37,7 @@ const Kiekko = props => {
   return (
     <tr>
       <td>
-        <ReactImageMagnify {...magnify(kiekko.kuva)} />
+        <ZoomImage image={kiekko.kuva} />
       </td>
       <td>{kiekko.id}</td>
       <td>{kiekko.omistaja}</td>

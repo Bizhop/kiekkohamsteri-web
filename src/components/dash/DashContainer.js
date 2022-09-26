@@ -1,7 +1,7 @@
 import React from "react"
 import { path } from "ramda"
 import { connect } from "react-redux"
-import GoogleLogin from "react-google-login"
+import { GoogleLogin } from "@react-oauth/google"
 
 import { login, googleLoginError, toggleEditModal, requestUpdateMe } from "../user/userActions"
 import UserEditModal from "../user/UserEditModal"
@@ -56,11 +56,9 @@ const DashContainer = props => (
       )
     ) : (
       <GoogleLogin
-        clientId="107543052765-lfgp4lke6h51a0l4kp258anilpeegf8v.apps.googleusercontent.com"
-        buttonText="Kirjaudu sisään"
-        className="btn btn-danger"
         onSuccess={props.login}
-        onFailure={props.loginError}
+        onError={props.loginError}
+        useOneTap
       />
     )}
     {props.error && (
