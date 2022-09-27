@@ -1,5 +1,5 @@
 import React from "react"
-import { path } from "ramda"
+import { path, pathOr, any, propEq } from "ramda"
 import { NavLink } from "react-router-dom"
 import { connect } from "react-redux"
 
@@ -18,12 +18,12 @@ const Header = props => (
           {props.loggedIn && (
             <div>
               <div className="col-md-1 col-xs-12">
-                <NavLink to="/kiekot" className="nav-link nav-item">
+                <NavLink to="/discs" className="nav-link nav-item">
                   Kiekot
                 </NavLink>
               </div>
               <div className="col-md-1 col-xs-12">
-                <NavLink to="/kaupat" className="nav-link nav-item">
+                <NavLink to="/shop" className="nav-link nav-item">
                   Kaupat
                 </NavLink>
               </div>
@@ -33,14 +33,19 @@ const Header = props => (
                 </NavLink>
               </div>
               <div className="col-md-1 col-xs-12">
-                <NavLink to="/muut" className="nav-link nav-item">
+                <NavLink to="/groups" className="nav-link nav-item">
+                  Ryhmät
+                </NavLink>
+              </div>
+              <div className="col-md-1 col-xs-12">
+                <NavLink to="/others" className="nav-link nav-item">
                   Muut
                 </NavLink>
               </div>
             </div>
           )}
-          {props.loggedIn &&
-            props.level === 2 && (
+          {props.loggedIn && props.roles &&
+            any(propEq('name', 'ADMIN'))(props.roles) && (
               <div>
                 <div className="col-md-1 col-xs-12">
                   <NavLink to="/users" className="nav-link nav-item">
@@ -53,18 +58,17 @@ const Header = props => (
                   </NavLink>
                 </div>
                 <div className="col-md-1 col-xs-12">
-                  <NavLink to="/muovit" className="nav-link nav-item">
+                  <NavLink to="/plastics" className="nav-link nav-item">
                     Muovit
                   </NavLink>
                 </div>
               </div>
             )}
           {props.loggedIn && (
-            <div className="col-md-4 col-xs-12 pull-right">
+            <div className="col-md-2 col-xs-12 pull-right">
               <div className="row">
-                <div className="col-md-6 col-xs-6">{props.loggedIn.email}</div>
                 <div className="col-md-6 col-xs-6">
-                  <button onClick={() => props.logout()} className="btn btn-primary">
+                  <button onClick={() => props.logout()} className="btn btn-danger">
                     Kirjaudu ulos
                   </button>
                 </div>
@@ -79,7 +83,8 @@ const Header = props => (
 
 const mapStateToProps = state => ({
   loggedIn: path(["user", "token"], state),
-  level: path(["user", "user", "level"], state)
+  user: path(["user", "user"], state),
+  roles: pathOr([], ["user", "user", "roles"], state)
 })
 
 const mapDispatchToProps = dispatch => ({

@@ -12,6 +12,7 @@ import YksiKiekkoContainer from "./kiekko/YksiKiekkoContainer"
 import MyytavatContainer from "./myytavat/MyytavatContainer"
 import RatingContainer from "./rating/RatingContainer"
 import MuutContainer from "./muut/MuutContainer"
+import GroupContainer from "./group/GroupContainer"
 
 const NotFound = () => (
   <div className="container">
@@ -26,13 +27,14 @@ const MyRoutes = () => (
     <Routes>
       <Route exact path="/" element={<DashContainer />} />
       <Route exact path="/users" element={<UserContainer />} />
-      <Route exact path="/kiekot" element={<KiekkoContainer />} />
-      <Route exact path="/kiekot/:id" element={<YksiKiekkoContainer />} />
+      <Route exact path="/discs" element={<KiekkoContainer />} />
+      <Route exact path="/discs/:id" element={<YksiKiekkoContainer />} />
       <Route exact path="/molds" element={<MoldContainer />} />
-      <Route exact path="/muovit" element={<MuoviContainer />} />
-      <Route exact path="/kaupat" element={<MyytavatContainer />} />
+      <Route exact path="/plastics" element={<MuoviContainer />} />
+      <Route exact path="/shop" element={<MyytavatContainer />} />
       <Route exact path="/rating" element={<RatingContainer />} />
-      <Route exact path="/muut" element={<MuutContainer />} />
+      <Route exact path="/others" element={<MuutContainer />} />
+      <Route exact path="/groups" element={<GroupContainer />} />
       <Route element={NotFound} />
     </Routes>
   </div>

@@ -61,9 +61,9 @@ const User = props => {
       <td>{user.id}</td>
       <td>{user.username}</td>
       <td>{user.email}</td>
-      <td>{user.etunimi}</td>
-      <td>{user.sukunimi}</td>
-      <td>{user.pdga_num}</td>
+      <td>{user.firstName}</td>
+      <td>{user.lastName}</td>
+      <td>{user.pdgaNumber}</td>
       <td>{user.discCount}</td>
       <td>{user.level}</td>
       <td>

@@ -4,7 +4,6 @@ import { googleLogout } from "@react-oauth/google"
 import { LOGOUT } from "./userActions"
 
 function* logoutSaga() {
-    console.log("Calling googleLogout()")
     yield call(googleLogout)
 }
 

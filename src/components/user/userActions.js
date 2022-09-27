@@ -36,7 +36,7 @@ export const logout = () => ({
 
 export const getUsers = () => ({
   type: USERS_REQUEST,
-  payload: getPayload({url: "api/user"})
+  payload: getPayload({url: "api/v2/user"})
 })
 
 export const toggleEditModal = user => ({
@@ -47,16 +47,16 @@ export const toggleEditModal = user => ({
 export const updateUser = user => ({
   type: UPDATE_REQUEST,
   payload: patchPayload({
-    url: `api/user/${user.id}`,
-    data: pick(["username", "etunimi", "sukunimi", "pdga_num"], user)
+    url: `api/v2/user/${user.id}`,
+    data: pick(["username", "firstName", "lastName", "pdgaNumber"], user)
   })
 })
 
 export const requestUpdateMe = user => ({
   type: UPDATE_REQUEST,
   payload: patchPayload({
-    url: `api/user/${user.id}`,
-    data: pick(["username", "etunimi", "sukunimi", "pdga_num","publicDiscCount", "publicList"], user)
+    url: `api/v2/user/${user.id}`,
+    data: pick(["username", "firstName", "lastName", "pdgaNumber","publicDiscCount", "publicList"], user)
   })
 })
 
@@ -66,27 +66,19 @@ export const updateUserError = error => ({
 })
 
 export const promoteUser = userId => ({
-  type: UPDATE_REQUEST,
-  payload: patchPayload({
-    url: `api/user/${userId}/level/2`,
-    data: null
-  })
+  type: UPDATE_REQUEST
 })
 
 export const demoteUser = userId => ({
-  type: UPDATE_REQUEST,
-  payload: patchPayload({
-    url: `api/user/${userId}/level/1`,
-    data: null
-  })
+  type: UPDATE_REQUEST
 })
 
 export const getMyDetails = () => ({
   type: GET_MY_DETAILS,
-  payload: getPayload({url: "api/user/me"})
+  payload: getPayload({url: "api/v2/user/me"})
 })
 
 export const getLeaders = () => ({
   type: LEADERS_REQUEST,
-  payload: getPayload({url: "api/user/leaders"})
+  payload: getPayload({url: "api/v2/user/leaders"})
 })

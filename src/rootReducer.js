@@ -10,6 +10,7 @@ import myytavatReducer from "./components/myytavat/myytavatReducer"
 import ratingReducer from "./components/rating/ratingReducer"
 import ostoReducer from "./components/osto/ostoReducer"
 import muutReducer from "./components/muut/muutReducer"
+import groupReducer from "./components/group/groupReducer"
 
 const rootReducer = combineReducers({
   form: formReducer,
@@ -21,7 +22,8 @@ const rootReducer = combineReducers({
   myytavat: myytavatReducer,
   rating: ratingReducer,
   osto: ostoReducer,
-  muut: muutReducer
+  muut: muutReducer,
+  group: groupReducer
 })
 
 export default rootReducer

@@ -23,7 +23,7 @@ const DashContainer = props => (
           <div className="row">
             <div className="col-md-2">Nimi</div>
             <div className="col-md-5">
-              {props.user.etunimi} {props.user.sukunimi}
+              {props.user.firstName} {props.user.lastName}
             </div>
           </div>
           <div className="row">
@@ -32,26 +32,23 @@ const DashContainer = props => (
           </div>
           <div className="row">
             <div className="col-md-2">PDGA numero</div>
-            <div className="col-md-5">{props.user.pdga_num}</div>
-          </div>
-          <div className="row">
-            <div className="col-md-2">Kiekkojen lkm</div>
-            <div className="col-md-5">{props.user.discCount}</div>
-          </div>
-          <div className="row">
-            <div className="col-md-2">Näytä lkm</div>
-            <div className="col-md-5">{props.user.publicDiscCount ? "Kyllä" : "Ei"}</div>
-          </div>
-          <div className="row">
-            <div className="col-md-2">Julkinen listaus</div>
-            <div className="col-md-5">{props.user.publicList ? "Kyllä" : "Ei"}</div>
+            <div className="col-md-5">{props.user.pdgaNumber}</div>
           </div>
           <div className="btn-group">
             <button className="btn btn-primary" onClick={() => props.toggleEditModal(props.user)}>
               Muokkaa
             </button>
           </div>
-          <p>Huom! Listauksen julkaiseminen tekee kaikista kiekoistasi myös julkisia</p>
+          <h2>Ryhmät</h2>
+          <table className="table table-striped">
+            <tbody>
+                {props.user.groups && props.user.groups.map(g => (
+                    <tr key={g.id}>
+                        <td>{g.name}</td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
         </div>
       )
     ) : (
