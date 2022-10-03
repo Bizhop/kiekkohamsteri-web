@@ -29,11 +29,6 @@ export const UPDATE_IMAGE = "kiekot/UPDATE_IMAGE"
 export const UPDATE_IMAGE_API = "kiekot/UPDATE_IMAGE_API"
 export const UPDATE_IMAGE_API_SUCCESS = "kiekot/UPDATE_IMAGE_API_SUCCESS"
 export const UPDATE_IMAGE_API_FAILURE = "kiekot/UPDATE_IMAGE_API_FAILURE"
-export const JULKISET_REQUEST = "kiekot/GET_JULKISET"
-export const JULKISET_SUCCESS = "kiekot/GET_JULKISET_SUCCESS"
-export const JULKISET_FAILURE = "kiekot/GET_JULKISET_FAIL"
-export const JULKISET_LAAJENNA = "kiekot/JULKISET_LAAJENNA"
-export const JULKISET_SUPISTA = "kiekot/JULKISET_SUPISTA"
 export const LOST_REQUEST = "kiekot/GET_LOST"
 export const LOST_SUCCESS = "kiekot/GET_LOST_SUCCESS"
 export const LOST_FAILURE = "kiekot/GET_LOST_FAIL"
@@ -142,21 +137,6 @@ export const completeCrop = params => ({
 export const cropComplete = image => ({
   type: CROP_COMPLETE,
   image
-})
-
-export const getJulkiset = () => ({
-  type: JULKISET_REQUEST,
-  payload: getPayload({url: 'api/kiekot/public-lists'})
-})
-
-export const laajenna = username => ({
-  type: JULKISET_LAAJENNA,
-  username
-})
-
-export const supista = username => ({
-  type: JULKISET_SUPISTA,
-  username
 })
 
 export const getLost = params => ({

@@ -1,6 +1,6 @@
 import React from "react"
 
-export const RenderTextInput = ({ input, label, type, meta: { touched, error } }) => (
+export const RenderTextInput = ({ input, label, meta: { touched, error } }) => (
   <div className="form-group form-inline">
     <div className="row">
       <div className="col-md-3">
@@ -9,14 +9,14 @@ export const RenderTextInput = ({ input, label, type, meta: { touched, error } }
         </label>
       </div>
       <div className="col-md-9">
-        <input className="form-control" {...input} type={type} />
+        <input className="form-control" {...input} type="text" />
         {touched && error && <span className="text-danger">{error}</span>}
       </div>
     </div>
   </div>
 )
 
-export const RenderSelectInput = ({ input, label, type, options, meta: { touched, error } }) => {
+export const RenderSelectInput = ({ input, label, options, meta: { touched, error } }) => {
   const optionList = options.map(opt => (
     <option key={opt.value} value={opt.value}>
       {opt.name}
@@ -31,7 +31,7 @@ export const RenderSelectInput = ({ input, label, type, options, meta: { touched
           </label>
         </div>
         <div className="col-md-9">
-          <select className="form-control" {...input} type={type}>
+          <select className="form-control" {...input}>
             <option value="">Valitse...</option>
             {optionList}
           </select>
@@ -51,7 +51,7 @@ export const RenderCheckbox = ({ input, label, type, meta: { touched, error } })
         </label>
       </div>
       <div className="col-md-9">
-        <input className="form-check-input" {...input} type={type} />
+        <input className="form-check-input" {...input} type="checkbox" />
         {touched && error && <span className="text-danger">{error}</span>}
       </div>
     </div>

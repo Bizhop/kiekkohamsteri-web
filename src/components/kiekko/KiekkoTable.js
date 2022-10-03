@@ -70,7 +70,7 @@ const Kiekko = props => {
       </td>
       <td>
         <NavLink
-          to={`/kiekot/${kiekko.id}`}
+          to={`/discs/${kiekko.id}`}
           target="_disc"
           className="nav-link nav-item"
         >

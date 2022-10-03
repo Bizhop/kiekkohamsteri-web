@@ -1,4 +1,4 @@
-import { filter, allPass, keys, prop, propEq, uniq, append, without, findIndex, update, path, remove, prepend } from "ramda"
+import { filter, allPass, keys, prop, propEq, findIndex, update, path, remove, prepend } from "ramda"
 
 import {
   KIEKOT_SUCCESS,
@@ -12,10 +12,6 @@ import {
   KIEKKO_FAILURE,
   UPDATE_CROP,
   CROP_COMPLETE,
-  JULKISET_SUCCESS,
-  JULKISET_LAAJENNA,
-  JULKISET_REQUEST,
-  JULKISET_SUPISTA,
   LOST_REQUEST,
   LOST_SUCCESS,
   UPDATE_KIEKKO_SUCCESS,
@@ -48,8 +44,6 @@ const initialState = {
     width: "",
     height: ""
   },
-  julkiset: null,
-  julkisetVisible: [],
   lost: null,
   lostSortColumn: null,
   imageUploading: false
@@ -184,26 +178,6 @@ const kiekkoReducer = (state = initialState, action) => {
       return {
         ...state,
         croppedImage: action.image,
-      }
-    case JULKISET_REQUEST:
-      return {
-        ...state,
-        julkiset: null
-      }
-    case JULKISET_SUCCESS:
-      return {
-        ...state,
-        julkiset: action.payload.data
-      }
-    case JULKISET_LAAJENNA:
-      return {
-        ...state,
-        julkisetVisible: uniq(append(action.username, state.julkisetVisible))
-      }
-    case JULKISET_SUPISTA:
-      return {
-        ...state,
-        julkisetVisible: without(action.username, state.julkisetVisible)
       }
     case LOST_REQUEST:
       return {

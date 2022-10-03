@@ -16,9 +16,7 @@ export const LOGOUT = "users/LOGOUT"
 export const GET_MY_DETAILS = "users/USER_DETAILS"
 export const USER_DETAILS_SUCCESS = "users/USER_DETAILS_SUCCESS"
 export const USER_DETAILS_FAILURE = "users/USER_DETAILS_FAIL"
-export const LEADERS_REQUEST = "users/LEADERS"
-export const LEADERS_SUCCESS = "users/LEADERS_SUCCESS"
-export const LEADERS_FAILURE = "users/LEADERS_FAIL"
+
 
 export const login = params => ({
   type: LOGIN_REQUEST,
@@ -36,7 +34,7 @@ export const logout = () => ({
 
 export const getUsers = () => ({
   type: USERS_REQUEST,
-  payload: getPayload({url: "api/user"})
+  payload: getPayload({url: "api/v2/user"})
 })
 
 export const toggleEditModal = user => ({
@@ -47,46 +45,40 @@ export const toggleEditModal = user => ({
 export const updateUser = user => ({
   type: UPDATE_REQUEST,
   payload: patchPayload({
-    url: `api/user/${user.id}`,
-    data: pick(["username", "etunimi", "sukunimi", "pdga_num"], user)
+    url: `api/v2/user/${user.id}`,
+    data: pick(["username", "firstName", "lastName", "pdgaNumber"], user)
   })
 })
 
 export const requestUpdateMe = user => ({
   type: UPDATE_REQUEST,
   payload: patchPayload({
-    url: `api/user/${user.id}`,
-    data: pick(["username", "etunimi", "sukunimi", "pdga_num","publicDiscCount", "publicList"], user)
+    url: `api/v2/user/${user.id}`,
+    data: pick(["username", "firstName", "lastName", "pdgaNumber", "removeFromGroupId"], user)
   })
-})
-
-export const updateUserError = error => ({
-  type: UPDATE_FAILURE,
-  error
 })
 
 export const promoteUser = userId => ({
   type: UPDATE_REQUEST,
   payload: patchPayload({
-    url: `api/user/${userId}/level/2`,
-    data: null
+    url: `api/v2/user/${userId}`,
+    data: {
+      addToRole: "ADMIN"
+    }
   })
 })
 
 export const demoteUser = userId => ({
   type: UPDATE_REQUEST,
   payload: patchPayload({
-    url: `api/user/${userId}/level/1`,
-    data: null
+    url: `api/v2/user/${userId}`,
+    data: {
+      removeFromRole: "ADMIN"
+    }
   })
 })
 
 export const getMyDetails = () => ({
   type: GET_MY_DETAILS,
-  payload: getPayload({url: "api/user/me"})
-})
-
-export const getLeaders = () => ({
-  type: LEADERS_REQUEST,
-  payload: getPayload({url: "api/user/leaders"})
+  payload: getPayload({url: "api/v2/user/me"})
 })

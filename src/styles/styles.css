@@ -24,6 +24,10 @@ img.on-table {
     height: 20px;
 }
 
+img.clickable {
+    cursor: pointer;
+}
+
 div.rai-spinner {
     margin: 10px;
 }

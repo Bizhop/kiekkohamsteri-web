@@ -1,42 +1,26 @@
 import React from "react"
-import { Field, reduxForm } from "redux-form"
+import { Form, Field } from "react-final-form"
 
-import { RenderTextInput, RenderCheckbox } from "../shared/FormInput"
+import { RenderTextInput } from "../shared/FormInput"
 
 const UserEditForm = props => (
-  <form onSubmit={props.handleSubmit}>
-    <Field name="username" label="Tunnus" component={RenderTextInput} type="text" />
-    <Field name="etunimi" label="Etunimi" component={RenderTextInput} type="text" />
-    <Field name="sukunimi" label="Sukunimi" component={RenderTextInput} type="text" />
-    <Field name="pdga_num" label="PDGA numero" component={RenderTextInput} type="text" />
-    {props.fromDash && (
-      <div>
-        <Field
-          name="publicDiscCount"
-          label="Näytä lkm"
-          component={RenderCheckbox}
-          type="checkbox"
-          normalize={v => !!v}
-        />
-        <Field
-          name="publicList"
-          label="Julkinen listaus"
-          component={RenderCheckbox}
-          type="checkbox"
-          normalize={v => !!v}
-        />
-      </div>
+  <Form onSubmit={props.onSubmit} initialValues={props.initialValues}>
+    {({ handleSubmit, pristine, submitting }) => (
+      <form onSubmit={handleSubmit}>
+        <Field name="username" label="Tunnus" component={RenderTextInput} />
+        <Field name="firstName" label="Etunimi" component={RenderTextInput} />
+        <Field name="lastName" label="Sukunimi" component={RenderTextInput} />
+        <Field name="pdgaNumber" label="PDGA numero" component={RenderTextInput} />
+        <button
+          type="submit"
+          className="btn btn-primary btn-block"
+          disabled={submitting || pristine}
+        >
+          Tallenna
+        </button>
+      </form>
     )}
-    <button
-      type="submit"
-      className="btn btn-primary btn-block"
-      disabled={props.submitting || props.pristine}
-    >
-      Tallenna
-    </button>
-  </form>
+  </Form>
 )
 
-export default reduxForm({
-  form: "userEditForm"
-})(UserEditForm)
+export default UserEditForm

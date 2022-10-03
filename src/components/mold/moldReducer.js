@@ -2,7 +2,6 @@ import { prepend } from 'ramda'
 
 import {
   CREATE_MOLD_SUCCESS,
-  MOLDS_BY_VALMISTAJA_REQUEST,
   MOLDS_REQUEST,
   MOLDS_SUCCESS,
   TOGGLE_CREATE_MODAL,

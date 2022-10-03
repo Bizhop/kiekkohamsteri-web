@@ -42,7 +42,6 @@ const KiekkoContainer = props => (
       kiekkoInEdit={props.kiekkoInEdit}
       dropdowns={props.dropdowns}
       getDropdownsByValmistaja={props.getDropdownsByValmistaja}
-      editFormValues={props.editFormValues}
       image={props.image}
     />
     <h1>Kuvan valinta</h1>
@@ -123,7 +122,6 @@ const KiekkoEditModal = props => (
       initialValues={props.kiekkoInEdit}
       dropdowns={props.dropdowns}
       getDropdownsByValmistaja={props.getDropdownsByValmistaja}
-      editFormValues={props.editFormValues}
     />
   </Modal>
 )
@@ -137,7 +135,6 @@ const mapStateToProps = state => ({
   isEditOpen: path(["kiekko", "isEditOpen"], state),
   kiekkoInEdit: path(["kiekko", "kiekkoInEdit"], state),
   dropdowns: path(["dropdowns", "dropdowns"], state),
-  editFormValues: path(["form", "kiekkoEditForm", "values"], state),
   predicates: path(["kiekko", "predicates"], state),
   image: path(["kiekko", "image"], state),
   crop: path(["kiekko", "crop"], state),

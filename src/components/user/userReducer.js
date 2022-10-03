@@ -1,4 +1,5 @@
 import { findIndex, propEq, prop, update } from "ramda"
+import { toast } from "react-toastify"
 
 import {
   LOGIN_SUCCESS,
@@ -8,7 +9,6 @@ import {
   TOGGLE_EDIT_MODAL,
   UPDATE_FAILURE,
   LOGOUT,
-  LEADERS_SUCCESS,
   USER_DETAILS_SUCCESS,
   GOOGLE_LOGIN_FAILURE,
   UPDATE_SUCCESS
@@ -18,7 +18,6 @@ const initialState = {
   user: null,
   token: localStorage.getItem("hamsteri-token"),
   users: [],
-  error: null,
   isEditModalOpen: false,
   userInEdit: {},
   leaders: []
@@ -45,9 +44,9 @@ const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOGIN_FAILURE:
     case GOOGLE_LOGIN_FAILURE:
+      toast.error("Kirjautuminen epäonnistui")
       return {
         ...state,
-        error: action.error ? "Kirjautuminen epäonnistui" : null,
         user: null,
         token: null
       }
@@ -57,21 +56,17 @@ const userReducer = (state = initialState, action) => {
         ...state,
         user: action.payload.data,
         token: action.payload.data.jwt,
-        error: null,
         isEditModalOpen: false
       }
     case USER_DETAILS_SUCCESS:
       return {
         ...state,
         user: action.payload.data,
-        error: null,
         isEditModalOpen: false
       }
     case USERS_FAILURE:
-      return {
-        ...state,
-        error: action.error
-      }
+      toast.error("Käyttäjien haku epäonnistui")
+      return state
     case USERS_SUCCESS:
       return {
         ...state,
@@ -85,6 +80,7 @@ const userReducer = (state = initialState, action) => {
         userInEdit: action.user
       }
     case UPDATE_SUCCESS:
+      toast.success("Käyttäjä päivitetty")
       return {
         ...state,
         users: updateUserArray(state.users, action.payload.data),
@@ -93,20 +89,13 @@ const userReducer = (state = initialState, action) => {
         isEditModalOpen: false
       }
     case UPDATE_FAILURE:
-      return {
-        ...state,
-        error: action.error
-      }
+      toast.error("Käyttäjän päivitys epäonnistui")
+      return state
     case LOGOUT:
       resetToken()
       return {
         ...initialState,
         token: null
-      }
-    case LEADERS_SUCCESS:
-      return {
-        ...state,
-        leaders: action.payload.data
       }
     default:
       return state

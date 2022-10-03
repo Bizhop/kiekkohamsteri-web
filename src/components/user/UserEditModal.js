@@ -11,8 +11,6 @@ const UserEditModal = props => (
     <UserEditForm 
       onSubmit={props.editUser}
       initialValues={props.user}
-      user={props.user}
-      fromDash={props.fromDash}
     />
   </Modal>
 )

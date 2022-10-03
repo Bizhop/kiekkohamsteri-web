@@ -1,5 +1,4 @@
 import { combineReducers } from "redux"
-import { reducer as formReducer } from "redux-form"
 
 import kiekkoReducer from "./components/kiekko/kiekkoReducer"
 import userReducer from "./components/user/userReducer"
@@ -10,9 +9,9 @@ import myytavatReducer from "./components/myytavat/myytavatReducer"
 import ratingReducer from "./components/rating/ratingReducer"
 import ostoReducer from "./components/osto/ostoReducer"
 import muutReducer from "./components/muut/muutReducer"
+import groupReducer from "./components/group/groupReducer"
 
 const rootReducer = combineReducers({
-  form: formReducer,
   kiekko: kiekkoReducer,
   user: userReducer,
   mold: moldReducer,
@@ -21,7 +20,8 @@ const rootReducer = combineReducers({
   myytavat: myytavatReducer,
   rating: ratingReducer,
   osto: ostoReducer,
-  muut: muutReducer
+  muut: muutReducer,
+  group: groupReducer
 })
 
 export default rootReducer
