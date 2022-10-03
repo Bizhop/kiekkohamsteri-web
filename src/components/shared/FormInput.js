@@ -1,19 +1,12 @@
 import React from "react"
+import { Grid, TextField } from "@mui/material"
 
-export const RenderTextInput = ({ input, label, meta: { touched, error } }) => (
-  <div className="form-group form-inline">
-    <div className="row">
-      <div className="col-md-3">
-        <label className="form-control-label pull-right" htmlFor={input.name}>
-          {label}
-        </label>
-      </div>
-      <div className="col-md-9">
-        <input className="form-control" {...input} type="text" />
-        {touched && error && <span className="text-danger">{error}</span>}
-      </div>
-    </div>
-  </div>
+export const RenderTextInput = ({ input, label }) => (
+  <Grid container spacing={1}>
+    <Grid item md={12}>
+      <TextField margin="normal" autoFocus fullWidth label={label} {...input} type="text" />
+    </Grid>
+  </Grid>
 )
 
 export const RenderSelectInput = ({ input, label, options, meta: { touched, error } }) => {

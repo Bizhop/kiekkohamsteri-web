@@ -4,6 +4,9 @@ import { connect } from "react-redux"
 import { GoogleLogin } from "@react-oauth/google"
 import { confirmAlert } from "react-confirm-alert"
 import "react-confirm-alert/src/react-confirm-alert.css"
+import { Box, Grid, Button, TableContainer, Table, TableBody, TableRow, TableCell, Paper } from "@mui/material"
+import EditIcon from "@mui/icons-material/Edit"
+import GroupRemoveIcon from "@mui/icons-material/GroupRemove"
 
 import { login, googleLoginError, toggleEditModal, requestUpdateMe } from "../user/userActions"
 import UserEditModal from "../user/UserEditModal"
@@ -15,7 +18,7 @@ const isGroupAdmin = ({ user, groupId }) => {
 }
 
 const DashContainer = props => (
-  <div className="container">
+  <div>
     <UserEditModal
       isOpen={props.isEditOpen}
       toggleModal={props.toggleEditModal}
@@ -25,48 +28,52 @@ const DashContainer = props => (
     />
     {props.loggedIn ? (
       props.user && (
-        <div>
+        <Box sx={{ flexGrow: 1 }}>
           <h1>Tervetuloa {props.user.username}!</h1>
-          <div className="row">
-            <div className="col-md-2">Nimi</div>
-            <div className="col-md-5">
+          <Grid container spacing={1}>
+            <Grid item md={2}>Nimi</Grid>
+            <Grid item md={5}>
               {props.user.firstName} {props.user.lastName}
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-md-2">Email</div>
-            <div className="col-md-5">{props.user.email}</div>
-          </div>
-          <div className="row">
-            <div className="col-md-2">PDGA numero</div>
-            <div className="col-md-5">{props.user.pdgaNumber}</div>
-          </div>
-          <div className="btn-group">
-            <button className="btn btn-primary" onClick={() => props.toggleEditModal(props.user)}>
-              Muokkaa
-            </button>
-          </div>
+            </Grid>
+          </Grid>
+          <Grid container spacing={1}>
+            <Grid item md={2}>Email</Grid>
+            <Grid item md={5}>{props.user.email}</Grid>
+          </Grid>
+          <Grid container spacing={1}>
+            <Grid item md={2}>PDGA numero</Grid>
+            <Grid item md={5}>{props.user.pdgaNumber}</Grid>
+          </Grid>
+          <Button variant="contained" startIcon={<EditIcon />} onClick={() => props.toggleEditModal(props.user)}>
+            Muokkaa
+          </Button>
           <h2>Ryhmät</h2>
-          <table className="table table-striped">
-            <tbody>
-              {props.user.groups && props.user.groups.map(g => (
-                <tr key={g.id}>
-                  <td>{g.name}</td>
-                  <td>
-                    {isGroupAdmin({ user: props.user, groupId: g.id }) &&
-                      <img src={admin} title="Ylläpitäjä" />
-                    }
-                  </td>
-                  <td>
-                    <button className="btn btn-info" onClick={() => handleLeavingGroup({confirm: props.editUser, data: {id: props.user.id, removeFromGroupId: g.id}})}>
-                      Poistu ryhmästä
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+          <TableContainer component={Paper}>
+            <Table>
+              <TableBody>
+                {props.user.groups && props.user.groups.map(g => (
+                  <TableRow key={g.id}>
+                    <TableCell>{g.name}</TableCell>
+                    <TableCell>
+                      {isGroupAdmin({ user: props.user, groupId: g.id }) &&
+                        <img src={admin} title="Ylläpitäjä" />
+                      }
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        startIcon={<GroupRemoveIcon />}
+                        onClick={() => handleLeavingGroup({ confirm: props.editUser, data: { id: props.user.id, removeFromGroupId: g.id } })}>
+                        Poistu ryhmästä
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
       )
     ) : (
       <GoogleLogin
@@ -74,11 +81,6 @@ const DashContainer = props => (
         onError={props.loginError}
         useOneTap
       />
-    )}
-    {props.error && (
-      <div>
-        {props.error}
-      </div>
     )}
   </div>
 )
@@ -103,7 +105,6 @@ const handleLeavingGroup = params => {
 const mapStateToProps = state => ({
   loggedIn: path(["user", "token"], state),
   user: path(["user", "user"], state),
-  error: path(["user", "error"], state),
   isEditOpen: path(["user", "isEditModalOpen"], state),
   userInEdit: path(["user", "userInEdit"], state)
 })

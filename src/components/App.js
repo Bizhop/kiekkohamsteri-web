@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom"
 import { GoogleOAuthProvider } from "@react-oauth/google"
 import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
+import { Container } from "@mui/material"
 
 import Header from "./shared/Header"
 import DashContainer from "./dash/DashContainer"
@@ -46,11 +47,11 @@ const App = () => (
   <GoogleOAuthProvider
     clientId="107543052765-lfgp4lke6h51a0l4kp258anilpeegf8v.apps.googleusercontent.com"
   >
-    <div className="app">
+    <Container>
       <Header />
       <MyRoutes />
       <ToastContainer autoClose={2000} position="top-center" />
-    </div>
+    </Container>
   </GoogleOAuthProvider>
 )
 

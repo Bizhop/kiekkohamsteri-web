@@ -1,53 +1,34 @@
-import React from 'react'
-import ReactModal from 'react-modal'
-
-const modalStyles = {
-  overlay: {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    zIndex: 9,
-  },
-  content: {
-    position: 'absolute',
-    top: '0',
-    left: '0',
-    right: '0',
-    overflow: 'auto',
-    WebkitOverflowScrolling: 'touch',
-    outline: 'none',
-  },
-}
+import React from "react"
+import { Dialog, DialogTitle, IconButton } from "@mui/material"
+import CloseIcon from "@mui/icons-material/Close"
 
 const Modal = props => (
-  <ReactModal
-    contentLabel={props.contentLabel}
-    style={modalStyles}
-    isOpen={props.isOpen}
-    onRequestClose={props.onRequestClose}
-    onAfterOpen={props.onAfterOpen}
-    ariaHideApp={false}
+  <Dialog
+    open={props.isOpen}
+    onClose={props.onRequestClose}
+    maxWidth="md"
+    fullWidth={true}
   >
-    <div className="modal-content">
-      <div className="modal-header">
-        <h5 className="modal-title" id="exampleModalLabel">
-          {props.contentLabel}
-        </h5>
-        <button
-          type="button"
-          className="close"
-          aria-label="Close"
-          onClick={() => props.onRequestClose()}
+    <DialogTitle>
+      {props.contentLabel}
+      {props.onRequestClose
+        ? <IconButton
+          aria-label="close"
+          onClick={props.onRequestClose}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
         >
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div className="modal-body modal-body-responsive">{props.children}</div>
-    </div>
-  </ReactModal>
+          <CloseIcon />
+        </IconButton>
+        : null
+      }
+    </DialogTitle>
+    {props.children}
+  </Dialog>
 )
 
 export default Modal

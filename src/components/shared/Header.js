@@ -1,90 +1,68 @@
 import React from "react"
-import { path, pathOr, any, propEq } from "ramda"
+import { path, any, propEq } from "ramda"
 import { NavLink } from "react-router-dom"
 import { connect } from "react-redux"
+import { Box, Grid, IconButton, Tooltip } from "@mui/material"
+import HomeIcon from "@mui/icons-material/Home"
+import LogoutIcon from "@mui/icons-material/Logout"
+import AnimationIcon from "@mui/icons-material/Animation"
+import ShopIcon from "@mui/icons-material/Shop"
+import TrendingUpIcon from "@mui/icons-material/TrendingUp"
+import GroupsIcon from "@mui/icons-material/Groups"
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz"
+import GroupIcon from "@mui/icons-material/Group"
+import BubbleChartIcon from "@mui/icons-material/BubbleChart"
+import SupportIcon from "@mui/icons-material/Support"
 
 import { logout, getMyDetails } from "../user/userActions"
 
+const isAdmin = user => {
+  if (!user || !user.roles) return false
+  return any(propEq("name", "ADMIN"))(user.roles)
+}
+
+const MyNavLink = ({ to, label, icon }) => (
+  <Grid item md={1} textAlign="center">
+    <NavLink to={to}>
+      <Tooltip title={label}>
+        <IconButton variant="outlined" size="small">
+          {icon}
+        </IconButton>
+      </Tooltip>
+    </NavLink>
+  </Grid>
+)
+
 const Header = props => (
-  <div>
-    <nav className="navbar navbar-default">
-      <div className="container">
-        <div className="row">
-          <div className="col-md-1 col-xs-12">
-            <NavLink to="/" className="nav-link nav-item">
-              Etusivu
-            </NavLink>
-          </div>
-          {props.loggedIn && (
-            <div>
-              <div className="col-md-1 col-xs-12">
-                <NavLink to="/discs" className="nav-link nav-item">
-                  Kiekot
-                </NavLink>
-              </div>
-              <div className="col-md-1 col-xs-12">
-                <NavLink to="/shop" className="nav-link nav-item">
-                  Kaupat
-                </NavLink>
-              </div>
-              <div className="col-md-1 col-xs-12">
-                <NavLink to="/rating" className="nav-link nav-item">
-                  Rating
-                </NavLink>
-              </div>
-              <div className="col-md-1 col-xs-12">
-                <NavLink to="/groups" className="nav-link nav-item">
-                  Ryhmät
-                </NavLink>
-              </div>
-              <div className="col-md-1 col-xs-12">
-                <NavLink to="/others" className="nav-link nav-item">
-                  Muut
-                </NavLink>
-              </div>
-            </div>
-          )}
-          {props.loggedIn && props.roles &&
-            any(propEq('name', 'ADMIN'))(props.roles) && (
-              <div>
-                <div className="col-md-1 col-xs-12">
-                  <NavLink to="/users" className="nav-link nav-item">
-                    Käyttäjät
-                  </NavLink>
-                </div>
-                <div className="col-md-1 col-xs-12">
-                  <NavLink to="/molds" className="nav-link nav-item">
-                    Moldit
-                  </NavLink>
-                </div>
-                <div className="col-md-1 col-xs-12">
-                  <NavLink to="/plastics" className="nav-link nav-item">
-                    Muovit
-                  </NavLink>
-                </div>
-              </div>
-            )}
-          {props.loggedIn && (
-            <div className="col-md-2 col-xs-12 pull-right">
-              <div className="row">
-                <div className="col-md-6 col-xs-6">
-                  <button onClick={() => props.logout()} className="btn btn-danger">
-                    Kirjaudu ulos
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    </nav>
-  </div>
+  <Box sx={{ flexGrow: 1 }}>
+    <Grid container spacing={1}>
+      <MyNavLink to="/" label="Etusivu" icon={<HomeIcon />} />
+      {props.loggedIn && <MyNavLink to="/discs" label="Kiekot" icon={<AnimationIcon />} />}
+      {props.loggedIn && <MyNavLink to="/shop" label="Kaupat" icon={<ShopIcon />} />}
+      {props.loggedIn && <MyNavLink to="/rating" label="Rating" icon={<TrendingUpIcon />} />}
+      {props.loggedIn && <MyNavLink to="/groups" label="Ryhmät" icon={<GroupsIcon />} />}
+      {props.loggedIn && <MyNavLink to="/others" label="Muut" icon={<MoreHorizIcon />} />}
+      {props.loggedIn && isAdmin(props.user) && <MyNavLink to="/users" label="Käyttäjät" icon={<GroupIcon />} />}
+      {props.loggedIn && isAdmin(props.user) && <MyNavLink to="/molds" label="Moldit" icon={<BubbleChartIcon />} />}
+      {props.loggedIn && isAdmin(props.user) && <MyNavLink to="/plastics" label="Muovit" icon={<SupportIcon />} />}
+      {props.loggedIn && (
+        <Grid item md>
+          <Box display="flex" justifyContent="flex-end">
+            <Tooltip title="Kirjaudu ulos">
+              <IconButton onClick={() => props.logout()} variant="contained" color="error">
+                <LogoutIcon />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        </Grid>
+      )}
+    </Grid>
+  </Box>
 )
 
 const mapStateToProps = state => ({
   loggedIn: path(["user", "token"], state),
   user: path(["user", "user"], state),
-  roles: pathOr([], ["user", "user", "roles"], state)
 })
 
 const mapDispatchToProps = dispatch => ({
