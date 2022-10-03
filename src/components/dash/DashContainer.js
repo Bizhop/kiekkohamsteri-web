@@ -1,10 +1,18 @@
 import React from "react"
-import { path } from "ramda"
+import { path, any, propEq } from "ramda"
 import { connect } from "react-redux"
 import { GoogleLogin } from "@react-oauth/google"
+import { confirmAlert } from "react-confirm-alert"
+import "react-confirm-alert/src/react-confirm-alert.css"
 
 import { login, googleLoginError, toggleEditModal, requestUpdateMe } from "../user/userActions"
 import UserEditModal from "../user/UserEditModal"
+import { admin } from "../shared/images"
+
+const isGroupAdmin = ({ user, groupId }) => {
+  if (!user || !groupId || !user.roles) return false
+  return any(propEq('name', 'GROUP_ADMIN') && propEq('groupId', groupId))(user.roles)
+}
 
 const DashContainer = props => (
   <div className="container">
@@ -13,7 +21,6 @@ const DashContainer = props => (
       toggleModal={props.toggleEditModal}
       user={props.userInEdit}
       editUser={props.editUser}
-      fromDash={true}
       label="Muokkaa tietojasi"
     />
     {props.loggedIn ? (
@@ -42,13 +49,23 @@ const DashContainer = props => (
           <h2>Ryhmät</h2>
           <table className="table table-striped">
             <tbody>
-                {props.user.groups && props.user.groups.map(g => (
-                    <tr key={g.id}>
-                        <td>{g.name}</td>
-                    </tr>
-                ))}
+              {props.user.groups && props.user.groups.map(g => (
+                <tr key={g.id}>
+                  <td>{g.name}</td>
+                  <td>
+                    {isGroupAdmin({ user: props.user, groupId: g.id }) &&
+                      <img src={admin} title="Ylläpitäjä" />
+                    }
+                  </td>
+                  <td>
+                    <button className="btn btn-info" onClick={() => handleLeavingGroup({confirm: props.editUser, data: {id: props.user.id, removeFromGroupId: g.id}})}>
+                      Poistu ryhmästä
+                    </button>
+                  </td>
+                </tr>
+              ))}
             </tbody>
-        </table>
+          </table>
         </div>
       )
     ) : (
@@ -65,6 +82,23 @@ const DashContainer = props => (
     )}
   </div>
 )
+
+const handleLeavingGroup = params => {
+  confirmAlert({
+    title: "Varoitus",
+    message: "Haluatko varmasti poistua ryhmästä?",
+    buttons: [
+      {
+        label: "Poistu",
+        onClick: () => params.confirm(params.data),
+        className: "red-button"
+      },
+      {
+        label: "Peruuta"
+      }
+    ]
+  })
+}
 
 const mapStateToProps = state => ({
   loggedIn: path(["user", "token"], state),

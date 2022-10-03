@@ -1,4 +1,4 @@
-import { getPayload, postPayload } from "../Api"
+import { deletePayload, getPayload, postPayload } from "../Api"
 
 export const GET_GROUPS = "groups/GET"
 export const GET_GROUPS_SUCCESS = "groups/GET_SUCCESS"
@@ -18,6 +18,18 @@ export const GET_GROUP_REQUESTS_FAILURE = "groups/REQUESTS_FAIL"
 export const COMPLETE_REQUEST = "groups/COMPLETE_REQUEST"
 export const COMPLETE_REQUEST_SUCCESS = "groups/COMPLETE_REQUEST_SUCCESS"
 export const COMPLETE_REQUEST_FAILURE = "groups/COMPLETE_REQUEST_FAIL"
+export const PROMOTE = "groups/PROMOTE"
+export const PROMOTE_SUCCESS = "groups/PROMOTE_SUCCESS"
+export const PROMOTE_FAILURE = "groups/PROMOTE_FAIL"
+export const DEMOTE = "groups/DEMOTE"
+export const DEMOTE_SUCCESS = "groups/DEMOTE_SUCCESS"
+export const DEMOTE_FAILURE = "groups/DEMOTE_FAIL"
+export const KICK = "groups/KICK"
+export const KICK_SUCCESS = "groups/KICK_SUCCESS"
+export const KICK_FAILURE = "groups/KICK_FAIL"
+export const DELETE_GROUP = "groups/DELETE_GROUP"
+export const DELETE_GROUP_SUCCESS = "groups/DELETE_GROUP_SUCCESS"
+export const DELETE_GROUP_FAILURE = "groups/DELETE_GROUP_FAIL"
 
 export const getGroups = () => ({
     type: GET_GROUPS,
@@ -61,5 +73,50 @@ export const completeRequest = ({ groupId, requestId, confirm }) => ({
         url: `api/v2/groups/${groupId}/requests/${requestId}`,
         data: { confirm }
     }),
-    requestId
+    requestId,
+    confirm
+})
+
+export const promote = ({ userId, groupId }) => ({
+    type: PROMOTE,
+    payload: postPayload({
+        url: `api/v2/groups/${groupId}/requests`,
+        data: {
+            targetUserId: userId,
+            type: "PROMOTE",
+            info: `Pyyntö ryhmän ${groupId} ylläpitäjäksi`
+        }
+    })
+})
+
+export const demote = ({ userId, groupId }) => ({
+    type: DEMOTE,
+    payload: postPayload({
+        url: `api/v2/groups/${groupId}/requests`,
+        data: {
+            targetUserId: userId,
+            type: "DEMOTE",
+            info: `Pyyntö poistaa ryhmän ${groupId} ylläpitäjä`
+        }
+    })
+})
+
+export const kick = ({ userId, groupId }) => ({
+    type: KICK,
+    payload: postPayload({
+        url: `api/v2/groups/${groupId}/requests`,
+        data: {
+            targetUserId: userId,
+            type: "KICK",
+            info: `Pyyntö poistaa ryhmästä ${groupId}`
+        }
+    })
+})
+
+export const deleteGroup = groupId => ({
+    type: DELETE_GROUP,
+    payload: deletePayload({
+        url: `api/v2/groups/${groupId}`
+    }),
+    groupId
 })

@@ -21,6 +21,7 @@ const MoldContainer = props => (
     <SelectValmistajaForm
       valmistajat={pathOr([], ["dropdowns", "valms"], props)}
       getByValmistaja={props.getMoldsByValmistaja}
+      valmId={props.valmId}
     />
     <div className="row">
       <div className="col-md-4">

@@ -21,6 +21,7 @@ const MuoviContainer = props => (
     <SelectValmistajaForm
       valmistajat={pathOr([], ["dropdowns", "valms"], props)}
       getByValmistaja={props.getMuovitByValmistaja}
+      valmId={props.valmId}
     />
     <div className="row">
       <div className="col-md-4">

@@ -1,4 +1,4 @@
-import { fork, all } from "redux-saga/effects"
+import { all, fork } from "redux-saga/effects"
 
 import kiekkoSaga from "./components/kiekko/kiekkoSaga"
 import userSaga from "./components/user/userSaga"

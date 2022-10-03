@@ -1,47 +1,50 @@
 import React from "react"
-import { FieldArray, Field, reduxForm } from "redux-form"
+import { Form, Field } from "react-final-form"
 
 import { RenderCheckbox } from "../shared/FormInput"
 
-const RoundsForm = props => {
-  return (
-    <form onSubmit={props.handleSubmit}>
-      <FieldArray name="rounds" component={Rounds} />
-      <div className="row rating">
-        <div className="col-md-6">
-          <Field
-            name="byRoundsOnly"
-            component={RenderCheckbox}
-            type="checkbox"
-            normalize={v => !!v}
-            label="Ohita väylien määrä laskussa"
-          />
-        </div>
-      </div>
-      <div className="row rating">
-        <div className="col-md-2">
-          <button
-            type="submit"
-            className="btn btn-primary btn-block"
-            disabled={props.submitting || props.pristine}
-          >
-            Spekuloi
-          </button>
-        </div>
-        {props.customRating && (
-          <div className="col-md-4">
-            <div className="row">
-              <div className="col-md-6">
-                <strong>Spekuloitu rating</strong>
-              </div>
-              <div className="col-md-6">{props.customRating}</div>
-            </div>
+const RoundsForm = props => (
+  <Form onSubmit={props.onSubmit}>
+    {({ handleSubmit, pristine, submitting }) => (
+      <form onSubmit={handleSubmit}>
+        <FieldArray name="rounds" component={Rounds} />
+        <div className="row rating">
+          <div className="col-md-6">
+            <Field
+              name="byRoundsOnly"
+              type="checkbox"
+              component={RenderCheckbox}
+              normalize={v => !!v}
+              label="Ohita väylien määrä laskussa"
+            />
           </div>
-        )}
-      </div>
-    </form>
-  )
-}
+        </div>
+        <div className="row rating">
+          <div className="col-md-2">
+            <button
+              type="submit"
+              className="btn btn-primary btn-block"
+              disabled={submitting || pristine}
+            >
+              Spekuloi
+            </button>
+          </div>
+          {props.customRating && (
+            <div className="col-md-4">
+              <div className="row">
+                <div className="col-md-6">
+                  <strong>Spekuloitu rating</strong>
+                </div>
+                <div className="col-md-6">{props.customRating}</div>
+              </div>
+            </div>
+          )}
+        </div>
+      </form>
+    )}
+  </Form>
+)
+
 
 const customRow = {
   tournament: "Oma kisa",
@@ -85,17 +88,17 @@ const Rounds = ({ fields }) => (
               <td className="text-right">{round.round}</td>
               <td className="text-right">{round.score}</td>
               <td>
-                <Field className="text-center" name={`${d}.rating`} component="input" type="text" />
+                <Field className="text-center" name={`${d}.rating`} component="input" />
               </td>
               <td>
-                <Field className="text-center" name={`${d}.holes`} component="input" type="text" />
+                <Field className="text-center" name={`${d}.holes`} component="input" />
               </td>
               <td className="text-center">
                 <Field
                   name={`${d}.included`}
                   label=""
-                  component={RenderCheckbox}
                   type="checkbox"
+                  component={RenderCheckbox}
                   normalize={v => !!v}
                 />
               </td>
@@ -103,8 +106,8 @@ const Rounds = ({ fields }) => (
                 <Field
                   name={`${d}.doubled`}
                   label=""
-                  component={RenderCheckbox}
                   type="checkbox"
+                  component={RenderCheckbox}
                   normalize={v => !!v}
                 />
               </td>
@@ -128,4 +131,4 @@ const Rounds = ({ fields }) => (
   </div>
 )
 
-export default reduxForm({ form: "roundsForm" })(RoundsForm)
+export default RoundsForm

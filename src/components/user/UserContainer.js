@@ -1,5 +1,5 @@
 import React from "react"
-import { path, pathOr } from "ramda"
+import { path, pathOr, any, propEq } from "ramda"
 import { connect } from "react-redux"
 import { Navigate } from "react-router-dom"
 
@@ -11,6 +11,12 @@ import {
   demoteUser
 } from "./userActions"
 import UserEditModal from "./UserEditModal"
+import { admin } from "../shared/images"
+
+const isAdmin = user => {
+  if (!user || !user.roles) return false
+  return any(propEq('name', 'ADMIN'))(user.roles)
+}
 
 const UserContainer = props => (
   <div className="container">
@@ -32,8 +38,7 @@ const UserContainer = props => (
           <th>Etunimi</th>
           <th>Sukunimi</th>
           <th>PDGA numero</th>
-          <th>Kiekkoja</th>
-          <th>Oikeudet</th>
+          <th>Admin</th>
           <th />
           <th />
         </tr>
@@ -64,8 +69,7 @@ const User = props => {
       <td>{user.firstName}</td>
       <td>{user.lastName}</td>
       <td>{user.pdgaNumber}</td>
-      <td>{user.discCount}</td>
-      <td>{user.level}</td>
+      <td>{isAdmin(user) && <img src={admin} />}</td>
       <td>
         <div className="btn-group">
           <button className="btn btn-primary" onClick={() => props.toggleEditModal(user)}>
@@ -75,13 +79,13 @@ const User = props => {
       </td>
       <td>
         <div className="btn-group">
-          {user.level === 1 ? (
-            <button className="btn btn-success" onClick={() => props.promote(user.id)}>
-              Lisää admin
-            </button>
-          ) : (
+          {isAdmin(user) ? (
             <button className="btn btn-danger" onClick={() => props.demote(user.id)}>
               Poista admin
+            </button>
+          ) : (
+            <button className="btn btn-success" onClick={() => props.promote(user.id)}>
+              Lisää admin
             </button>
           )}
         </div>

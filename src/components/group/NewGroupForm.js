@@ -1,21 +1,23 @@
 import React from "react"
-import { Field, reduxForm } from "redux-form"
+import { Field, Form } from "react-final-form"
 
 import { RenderTextInput } from "../shared/FormInput"
 
 const NewGroupForm = props => (
-    <form onSubmit={props.handleSubmit}>
-        <Field name="name" label="Ryhmän nimi" component={RenderTextInput} type="text" />
-        <button
-            type="submit"
-            className="btn btn-primary btn-block"
-            disabled={props.submitting || props.pristine}
-        >
-            Luo ryhmä
-        </button>
-    </form>
+    <Form onSubmit={props.onSubmit}>
+        {({ handleSubmit, pristine, submitting }) => (
+            <form onSubmit={handleSubmit}>
+                <Field name="name" label="Ryhmän nimi" component={RenderTextInput} />
+                <button
+                    type="submit"
+                    className="btn btn-primary btn-block"
+                    disabled={submitting || pristine}
+                >
+                    Luo ryhmä
+                </button>
+            </form>
+        )}
+    </Form>
 )
 
-export default reduxForm({
-    form: "newGroupForm"
-})(NewGroupForm)
+export default NewGroupForm

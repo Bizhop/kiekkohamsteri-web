@@ -1,7 +1,8 @@
-import React from 'react'
-import { Field, reduxForm } from 'redux-form'
+import React from "react"
+import { Form, Field } from "react-final-form"
 
-import { RenderSelectInput } from '../shared/FormInput'
+import { RenderSelectInput } from "../shared/FormInput"
+
 
 const valmistajaDropdown = valmistajat =>
   valmistajat.map(v => ({ name: v.valmistaja, value: v.id }))
@@ -9,18 +10,21 @@ const valmistajaDropdown = valmistajat =>
 const SelectValmistajaForm = props => (
   <div className="row">
     <div className="col-md-4">
-      <form>
-        <Field
-          name="valmistaja"
-          label="Valmistaja"
-          type="select"
-          component={RenderSelectInput}
-          options={valmistajaDropdown(props.valmistajat)}
-          onChange={(e, newValue) => props.getByValmistaja(newValue)}
-        />
-      </form>
+      <Form onSubmit={() => false} initialValues={{ valmistaja: props.valmId }} >
+        {() => (
+          <form>
+            <Field
+              name="valmistaja"
+              label="Valmistaja"
+              component={RenderSelectInput}
+              options={valmistajaDropdown(props.valmistajat)}
+              parse={value => props.getByValmistaja(value)}
+            />
+          </form>
+        )}
+      </Form>
     </div>
   </div>
 )
 
-export default reduxForm({ form: 'selectValmistajaForm' })(SelectValmistajaForm)
+export default SelectValmistajaForm

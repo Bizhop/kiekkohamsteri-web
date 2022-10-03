@@ -1,20 +1,14 @@
 import React from "react"
 import { path } from "ramda"
 import { connect } from "react-redux"
-import { Navigate, useParams } from "react-router-dom"
+import { Navigate, useLocation } from "react-router-dom"
 
 import { getKiekko } from "./kiekkoActions"
 import { imageUrl, check } from "../shared/images"
 import { tussit } from "../shared/text"
 
-const withParams = props => {
-  const params = useParams()
-  return <YksiKiekkoContainer params={params} {...props} />
-}
-
 const YksiKiekkoContainer = props => (
   <div className="container">
-    {!props.loggedIn && <Navigate to="/" />}
     {props.kiekko ? (
       <div>
         <h1>
@@ -89,14 +83,16 @@ const YksiKiekkoContainer = props => (
           </div>
         </div>
       </div>
-    ) : (
-      <div>
-        <button onClick={() => props.getKiekko(props.params.id)}>Hae kiekko</button>
-        <h1>{props.oneDiscText}</h1>
-      </div>
-    )}
+    ) : getDiscIdAndDisc(props.getDisc)}
+    {!props.loggedIn && <Navigate to="/" />}
   </div>
 )
+
+function getDiscIdAndDisc(getDisc) {
+  const location = useLocation()
+  const id = location.pathname.split('/').pop()
+  getDisc(id)
+}
 
 const mapStateToProps = state => ({
   loggedIn: path(["user", "token"], state),
@@ -105,7 +101,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  getKiekko: id => dispatch(getKiekko(id))
+  getDisc: id => dispatch(getKiekko(id))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(withParams)
+export default connect(mapStateToProps, mapDispatchToProps)(YksiKiekkoContainer)

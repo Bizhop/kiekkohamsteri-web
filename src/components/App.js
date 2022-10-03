@@ -1,6 +1,8 @@
 import React from "react"
 import { Route, Routes } from "react-router-dom"
 import { GoogleOAuthProvider } from "@react-oauth/google"
+import { ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 import Header from "./shared/Header"
 import DashContainer from "./dash/DashContainer"
@@ -47,6 +49,7 @@ const App = () => (
     <div className="app">
       <Header />
       <MyRoutes />
+      <ToastContainer autoClose={2000} position="top-center" />
     </div>
   </GoogleOAuthProvider>
 )
