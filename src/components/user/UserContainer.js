@@ -2,6 +2,11 @@ import React from "react"
 import { path, pathOr, any, propEq } from "ramda"
 import { connect } from "react-redux"
 import { Navigate } from "react-router-dom"
+import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Button, Box, Tooltip } from "@mui/material"
+import EngineeringIcon from "@mui/icons-material/Engineering"
+import EditIcon from "@mui/icons-material/Edit"
+import PersonAddIcon from "@mui/icons-material/PersonAdd"
+import PersonRemoveIcon from "@mui/icons-material/PersonRemove"
 
 import {
   getUsers,
@@ -11,7 +16,6 @@ import {
   demoteUser
 } from "./userActions"
 import UserEditModal from "./UserEditModal"
-import { admin } from "../shared/images"
 
 const isAdmin = user => {
   if (!user || !user.roles) return false
@@ -19,78 +23,88 @@ const isAdmin = user => {
 }
 
 const UserContainer = props => (
-  <div className="container">
+  <Box sx={{ flexGrow: 1 }}>
     <UserEditModal
       isOpen={props.isEditOpen}
       toggleModal={props.toggleEditModal}
       user={props.userInEdit}
       editUser={props.editUser}
-      fromDash={false}
       label="Muokkaa käyttäjää"
     />
     <h1>Käyttäjät</h1>
-    <table className="table table-striped custom-table">
-      <thead>
-        <tr>
-          <th>Id</th>
-          <th>Tunnus</th>
-          <th>email</th>
-          <th>Etunimi</th>
-          <th>Sukunimi</th>
-          <th>PDGA numero</th>
-          <th>Admin</th>
-          <th />
-          <th />
-        </tr>
-      </thead>
-      <tbody>
-        {props.users.map(p => (
-          <User
-            key={p.id}
-            user={p}
-            toggleEditModal={props.toggleEditModal}
-            promote={props.promote}
-            demote={props.demote}
-          />
-        ))}
-      </tbody>
-    </table>
+    <TableContainer component={Paper}>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>Id</TableCell>
+            <TableCell>Tunnus</TableCell>
+            <TableCell>email</TableCell>
+            <TableCell>Etunimi</TableCell>
+            <TableCell>Sukunimi</TableCell>
+            <TableCell>PDGA numero</TableCell>
+            <TableCell />
+            <TableCell />
+            <TableCell />
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {props.users.map(p => (
+            <User
+              key={p.id}
+              user={p}
+              toggleEditModal={props.toggleEditModal}
+              promote={props.promote}
+              demote={props.demote}
+            />
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
     {!props.loggedIn && <Navigate to="/" />}
-  </div>
+  </Box>
 )
 
 const User = props => {
   const user = props.user
   return (
-    <tr>
-      <td>{user.id}</td>
-      <td>{user.username}</td>
-      <td>{user.email}</td>
-      <td>{user.firstName}</td>
-      <td>{user.lastName}</td>
-      <td>{user.pdgaNumber}</td>
-      <td>{isAdmin(user) && <img src={admin} />}</td>
-      <td>
-        <div className="btn-group">
-          <button className="btn btn-primary" onClick={() => props.toggleEditModal(user)}>
-            Muokkaa
-          </button>
-        </div>
-      </td>
-      <td>
-        <div className="btn-group">
-          {isAdmin(user) ? (
-            <button className="btn btn-danger" onClick={() => props.demote(user.id)}>
-              Poista admin
-            </button>
-          ) : (
-            <button className="btn btn-success" onClick={() => props.promote(user.id)}>
-              Lisää admin
-            </button>
-          )}
-        </div>
-      </td>
-    </tr>
+    <TableRow>
+      <TableCell>{user.id}</TableCell>
+      <TableCell>{user.username}</TableCell>
+      <TableCell>{user.email}</TableCell>
+      <TableCell>{user.firstName}</TableCell>
+      <TableCell>{user.lastName}</TableCell>
+      <TableCell>{user.pdgaNumber}</TableCell>
+      <TableCell>{isAdmin(user) && <Tooltip title="Ylläpitäjä"><EngineeringIcon /></Tooltip>}</TableCell>
+      <TableCell>
+        <Button
+          variant="contained"
+          startIcon={<EditIcon />}
+          onClick={() => props.toggleEditModal(user)}
+        >
+          Muokkaa
+        </Button>
+      </TableCell>
+      <TableCell>
+        {isAdmin(user)
+          ? <Button
+            variant="contained"
+            color="error"
+            startIcon={<PersonRemoveIcon />}
+            onClick={() => props.demote(user.id)}
+          >
+            Poista ylläpitäjä
+          </Button>
+          : <Button
+            variant="contained"
+            color="secondary"
+            startIcon={<PersonAddIcon />}
+            onClick={() => props.promote(user.id)}
+          >
+            Lisää ylläpitäjäksi
+          </Button>
+        }
+      </TableCell>
+    </TableRow>
   )
 }
 

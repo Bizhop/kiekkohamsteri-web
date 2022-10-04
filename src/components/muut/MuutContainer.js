@@ -4,6 +4,7 @@ import { connect } from "react-redux"
 import { Navigate } from "react-router-dom"
 import { Spinner } from "react-activity"
 import "react-activity/dist/library.css"
+import { Box, Grid } from "@mui/material"
 
 import { getLost, found } from "../kiekko/kiekkoActions"
 import KiekkoTable from "../kiekko/KiekkoTable"
@@ -11,24 +12,10 @@ import { getStats } from "./muutActions"
 import StatsTable from "./StatsTable"
 
 const MuutContainer = props => (
-  <div className="container">
-    <h1>Statistiikat</h1>
-    {props.stats ? (
-      <div className="row">
-        <div className="col-md-6">
-          <StatsTable
-            stats={props.stats}
-            sortColumn={props.statsSortColumn}
-            update={props.updateStats}
-          />
-        </div>
-      </div>
-    ) : (
-      <Spinner />
-    )}
+  <Box sx={{ flexGrow: 1 }}>
     <h1>Kadonneet</h1>
-    {props.lost ? (
-      <KiekkoTable
+    {props.lost
+      ? <KiekkoTable
         kiekot={props.lost}
         editable={false}
         lostDiscs={true}
@@ -37,11 +24,19 @@ const MuutContainer = props => (
         username={props.username}
         found={props.found}
       />
-    ) : (
-      <Spinner />
-    )}
+      : <Spinner />
+    }
+    <h1>Statistiikat</h1>
+    {props.stats
+      ? <StatsTable
+        stats={props.stats}
+        sortColumn={props.statsSortColumn}
+        update={props.updateStats}
+      />
+      : <Spinner />
+    }
     {!props.loggedIn && <Navigate to="/" />}
-  </div>
+  </Box>
 )
 
 const mapStateToProps = state => ({
