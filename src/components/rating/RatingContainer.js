@@ -15,7 +15,7 @@ const RatingContainer = props => (
       <div className="col-md-2">
         <button
           className="btn btn-primary btn-block"
-          onClick={() => props.getRating(props.user.pdga_num)}
+          onClick={() => props.getRating(props.user.pdgaNumber)}
         >
           Hae kierrokset
         </button>

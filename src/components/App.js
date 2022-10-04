@@ -13,7 +13,7 @@ import MuoviContainer from "./muovi/MuoviContainer"
 import KiekkoContainer from "./kiekko/KiekkoContainer"
 import YksiKiekkoContainer from "./kiekko/YksiKiekkoContainer"
 import MyytavatContainer from "./myytavat/MyytavatContainer"
-import RatingContainer from "./rating/RatingContainer"
+// import RatingContainer from "./rating/RatingContainer"
 import MuutContainer from "./muut/MuutContainer"
 import GroupContainer from "./group/GroupContainer"
 
@@ -35,7 +35,7 @@ const MyRoutes = () => (
       <Route exact path="/molds" element={<MoldContainer />} />
       <Route exact path="/plastics" element={<MuoviContainer />} />
       <Route exact path="/shop" element={<MyytavatContainer />} />
-      <Route exact path="/rating" element={<RatingContainer />} />
+      {/* <Route exact path="/rating" element={<RatingContainer />} /> */}
       <Route exact path="/others" element={<MuutContainer />} />
       <Route exact path="/groups" element={<GroupContainer />} />
       <Route element={NotFound} />

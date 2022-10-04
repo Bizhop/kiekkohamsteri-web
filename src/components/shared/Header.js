@@ -39,7 +39,7 @@ const Header = props => (
       <MyNavLink to="/" label="Etusivu" icon={<HomeIcon />} />
       {props.loggedIn && <MyNavLink to="/discs" label="Kiekot" icon={<AnimationIcon />} />}
       {props.loggedIn && <MyNavLink to="/shop" label="Kaupat" icon={<ShopIcon />} />}
-      {props.loggedIn && <MyNavLink to="/rating" label="Rating" icon={<TrendingUpIcon />} />}
+      {/* {props.loggedIn && <MyNavLink to="/rating" label="Rating" icon={<TrendingUpIcon />} />} */}
       {props.loggedIn && <MyNavLink to="/groups" label="Ryhmät" icon={<GroupsIcon />} />}
       {props.loggedIn && <MyNavLink to="/others" label="Muut" icon={<MoreHorizIcon />} />}
       {props.loggedIn && isAdmin(props.user) && <MyNavLink to="/users" label="Käyttäjät" icon={<GroupIcon />} />}

@@ -1,62 +1,78 @@
 import React from "react"
+import { TableContainer, Paper, Table, TableHead, TableRow, TableBody, TableCell, IconButton, Tooltip } from "@mui/material"
+import CheckIcon from "@mui/icons-material/Check"
+import CloseIcon from "@mui/icons-material/Close"
 
 import ThWithButton from "../shared/ThWithButton"
-import { check } from "../shared/images"
 import ZoomImage from "../shared/ZoomImage"
 
 const MyyntiTable = props => (
-  <table className="table table-striped">
-    <thead>
-      <tr>{tableHeaders.map(t => <ThWithButton {...t} key={t.label} />)}</tr>
-    </thead>
-    <tbody>
-      {props.myynnit.map(p => (
-        <Myynti key={p.id} myynti={p} accept={props.accept} cancel={props.cancel} />
-      ))}
-    </tbody>
-  </table>
+  <TableContainer component={Paper}>
+    <Table>
+      <TableHead>
+        <TableRow>
+          <TableCell />
+          {tableHeaders.map(t => <ThWithButton {...t} key={t.label} />)}
+          <TableCell />
+          <TableCell />
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {props.myynnit.map(p => (
+          <Myynti key={p.id} myynti={p} accept={props.accept} cancel={props.cancel} />
+        ))}
+      </TableBody>
+    </Table>
+  </TableContainer>
 )
 
 const Myynti = props => {
   const kiekko = props.myynti.kiekko
   return (
-    <tr>
-      <td>
+    <TableRow>
+      <TableCell>
         <ZoomImage image={kiekko.kuva} />
-      </td>
-      <td>{props.myynti.id}</td>
-      <td>{props.myynti.ostaja.username}</td>
-      <td>{kiekko.hinta} €</td>
-      <td>
+      </TableCell>
+      <TableCell>{kiekko.id}</TableCell>
+      <TableCell>{props.myynti.ostaja.username}</TableCell>
+      <TableCell>{kiekko.hinta} €</TableCell>
+      <TableCell>
         {kiekko.mold.valmistaja.valmistaja} {kiekko.muovi.muovi} {kiekko.mold.kiekko}
-      </td>
-      <td>
+      </TableCell>
+      <TableCell>
         {kiekko.mold.nopeus} / {kiekko.mold.liito} / {kiekko.mold.vakaus} / {kiekko.mold.feidi}
-      </td>
-      <td>{kiekko.kunto} / 10</td>
-      <td>{kiekko.paino}</td>
-      <td>{kiekko.dyed ? <img className="on-table" src={check} alt="" /> : ""}</td>
-      <td>{kiekko.hohto ? <img className="on-table" src={check} alt="" /> : ""}</td>
-      <td>{kiekko.swirly ? <img className="on-table" src={check} alt="" /> : ""}</td>
-      <td>{kiekko.spessu ? <img className="on-table" src={check} alt="" /> : ""}</td>
-      <td>
-        <button className="btn btn-primary" onClick={() => props.accept.action(props.myynti.id)}>
-          {props.accept.label}
-        </button>
-      </td>
-      <td>
-        <button className="btn btn-primary" onClick={() => props.cancel.action(props.myynti.id)}>
-          {props.cancel.label}
-        </button>
-      </td>
-    </tr>
+      </TableCell>
+      <TableCell>{kiekko.kunto} / 10</TableCell>
+      <TableCell>{kiekko.paino}</TableCell>
+      <TableCell>{kiekko.dyed ? <img className="on-table" src={check} alt="" /> : ""}</TableCell>
+      <TableCell>{kiekko.hohto ? <img className="on-table" src={check} alt="" /> : ""}</TableCell>
+      <TableCell>{kiekko.swirly ? <img className="on-table" src={check} alt="" /> : ""}</TableCell>
+      <TableCell>{kiekko.spessu ? <img className="on-table" src={check} alt="" /> : ""}</TableCell>
+      <TableCell>
+        <Tooltip title={props.accept.label}>
+          <IconButton
+            variant="contained"
+            onClick={() => props.accept.action(props.myynti.id)}
+          >
+            <CheckIcon />
+          </IconButton>
+        </Tooltip>
+      </TableCell>
+      <TableCell>
+        <Tooltip title={props.cancel.label}>
+          <IconButton
+            variant="contained"
+            onClick={() => props.cancel.action(props.myynti.id)}
+          >
+            <CloseIcon />
+          </IconButton>
+        </Tooltip>
+      </TableCell>
+    </TableRow>
   )
 }
 
 const tableHeaders = [
-  {
-    label: "Kuva"
-  },
   {
     label: "Id"
   },
@@ -89,12 +105,6 @@ const tableHeaders = [
   },
   {
     label: "Spessu"
-  },
-  {
-    label: "Hyväksy"
-  },
-  {
-    label: "Peruuta"
   }
 ]
 

@@ -8,9 +8,9 @@ import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody
 import CloudUploadIcon from "@mui/icons-material/CloudUpload"
 import EditIcon from "@mui/icons-material/Edit"
 import DeleteIcon from "@mui/icons-material/Delete"
+import CheckIcon from "@mui/icons-material/Check"
 
 import ThWithButton from "../shared/ThWithButton"
-import { check } from "../shared/images"
 import { defaultSort } from "../shared/text"
 import ZoomImage from "../shared/ZoomImage"
 
@@ -37,7 +37,6 @@ const KiekkoTable = props => (
                 sortColumn={props.sortColumn}
               />
             )}
-            {props.lostDiscs && <ThWithButton label="Löytynyt" />}
             <TableCell />
           </TableRow>
         </TableHead>
@@ -88,18 +87,13 @@ const Kiekko = props => {
       <TableCell>{kiekko.vakaus}</TableCell>
       <TableCell>{kiekko.feidi}</TableCell>
       <TableCell>{kiekko.paino}</TableCell>
-      {props.lostDiscs && <TableCell>{kiekko.createdAt}</TableCell>}
+      {props.lostDiscs && <TableCell>{kiekko.updatedAt}</TableCell>}
       {props.lostDiscs && (
         <TableCell>
           {props.username === kiekko.omistaja && (
-            <input
-              type="image"
-              alt="found"
-              src={check}
-              height="15"
-              width="15"
-              onClick={() => props.found(kiekko.id)}
-            />
+            <IconButton onClick={() => props.found(kiekko.id)}>
+              <CheckIcon />
+            </IconButton>
           )}
         </TableCell>
       )}
