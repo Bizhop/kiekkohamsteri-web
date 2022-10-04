@@ -1,5 +1,6 @@
 import React from "react"
 import { Field, Form } from "react-final-form"
+import { Button } from "@mui/material"
 
 import { RenderTextInput } from "../shared/FormInput"
 
@@ -8,13 +9,13 @@ const NewGroupForm = props => (
         {({ handleSubmit, pristine, submitting }) => (
             <form onSubmit={handleSubmit}>
                 <Field name="name" label="Ryhmän nimi" component={RenderTextInput} />
-                <button
+                <Button
+                    variant="contained"
                     type="submit"
-                    className="btn btn-primary btn-block"
                     disabled={submitting || pristine}
                 >
                     Luo ryhmä
-                </button>
+                </Button>
             </form>
         )}
     </Form>

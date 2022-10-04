@@ -4,7 +4,7 @@ import "react-confirm-alert/src/react-confirm-alert.css"
 import { NavLink } from "react-router-dom"
 import { Spinner } from "react-activity"
 import "react-activity/dist/library.css"
-import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, IconButton } from "@mui/material"
+import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, IconButton, Tooltip } from "@mui/material"
 import CloudUploadIcon from "@mui/icons-material/CloudUpload"
 import EditIcon from "@mui/icons-material/Edit"
 import DeleteIcon from "@mui/icons-material/Delete"
@@ -90,11 +90,13 @@ const Kiekko = props => {
       {props.lostDiscs && <TableCell>{kiekko.updatedAt}</TableCell>}
       {props.lostDiscs && (
         <TableCell>
-          {props.username === kiekko.omistaja && (
-            <IconButton onClick={() => props.found(kiekko.id)}>
-              <CheckIcon />
-            </IconButton>
-          )}
+          {props.username === kiekko.omistaja &&
+            <Tooltip title="Löytynyt">
+              <IconButton onClick={() => props.found(kiekko.id)}>
+                <CheckIcon />
+              </IconButton>
+            </Tooltip>
+          }
         </TableCell>
       )}
       <TableCell>
