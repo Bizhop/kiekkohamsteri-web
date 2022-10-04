@@ -1,5 +1,7 @@
 import React from "react"
 import { Form, Field } from "react-final-form"
+import { Button, FormGroup } from "@mui/material"
+import SaveAltIcon from "@mui/icons-material/SaveAlt"
 
 import { RenderTextInput, RenderSelectInput, RenderCheckbox } from "../shared/FormInput"
 
@@ -13,7 +15,7 @@ const kuntoDropdown = kunto => kunto.map(v => ({ name: v.nimi, value: v.id }))
 const KiekkoEditForm = props => (
   <Form onSubmit={props.onSubmit} initialValues={props.initialValues}>
     {({ handleSubmit, pristine, submitting }) => (
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} style={{ padding: "10px" }}>
         <Field
           name="valmId"
           label="Valmistaja"
@@ -53,77 +55,82 @@ const KiekkoEditForm = props => (
         />
         <Field name="paino" label="Paino" component={RenderTextInput} />
         <Field name="muuta" label="Muuta" component={RenderTextInput} />
-        <Field
-          name="dyed"
-          label="Dyed"
-          type="checkbox"
-          component={RenderCheckbox}
-          normalize={v => !!v}
-        />
-        <Field
-          name="hohto"
-          label="Hohtava"
-          type="checkbox"
-          component={RenderCheckbox}
-          normalize={v => !!v}
-        />
-        <Field
-          name="itb"
-          label="In The Bag"
-          type="checkbox"
-          component={RenderCheckbox}
-          normalize={v => !!v}
-        />
-        <Field
-          name="loytokiekko"
-          label="Löytökiekko"
-          type="checkbox"
-          component={RenderCheckbox}
-          normalize={v => !!v}
-        />
-        <Field
-          name="spessu"
-          label="Spesiaali"
-          type="checkbox"
-          component={RenderCheckbox}
-          normalize={v => !!v}
-        />
-        <Field
-          name="swirly"
-          label="Swirly"
-          type="checkbox"
-          component={RenderCheckbox}
-          normalize={v => !!v}
-        />
-        <Field
-          name="publicDisc"
-          label="Julkinen"
-          type="checkbox"
-          component={RenderCheckbox}
-          normalize={v => !!v}
-        />
-        <Field
-          name="lost"
-          label="Kadonnut"
-          type="checkbox"
-          component={RenderCheckbox}
-          normalize={v => !!v}
-        />
-        <Field
-          name="myynnissa"
-          label="Myynnissä"
-          type="checkbox"
-          component={RenderCheckbox}
-          normalize={v => !!v}
-        />
+        <FormGroup row>
+          <Field
+            name="dyed"
+            label="Dyed"
+            type="checkbox"
+            component={RenderCheckbox}
+            normalize={v => !!v}
+          />
+          <Field
+            name="hohto"
+            label="Hohtava"
+            type="checkbox"
+            component={RenderCheckbox}
+            normalize={v => !!v}
+          />
+          <Field
+            name="spessu"
+            label="Spesiaali"
+            type="checkbox"
+            component={RenderCheckbox}
+            normalize={v => !!v}
+          />
+          <Field
+            name="swirly"
+            label="Swirly"
+            type="checkbox"
+            component={RenderCheckbox}
+            normalize={v => !!v}
+          />
+        </FormGroup>
+        <FormGroup row>
+          <Field
+            name="itb"
+            label="In The Bag"
+            type="checkbox"
+            component={RenderCheckbox}
+            normalize={v => !!v}
+          />
+          <Field
+            name="loytokiekko"
+            label="Löytökiekko"
+            type="checkbox"
+            component={RenderCheckbox}
+            normalize={v => !!v}
+          />
+          <Field
+            name="publicDisc"
+            label="Julkinen"
+            type="checkbox"
+            component={RenderCheckbox}
+            normalize={v => !!v}
+          />
+          <Field
+            name="lost"
+            label="Kadonnut"
+            type="checkbox"
+            component={RenderCheckbox}
+            normalize={v => !!v}
+          />
+          <Field
+            name="myynnissa"
+            label="Myynnissä"
+            type="checkbox"
+            component={RenderCheckbox}
+            normalize={v => !!v}
+          />
+        </FormGroup>
         <Field name="hinta" label="Hinta" component={RenderTextInput} />
-        <button
+        <Button
+          variant="contained"
           type="submit"
-          className="btn btn-primary btn-block"
           disabled={submitting || pristine}
+          startIcon={<SaveAltIcon />}
         >
           Tallenna
-        </button>
+        </Button>
       </form>
     )}
   </Form>

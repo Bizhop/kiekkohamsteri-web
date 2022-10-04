@@ -5,6 +5,8 @@ import { Navigate } from "react-router-dom"
 import Dropzone from "react-dropzone"
 import ReactCrop from "react-image-crop"
 import "react-image-crop/dist/ReactCrop.css"
+import { Box, Grid, Button } from "@mui/material"
+import CloudUploadIcon from "@mui/icons-material/CloudUpload"
 
 import {
   getKiekot,
@@ -24,7 +26,6 @@ import KiekkoEditForm from "./KiekkoEditForm"
 import PredicatesForm from "./PredicatesForm"
 import KiekkoTable from "./KiekkoTable"
 import { defaultSort } from "../shared/text"
-import { upload } from "../shared/images"
 
 const extractCropDimensions = crop => {
   if (typeof crop.width === 'number' && typeof crop.height === 'number') {
@@ -34,7 +35,7 @@ const extractCropDimensions = crop => {
 }
 
 const KiekkoContainer = props => (
-  <div className="container">
+  <Box sx={{ flexGrow: 1 }}>
     <KiekkoEditModal
       isOpen={props.isEditOpen}
       toggleModal={props.toggleEditModal}
@@ -45,24 +46,25 @@ const KiekkoContainer = props => (
       image={props.image}
     />
     <h1>Kuvan valinta</h1>
-    <div className="row mb-10">
-      <div className="col-md-3">
+    <Grid container spacing={1}>
+      <Grid item md={3}>
         <Dropzone onDrop={props.chooseImage}>{imageDropzone}</Dropzone>
-      </div>
-      <div className="col-md-2">
-        <button
-          className="btn btn-primary btn-block"
+      </Grid>
+      <Grid item md={2}>
+        <Button
+          variant="contained"
+          startIcon={<CloudUploadIcon />}
           onClick={() => props.uploadImage(props.croppedImage)}
           disabled={props.image === null || props.imageUploading}
         >
           Luo uusi kiekko
-        </button>
-      </div>
-    </div>
+        </Button>
+      </Grid>
+    </Grid>
     <p><strong>Kiekon lisäys:</strong> valitse ensin kuva, tee rajaus ja paina nappia "Lisää uusi kiekko"</p>
     <p>
       <strong>Kuvan päivitys:</strong> valitse ensin kuva, tee rajaus ja paina sitten haluamasi kiekon kohdalta
-      upload-nappia <img alt="kuva" src={upload} />
+      upload-nappia <CloudUploadIcon />
     </p>
     {props.image && (
       <div>
@@ -101,10 +103,10 @@ const KiekkoContainer = props => (
       image={props.croppedImage}
       editable={true}
     />
-  </div>
+  </Box>
 )
 
-const imageDropzone = ({getRootProps, getInputProps}) => (
+const imageDropzone = ({ getRootProps, getInputProps }) => (
   <div {...getRootProps()}>
     <input {...getInputProps()} />
     <p className="choose-file">Raahaa tiedosto tähän tai klikkaa...</p>
