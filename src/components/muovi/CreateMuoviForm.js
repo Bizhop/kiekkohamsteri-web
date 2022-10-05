@@ -1,23 +1,27 @@
+import { Button } from "@mui/material"
 import React from "react"
 import { Form, Field } from "react-final-form"
+import { Button, Box } from "@mui/material"
+import SaveAltIcon from "@mui/icons-material/SaveAlt"
 
 import { RenderTextInput } from "../shared/FormInput"
 
 const CreateMuoviForm = props => (
   <Form onSubmit={props.onSubmit}>
     {({ handleSubmit, pristine, submitting }) => (
-      <form onSubmit={handleSubmit}>
-        <div className="row">
-          <div className="col-md-12">Valmistaja (id): {props.initialValues.valmId}</div>
-        </div>
+      <form onSubmit={handleSubmit} style={{ padding: "10px" }}>
+        <p>Valmistaja (id): {props.initialValues.valmId}</p>
         <Field name="muovi" label="Muovi" component={RenderTextInput} />
-        <button
-          type="submit"
-          className="btn btn-primary btn-block"
-          disabled={submitting || pristine || props.initialValues.valmId === null}
-        >
-          Tallenna
-        </button>
+        <Box display="flex" justifyContent="center">
+          <Button
+            variant="contained"
+            type="submit"
+            disabled={submitting || pristine || props.initialValues.valmId === null}
+            startIcon={<SaveAltIcon />}
+          >
+            Tallenna
+          </Button>
+        </Box>
       </form>
     )}
   </Form>

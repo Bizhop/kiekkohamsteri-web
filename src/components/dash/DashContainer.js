@@ -4,13 +4,13 @@ import { connect } from "react-redux"
 import { GoogleLogin } from "@react-oauth/google"
 import { confirmAlert } from "react-confirm-alert"
 import "react-confirm-alert/src/react-confirm-alert.css"
-import { Box, Grid, Button, TableContainer, Table, TableBody, TableRow, TableCell, Paper } from "@mui/material"
+import { Box, Grid, Button, TableContainer, Table, TableBody, TableRow, TableCell, Paper, Tooltip } from "@mui/material"
 import EditIcon from "@mui/icons-material/Edit"
 import GroupRemoveIcon from "@mui/icons-material/GroupRemove"
+import EngineeringIcon from "@mui/icons-material/Engineering"
 
 import { login, googleLoginError, toggleEditModal, requestUpdateMe } from "../user/userActions"
 import UserEditModal from "../user/UserEditModal"
-import { admin } from "../shared/images"
 
 const isGroupAdmin = ({ user, groupId }) => {
   if (!user || !groupId || !user.roles) return false
@@ -56,7 +56,9 @@ const DashContainer = props => (
                     <TableCell>{g.name}</TableCell>
                     <TableCell>
                       {isGroupAdmin({ user: props.user, groupId: g.id }) &&
-                        <img src={admin} title="Ylläpitäjä" />
+                        <Tooltip title="Ylläpitäjä">
+                          <EngineeringIcon />
+                        </Tooltip>
                       }
                     </TableCell>
                     <TableCell>

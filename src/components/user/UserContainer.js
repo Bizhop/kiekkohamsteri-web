@@ -31,7 +31,7 @@ const UserContainer = props => (
       editUser={props.editUser}
       label="Muokkaa käyttäjää"
     />
-    <h1>Käyttäjät</h1>
+    <h2>Käyttäjät</h2>
     <TableContainer component={Paper}>
       <Table>
         <TableHead>
