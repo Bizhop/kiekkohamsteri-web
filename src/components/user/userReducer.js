@@ -19,8 +19,7 @@ const initialState = {
   token: localStorage.getItem("hamsteri-token"),
   users: [],
   isEditModalOpen: false,
-  userInEdit: {},
-  leaders: []
+  userInEdit: {}
 }
 
 const updateUserArray = (users, updatedUser) => {
