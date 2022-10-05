@@ -21,7 +21,7 @@ const KiekkoEditForm = props => (
           label="Valmistaja"
           component={RenderSelectInput}
           options={valmistajaDropdown(props.dropdowns.valms)}
-          onChange={(e, newValue) => props.getDropdownsByValmistaja(newValue)}
+          parse={value => props.getDropdownsByValmistaja(value)}
         />
         <Field
           name="moldId"

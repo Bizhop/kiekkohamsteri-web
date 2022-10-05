@@ -55,7 +55,7 @@ const KiekkoContainer = props => (
           variant="contained"
           startIcon={<CloudUploadIcon />}
           onClick={() => props.uploadImage(props.croppedImage)}
-          disabled={props.image === null || props.imageUploading}
+          disabled={props.image === null || props.croppedImage === null || props.imageUploading}
         >
           Luo uusi kiekko
         </Button>

@@ -8,21 +8,19 @@ const initialState = {
     varit: [],
     kunto: [],
     tussit: []
-  },
-  error: null
+  }
 }
 
 const dropdownReducer = (state = initialState, action) => {
   switch (action.type) {
     case DROPDOWNS_FAILURE:
       return {
-        ...initialState,
-        error: action.error,
+        ...initialState
       }
     case DROPDOWNS_SUCCESS:
       return {
         ...state,
-        dropdowns: action.payload.data,
+        dropdowns: action.payload.data
       }
     default:
       return state
