@@ -1,7 +1,7 @@
 import React from "react"
-import { Form, Field } from "react-final-form"
+import { Form, Field, FieldArray } from "react-final-form"
 
-import { RenderCheckbox } from "../shared/FormInput"
+import { RenderCheckbox, RenderTextInput } from "../shared/FormInput"
 
 const RoundsForm = props => (
   <Form onSubmit={props.onSubmit}>
@@ -88,10 +88,10 @@ const Rounds = ({ fields }) => (
               <td className="text-right">{round.round}</td>
               <td className="text-right">{round.score}</td>
               <td>
-                <Field className="text-center" name={`${d}.rating`} component="input" />
+                <Field className="text-center" name={`${d}.rating`} component={RenderTextInput} />
               </td>
               <td>
-                <Field className="text-center" name={`${d}.holes`} component="input" />
+                <Field className="text-center" name={`${d}.holes`} component={RenderTextInput} />
               </td>
               <td className="text-center">
                 <Field

@@ -35,5 +35,3 @@ export const hyvaksyOsto = id => ({
   payload: postPayload({url: `api/ostot/${id}/confirm`}),
   id
 })
-
-//`api/ostot/${action.id}/confirm`

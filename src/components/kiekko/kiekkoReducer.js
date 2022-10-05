@@ -1,4 +1,5 @@
-import { filter, allPass, keys, prop, propEq, findIndex, update, path, remove, prepend } from "ramda"
+import { filter, allPass, keys, prop, propEq, findIndex, update, path, prepend } from "ramda"
+import { toast } from "react-toastify"
 
 import {
   KIEKOT_SUCCESS,
@@ -106,6 +107,7 @@ const kiekkoReducer = (state = initialState, action) => {
         kiekkoInEdit: action.kiekko
       }
     case UPDATE_KIEKKO_SUCCESS: {
+      toast.success("Kiekon tiedot päivitetty")
       const kiekotUpdated = updateKiekotArray(state.kiekot, action.payload.data)
       return {
         ...state,
@@ -191,11 +193,13 @@ const kiekkoReducer = (state = initialState, action) => {
         lostSortColumn: getSortColumn(action)
       }
     case FOUND_SUCCESS:
+      toast.success("Kiekko merkitty löytyneeksi")
       return {
         ...state,
         lost: removeFromArrayById(state.lost, path(["meta", "previousAction", "id"], action))
       }
     case DELETE_DISC_SUCCESS: {
+      toast.success("Kiekko poistettu")
       const kiekotUpdated = removeFromArrayById(state.kiekot, path(["meta", "previousAction", "id"], action))
       return {
         ...state,

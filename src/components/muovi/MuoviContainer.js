@@ -2,6 +2,7 @@ import React from "react"
 import { path, pathOr } from "ramda"
 import { connect } from "react-redux"
 import { Navigate } from "react-router-dom"
+import { Box, Button, Grid, TableContainer, Table, TableBody, TableRow, TableCell, Paper, TableHead } from "@mui/material"
 
 import { getMuovit, getMuovitByValmistaja, toggleCreateModal, createMuovi } from "./muoviActions"
 import { getDropdowns } from "../dropdown/dropdownActions"
@@ -10,44 +11,46 @@ import Modal from "../shared/Modal"
 import CreateMuoviForm from "./CreateMuoviForm"
 
 const MuoviContainer = props => (
-  <div className="container">
+  <Box sx={{ flexGrow: 1 }}>
     <MuoviCreateModal
       isOpen={props.isCreateOpen}
       toggleModal={props.toggleCreateModal}
       createMuovi={props.createMuovi}
       valmId={props.valmId}
     />
-    <h1>Muovit</h1>
+    <h2>Muovit</h2>
     <SelectValmistajaForm
       valmistajat={pathOr([], ["dropdowns", "valms"], props)}
       getByValmistaja={props.getMuovitByValmistaja}
       valmId={props.valmId}
     />
-    <div className="row">
-      <div className="col-md-4">
-        <div className="btn-group">
-          <button
-            className="btn btn-primary"
-            onClick={() => props.toggleCreateModal()}
-            disabled={props.valmId === null || props.valmId === ""}
-          >
-            Uusi muovi
-          </button>
-        </div>
-      </div>
-    </div>
-    <table className="table table-striped custom-table">
-      <thead>
-        <tr>
-          <th>Id</th>
-          <th>Valmistaja</th>
-          <th>Muovi</th>
-        </tr>
-      </thead>
-      <tbody>{props.muovit.map(p => <Muovi key={p.id} muovi={p} />)}</tbody>
-    </table>
+    <Grid container spacing={1}>
+      <Grid item md={4}>
+        <Button
+          variant="contained"
+          onClick={() => props.toggleCreateModal()}
+          disabled={props.valmId === null || props.valmId === ""}
+        >
+          Uusi muovi
+        </Button>
+      </Grid>
+    </Grid>
+    <TableContainer component={Paper}>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>Id</TableCell>
+            <TableCell>Valmistaja</TableCell>
+            <TableCell>Muovi</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {props.muovit.map(p => <Muovi key={p.id} muovi={p} />)}
+        </TableBody>
+      </Table>
+    </TableContainer>
     {!props.loggedIn && <Navigate to="/" />}
-  </div>
+  </Box>
 )
 
 const MuoviCreateModal = props => (
@@ -63,11 +66,11 @@ const MuoviCreateModal = props => (
 const Muovi = props => {
   const muovi = props.muovi
   return (
-    <tr>
-      <td>{muovi.id}</td>
-      <td>{muovi.valmistaja}</td>
-      <td>{muovi.muovi}</td>
-    </tr>
+    <TableRow key={muovi.id}>
+      <TableCell>{muovi.id}</TableCell>
+      <TableCell>{muovi.valmistaja}</TableCell>
+      <TableCell>{muovi.muovi}</TableCell>
+    </TableRow>
   )
 }
 

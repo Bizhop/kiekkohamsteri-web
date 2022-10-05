@@ -10,6 +10,7 @@ import ratingReducer from "./components/rating/ratingReducer"
 import ostoReducer from "./components/osto/ostoReducer"
 import muutReducer from "./components/muut/muutReducer"
 import groupReducer from "./components/group/groupReducer"
+import adminReducer from "./components/admin/adminReducer"
 
 const rootReducer = combineReducers({
   kiekko: kiekkoReducer,
@@ -21,7 +22,8 @@ const rootReducer = combineReducers({
   rating: ratingReducer,
   osto: ostoReducer,
   muut: muutReducer,
-  group: groupReducer
+  group: groupReducer,
+  admin: adminReducer
 })
 
 export default rootReducer

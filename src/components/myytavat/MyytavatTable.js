@@ -1,77 +1,79 @@
 import React from "react"
+import { TableContainer, Paper, Table, TableHead, TableRow, TableBody, TableCell, Button } from "@mui/material"
+import CircleIcon from "@mui/icons-material/Circle"
 
 import ThWithButton from "../shared/ThWithButton"
-import { check } from "../shared/images"
 import ZoomImage from "../shared/ZoomImage"
 import { tussit } from "../shared/text"
 
 const MyytavatTable = props => (
-  <table className="table table-striped custom-table">
-    <thead>
-      <tr>
-        {tableHeaders.map(t => (
-          <ThWithButton
-            {...t}
-            key={t.label}
-            update={props.updateMyytavat}
-            sortColumn={props.sortColumn}
+  <TableContainer component={Paper}>
+    <Table>
+      <TableHead>
+        <TableRow>
+          <TableCell />
+          {tableHeaders.map(t => (
+            <ThWithButton
+              {...t}
+              key={t.label}
+              update={props.updateMyytavat}
+              sortColumn={props.sortColumn}
+            />
+          ))}
+          <TableCell />
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {props.kiekot.map(p => (
+          <Kiekko
+            key={p.id}
+            kiekko={p}
+            action={{ ...props.action, id: p.id }}
+            username={props.username}
           />
         ))}
-      </tr>
-    </thead>
-    <tbody>
-      {props.kiekot.map(p => (
-        <Kiekko
-          key={p.id}
-          kiekko={p}
-          action={{ ...props.action, id: p.id }}
-          username={props.username}
-        />
-      ))}
-    </tbody>
-  </table>
+      </TableBody>
+    </Table>
+  </TableContainer>
 )
 
 const Kiekko = props => {
   const kiekko = props.kiekko
   return (
-    <tr>
-      <td>
+    <TableRow>
+      <TableCell>
         <ZoomImage image={kiekko.kuva} />
-      </td>
-      <td>{kiekko.id}</td>
-      <td>{kiekko.omistaja}</td>
-      <td>{kiekko.hinta} €</td>
-      <td>
+      </TableCell>
+      <TableCell>{kiekko.id}</TableCell>
+      <TableCell>{kiekko.omistaja}</TableCell>
+      <TableCell>{kiekko.hinta} €</TableCell>
+      <TableCell>
         {kiekko.valmistaja} {kiekko.muovi} {kiekko.mold}
-      </td>
-      <td>
+      </TableCell>
+      <TableCell>
         {kiekko.nopeus} / {kiekko.liito} / {kiekko.vakaus} / {kiekko.feidi}
-      </td>
-      <td>{kiekko.kunto} / 10</td>
-      <td>{tussit[kiekko.tussit - 1]}</td>
-      <td>{kiekko.paino}</td>
-      <td>{kiekko.dyed ? <img className="on-table" src={check} alt="" /> : ""}</td>
-      <td>{kiekko.hohto ? <img className="on-table" src={check} alt="" /> : ""}</td>
-      <td>{kiekko.swirly ? <img className="on-table" src={check} alt="" /> : ""}</td>
-      <td>{kiekko.spessu ? <img className="on-table" src={check} alt="" /> : ""}</td>
-      <td>
-        <button
-          className="btn btn-primary"
+      </TableCell>
+      <TableCell>{kiekko.kunto} / 10</TableCell>
+      <TableCell>{tussit[kiekko.tussit - 1]}</TableCell>
+      <TableCell>{kiekko.paino}</TableCell>
+      <TableCell>{kiekko.dyed && <CircleIcon />}</TableCell>
+      <TableCell>{kiekko.hohto && <CircleIcon />}</TableCell>
+      <TableCell>{kiekko.swirly && <CircleIcon />}</TableCell>
+      <TableCell>{kiekko.spessu && <CircleIcon />}</TableCell>
+      <TableCell>
+        <Button
+          variant="contained"
           disabled={kiekko.omistaja === props.username}
           onClick={() => props.action.action(props.action.id)}
         >
           {props.action.label}
-        </button>
-      </td>
-    </tr>
+        </Button>
+      </TableCell>
+    </TableRow>
   )
 }
 
 const tableHeaders = [
-  {
-    label: "Kuva"
-  },
   {
     label: "Id",
     sort: "id,asc"
@@ -115,9 +117,6 @@ const tableHeaders = [
   {
     label: "Spessu",
     sort: "spessu,desc"
-  },
-  {
-    label: "Osta"
   }
 ]
 

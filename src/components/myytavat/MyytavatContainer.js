@@ -2,6 +2,7 @@ import React from "react"
 import { path, pathOr } from "ramda"
 import { connect } from "react-redux"
 import { Navigate } from "react-router-dom"
+import { Box } from "@mui/material"
 
 import { getMyytavat } from "./myytavatActions"
 import { buyDisc, getOmat, peruutaOsto, hyvaksyOsto } from "../osto/ostoActions"
@@ -10,12 +11,7 @@ import OstoTable from "./OstoTable"
 import MyyntiTable from "./MyyntiTable"
 
 const MyytavatContainer = props => (
-  <div className="container">
-    {props.error && (
-      <div className="alert alert-warning">
-        {props.error}
-      </div>
-    )}
+  <Box sx={{ flexGrow: 1 }}>
     <h1>Omat ostot</h1>
     {props.kaupat && (
       <OstoTable
@@ -43,7 +39,7 @@ const MyytavatContainer = props => (
       }}
       username={props.username}
     />
-  </div>
+  </Box>
 )
 
 const mapStateToProps = state => ({
@@ -51,8 +47,7 @@ const mapStateToProps = state => ({
   username: path(["user", "user", "username"], state),
   kiekot: pathOr([], ["myytavat", "kiekot"], state),
   sortColumn: path(["myytavat", "sortColumn"], state),
-  kaupat: path(["osto", "data"], state),
-  error: path(["osto", "error"], state)
+  kaupat: path(["osto", "data"], state)
 })
 
 const mapDispatchToProps = dispatch => ({

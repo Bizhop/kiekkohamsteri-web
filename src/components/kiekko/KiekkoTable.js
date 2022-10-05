@@ -4,18 +4,23 @@ import "react-confirm-alert/src/react-confirm-alert.css"
 import { NavLink } from "react-router-dom"
 import { Spinner } from "react-activity"
 import "react-activity/dist/library.css"
+import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, IconButton, Tooltip } from "@mui/material"
+import CloudUploadIcon from "@mui/icons-material/CloudUpload"
+import EditIcon from "@mui/icons-material/Edit"
+import DeleteIcon from "@mui/icons-material/Delete"
+import CheckIcon from "@mui/icons-material/Check"
 
 import ThWithButton from "../shared/ThWithButton"
-import { edit, del, magnify, upload, check } from "../shared/images"
 import { defaultSort } from "../shared/text"
 import ZoomImage from "../shared/ZoomImage"
 
 const KiekkoTable = props => (
-  <div>
+  <TableContainer component={Paper} sx={{ maxHeight: 520 }} >
     {props.kiekot ? (
-      <table className="table table-striped custom-table">
-        <thead>
-          <tr>
+      <Table size="small" stickyHeader>
+        <TableHead>
+          <TableRow>
+            <TableCell />
             {tableHeaders.map(t => (
               <ThWithButton
                 {...t}
@@ -32,13 +37,10 @@ const KiekkoTable = props => (
                 sortColumn={props.sortColumn}
               />
             )}
-            {props.lostDiscs && <ThWithButton label="Löytynyt" />}
-            <th />
-            <th />
-            <th />
-          </tr>
-        </thead>
-        <tbody>
+            <TableCell />
+          </TableRow>
+        </TableHead>
+        <TableBody>
           {props.kiekot.map(p => (
             <Kiekko
               key={p.id}
@@ -53,106 +55,84 @@ const KiekkoTable = props => (
               found={props.found}
             />
           ))}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
     ) : (
       <Spinner />
     )}
-  </div>
+  </TableContainer>
 )
 
 const Kiekko = props => {
   const kiekko = props.kiekko
   return (
-    <tr>
-      <td>
+    <TableRow>
+      <TableCell>
         <ZoomImage image={kiekko.kuva} />
-      </td>
-      <td>
+      </TableCell>
+      <TableCell>
         <NavLink
           to={`/discs/${kiekko.id}`}
           target="_disc"
-          className="nav-link nav-item"
         >
           {kiekko.id}
         </NavLink>
-      </td>
-      <td>{kiekko.valmistaja}</td>
-      <td>{kiekko.mold}</td>
-      <td>{kiekko.muovi}</td>
-      <td>{kiekko.nopeus}</td>
-      <td>{kiekko.liito}</td>
-      <td>{kiekko.vakaus}</td>
-      <td>{kiekko.feidi}</td>
-      <td>{kiekko.paino}</td>
-      {props.lostDiscs && <td>{kiekko.createdAt}</td>}
+      </TableCell>
+      <TableCell>{kiekko.valmistaja}</TableCell>
+      <TableCell>{kiekko.mold}</TableCell>
+      <TableCell>{kiekko.muovi}</TableCell>
+      <TableCell>{kiekko.nopeus}</TableCell>
+      <TableCell>{kiekko.liito}</TableCell>
+      <TableCell>{kiekko.vakaus}</TableCell>
+      <TableCell>{kiekko.feidi}</TableCell>
+      <TableCell>{kiekko.paino}</TableCell>
+      {props.lostDiscs && <TableCell>{kiekko.updatedAt}</TableCell>}
       {props.lostDiscs && (
-        <td>
-          {props.username === kiekko.omistaja && (
-            <input
-              type="image"
-              alt="found"
-              src={check}
-              height="15"
-              width="15"
-              onClick={() => props.found(kiekko.id)}
-            />
-          )}
-        </td>
+        <TableCell>
+          {props.username === kiekko.omistaja &&
+            <Tooltip title="Löytynyt">
+              <IconButton onClick={() => props.found(kiekko.id)}>
+                <CheckIcon />
+              </IconButton>
+            </Tooltip>
+          }
+        </TableCell>
       )}
-      <td>
+      <TableCell>
         {props.editable && (
-          <input
-            type="image"
-            alt="upload"
-            src={upload}
-            height="15"
-            width="15"
+          <IconButton
             disabled={props.image === null}
             onClick={() =>
               props.updateImage({
                 id: kiekko.id,
                 image: props.image
               })}
-          />
+          >
+            <CloudUploadIcon />
+          </IconButton>
         )}
-      </td>
-      <td>
         {props.editable && (
-          <input
-            type="image"
-            alt="edit"
-            src={edit}
-            height="15"
-            width="15"
-            onClick={() => props.toggleEditModal(kiekko)}
-          />
+          <IconButton onClick={() => props.toggleEditModal(kiekko)}>
+            <EditIcon />
+          </IconButton>
         )}
-      </td>
-      <td>
         {props.editable && (
-          <input
-            type="image"
-            alt="delete"
-            src={del}
-            height="15"
-            width="15"
+          <IconButton
             onClick={() =>
               handleDelete({
                 id: kiekko.id,
                 confirm: props.deleteDisc
               })}
-          />
+          >
+            <DeleteIcon />
+          </IconButton>
         )}
-      </td>
-    </tr>
+      </TableCell>
+    </TableRow>
   )
 }
 
 const tableHeaders = [
-  {
-    label: "Kuva"
-  },
   {
     label: "Id",
     sort: "id,desc"
@@ -170,19 +150,19 @@ const tableHeaders = [
     sort: "muovi.muovi,asc"
   },
   {
-    label: "Nopeus",
+    label: "SPD",
     sort: "mold.nopeus,desc"
   },
   {
-    label: "Liito",
+    label: "GLD",
     sort: "mold.liito,desc"
   },
   {
-    label: "Vakaus",
+    label: "STA",
     sort: "mold.vakaus,asc"
   },
   {
-    label: "Feidi",
+    label: "FAD",
     sort: "mold.feidi,asc"
   },
   {

@@ -1,36 +1,41 @@
 import React from "react"
+import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material"
 
 import ThWithButton from "../shared/ThWithButton"
 
 const StatsTable = props => (
-  <table className="table table-striped">
-    <thead>
-      <tr>
-        {tableHeaders.map(t => (
-          <ThWithButton {...t} key={t.label} update={props.update} sortColumn={props.sortColumn} />
-        ))}
-      </tr>
-    </thead>
-    <tbody>{props.stats.map(s => <Stats key={s.id} stats={s} />)}</tbody>
-  </table>
+  <TableContainer component={Paper}>
+    <Table>
+      <TableHead>
+        <TableRow>
+          {tableHeaders.map(t => (
+            <ThWithButton {...t} key={t.label} update={props.update} sortColumn={props.sortColumn} />
+          ))}
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {props.stats.map(s => <Stats key={s.id} stats={s} />)}
+      </TableBody>
+    </Table>
+  </TableContainer>
 )
 
 const Stats = props => {
   const stats = props.stats
   return (
-    <tr>
-      <td>
+    <TableRow>
+      <TableCell>
         <strong>
           {stats.year}-{stats.month}
         </strong>
-      </td>
-      <td>{stats.newUsers}</td>
-      <td>{stats.newDiscs}</td>
-      <td>{stats.newManufacturers}</td>
-      <td>{stats.newMolds}</td>
-      <td>{stats.newPlastics}</td>
-      <td>{stats.salesCompleted}</td>
-    </tr>
+      </TableCell>
+      <TableCell>{stats.newUsers}</TableCell>
+      <TableCell>{stats.newDiscs}</TableCell>
+      <TableCell>{stats.newManufacturers}</TableCell>
+      <TableCell>{stats.newMolds}</TableCell>
+      <TableCell>{stats.newPlastics}</TableCell>
+      <TableCell>{stats.salesCompleted}</TableCell>
+    </TableRow>
   )
 }
 

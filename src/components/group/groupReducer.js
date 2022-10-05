@@ -1,7 +1,7 @@
 import { head, filter, append, reject, path, findIndex, propEq, prop, update } from "ramda"
 import { toast } from "react-toastify"
 
-import { COMPLETE_REQUEST_SUCCESS, CREATE_GROUP_SUCCESS, DELETE_GROUP_FAILURE, DELETE_GROUP_SUCCESS, DEMOTE_SUCCESS, GET_GROUPS_SUCCESS, GET_GROUP_REQUESTS_SUCCESS, GET_GROUP_USERS, GET_GROUP_USERS_FAILURE, GET_GROUP_USERS_SUCCESS, JOIN_GROUP_SUCCESS, KICK_SUCCESS, PROMOTE_SUCCESS } from "./groupActions"
+import { COMPLETE_REQUEST_SUCCESS, CREATE_GROUP_FAILURE, CREATE_GROUP_SUCCESS, DELETE_GROUP_FAILURE, DELETE_GROUP_SUCCESS, DEMOTE_SUCCESS, GET_GROUPS_SUCCESS, GET_GROUP_REQUESTS_SUCCESS, GET_GROUP_USERS, GET_GROUP_USERS_FAILURE, GET_GROUP_USERS_SUCCESS, JOIN_GROUP_SUCCESS, KICK_SUCCESS, PROMOTE_SUCCESS } from "./groupActions"
 
 const initialState = {
     groups: [],
@@ -55,6 +55,10 @@ const groupReducer = (state = initialState, action) => {
                 ...state,
                 groups: append(action.payload.data, state.groups)
             }
+        case CREATE_GROUP_FAILURE:
+            const groupName = path(["meta", "previousAction", "payload", "request", "data", "name"], action)
+            toast.error(`Ryhmä "${groupName}" on jo olemassa`)
+            return state
         case COMPLETE_REQUEST_SUCCESS:
             console.log(action)
             path(["meta", "previousAction", "confirm"])

@@ -1,10 +1,10 @@
 import React from "react"
+import { TableCell, Button } from "@mui/material"
 
 const ThWithButton = props => (
-  <th>
+  <TableCell>
     {props.sort ? (
-      <button
-        className="btn btn-link btn-th"
+      <Button
         onClick={() =>
           props.update({
             sort: props.sort,
@@ -13,13 +13,13 @@ const ThWithButton = props => (
         disabled={props.sortColumn === props.label}
       >
         {props.label}
-      </button>
+      </Button>
     ) : (
-      <button className="btn btn-link btn-th" disabled>
+      <Button disabled>
         {props.label}
-      </button>
+      </Button>
     )}
-  </th>
+  </TableCell>
 )
 
 export default ThWithButton

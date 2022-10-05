@@ -1,53 +1,62 @@
 import React from "react"
+import { TableContainer, Paper, Table, TableHead, TableRow, TableBody, TableCell, Button } from "@mui/material"
+import CircleIcon from "@mui/icons-material/Circle"
 
 import ThWithButton from "../shared/ThWithButton"
-import { check } from "../shared/images"
 import ZoomImage from "../shared/ZoomImage"
 
 const OstoTable = props => (
-  <table className="table table-striped">
-    <thead>
-      <tr>{tableHeaders.map(t => <ThWithButton {...t} key={t.label} />)}</tr>
-    </thead>
-    <tbody>{props.ostot.map(p => <Osto key={p.id} osto={p} action={props.action} />)}</tbody>
-  </table>
+  <TableContainer component={Paper}>
+    <Table>
+      <TableHead>
+        <TableRow>
+          <TableCell />
+          {tableHeaders.map(t => <ThWithButton {...t} key={t.label} />)}
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {props.ostot.map(p => <Osto key={p.id} osto={p} action={props.action} />)}
+      </TableBody>
+    </Table>
+  </TableContainer>
 )
 
 const Osto = props => {
   const kiekko = props.osto.kiekko
   return (
-    <tr>
-      <td>
+    <TableRow>
+      <TableCell>
         <ZoomImage image={kiekko.kuva} />
-      </td>
-      <td>{props.osto.id}</td>
-      <td>{props.osto.myyja.username}</td>
-      <td>{kiekko.hinta} €</td>
-      <td>
+      </TableCell>
+      <TableCell>{kiekko.id}</TableCell>
+      <TableCell>{props.osto.myyja.username}</TableCell>
+      <TableCell>{kiekko.hinta} €</TableCell>
+      <TableCell>
         {kiekko.mold.valmistaja.valmistaja} {kiekko.muovi.muovi} {kiekko.mold.kiekko}
-      </td>
-      <td>
+      </TableCell>
+      <TableCell>
         {kiekko.mold.nopeus} / {kiekko.mold.liito} / {kiekko.mold.vakaus} / {kiekko.mold.feidi}
-      </td>
-      <td>{kiekko.kunto} / 10</td>
-      <td>{kiekko.paino}</td>
-      <td>{kiekko.dyed ? <img className="on-table" src={check} alt="" /> : ""}</td>
-      <td>{kiekko.hohto ? <img className="on-table" src={check} alt="" /> : ""}</td>
-      <td>{kiekko.swirly ? <img className="on-table" src={check} alt="" /> : ""}</td>
-      <td>{kiekko.spessu ? <img className="on-table" src={check} alt="" /> : ""}</td>
-      <td>
-        <button className="btn btn-primary" onClick={() => props.action.action(props.osto.id)}>
+      </TableCell>
+      <TableCell>{kiekko.kunto} / 10</TableCell>
+      <TableCell>{kiekko.paino}</TableCell>
+      <TableCell>{kiekko.dyed && <CircleIcon />}</TableCell>
+      <TableCell>{kiekko.hohto && <CircleIcon />}</TableCell>
+      <TableCell>{kiekko.swirly && <CircleIcon />}</TableCell>
+      <TableCell>{kiekko.spessu && <CircleIcon />}</TableCell>
+      <TableCell>
+        <Button
+          variant="contained"
+          color="error"
+          onClick={() => props.action.action(props.osto.id)}
+        >
           {props.action.label}
-        </button>
-      </td>
-    </tr>
+        </Button>
+      </TableCell>
+    </TableRow>
   )
 }
 
 const tableHeaders = [
-  {
-    label: "Kuva"
-  },
   {
     label: "Id"
   },

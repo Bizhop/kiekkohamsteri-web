@@ -1,47 +1,5 @@
-table.custom-table {
-    width: auto;
-    table-layout: fixed;
-    word-wrap: normal;
-    white-space: nowrap;
-    margin-bottom: 450px;
-}
-
-.btn-th {
-    padding: 0px;
-}
-
-.smaller {
-    font-size: 75%;
-}
-
-.table-striped>tbody>tr:nth-child(odd)>td,
-.table-striped>tbody>tr:nth-child(odd)>th {
-    background-color: lightgray;
-}
-
-img.on-table {
-    width: 20px;
-    height: 20px;
-}
-
-img.clickable {
-    cursor: pointer;
-}
-
-div.rai-spinner {
-    margin: 10px;
-}
-
-div.rating {
-    margin-top: 10px;
-}
-
 img.image100 {
     width: 100%;
-}
-
-.mb-10 {
-    margin-bottom: 10px;
 }
 
 p.choose-file {
