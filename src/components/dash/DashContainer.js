@@ -31,17 +31,17 @@ const DashContainer = props => (
         <Box sx={{ flexGrow: 1 }}>
           <h1>Tervetuloa {props.user.username}!</h1>
           <Grid container spacing={1}>
-            <Grid item md={2}>Nimi</Grid>
+            <Grid item md={2}><strong>Nimi</strong></Grid>
             <Grid item md={5}>
               {props.user.firstName} {props.user.lastName}
             </Grid>
           </Grid>
           <Grid container spacing={1}>
-            <Grid item md={2}>Email</Grid>
+            <Grid item md={2}><strong>Email</strong></Grid>
             <Grid item md={5}>{props.user.email}</Grid>
           </Grid>
           <Grid container spacing={1}>
-            <Grid item md={2}>PDGA numero</Grid>
+            <Grid item md={2}><strong>PDGA numero</strong></Grid>
             <Grid item md={5}>{props.user.pdgaNumber}</Grid>
           </Grid>
           <Button variant="contained" startIcon={<EditIcon />} onClick={() => props.toggleEditModal(props.user)}>

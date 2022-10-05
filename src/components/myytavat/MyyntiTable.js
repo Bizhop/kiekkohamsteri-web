@@ -2,6 +2,7 @@ import React from "react"
 import { TableContainer, Paper, Table, TableHead, TableRow, TableBody, TableCell, IconButton, Tooltip } from "@mui/material"
 import CheckIcon from "@mui/icons-material/Check"
 import CloseIcon from "@mui/icons-material/Close"
+import CircleIcon from '@mui/icons-material/Circle';
 
 import ThWithButton from "../shared/ThWithButton"
 import ZoomImage from "../shared/ZoomImage"
@@ -44,10 +45,10 @@ const Myynti = props => {
       </TableCell>
       <TableCell>{kiekko.kunto} / 10</TableCell>
       <TableCell>{kiekko.paino}</TableCell>
-      <TableCell>{kiekko.dyed ? <img className="on-table" src={check} alt="" /> : ""}</TableCell>
-      <TableCell>{kiekko.hohto ? <img className="on-table" src={check} alt="" /> : ""}</TableCell>
-      <TableCell>{kiekko.swirly ? <img className="on-table" src={check} alt="" /> : ""}</TableCell>
-      <TableCell>{kiekko.spessu ? <img className="on-table" src={check} alt="" /> : ""}</TableCell>
+      <TableCell>{kiekko.dyed && <CircleIcon />}</TableCell>
+      <TableCell>{kiekko.hohto && <CircleIcon />}</TableCell>
+      <TableCell>{kiekko.swirly && <CircleIcon />}</TableCell>
+      <TableCell>{kiekko.spessu && <CircleIcon />}</TableCell>
       <TableCell>
         <Tooltip title={props.accept.label}>
           <IconButton

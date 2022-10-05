@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom"
 import { GoogleOAuthProvider } from "@react-oauth/google"
 import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
-import { Container } from "@mui/material"
+import { Container, Box } from "@mui/material"
 
 import Header from "./shared/Header"
 import DashContainer from "./dash/DashContainer"
@@ -16,11 +16,9 @@ import GroupContainer from "./group/GroupContainer"
 import AdminContainer from "./admin/AdminContainer"
 
 const NotFound = () => (
-  <div className="container">
-    <div className="jumbotron">
-      <h1>Page not Found 404!</h1>
-    </div>
-  </div>
+  <Box sx={{ flexGrow: 1 }}>
+    <h1>Page not Found 404!</h1>
+  </Box>
 )
 
 const MyRoutes = () => (

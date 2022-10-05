@@ -1,6 +1,6 @@
 import React from "react"
 import { TableContainer, Paper, Table, TableHead, TableRow, TableBody, TableCell, Button } from "@mui/material"
-import CheckIcon from "@mui/icons-material/Check"
+import CircleIcon from "@mui/icons-material/Circle"
 
 import ThWithButton from "../shared/ThWithButton"
 import ZoomImage from "../shared/ZoomImage"
@@ -56,10 +56,10 @@ const Kiekko = props => {
       <TableCell>{kiekko.kunto} / 10</TableCell>
       <TableCell>{tussit[kiekko.tussit - 1]}</TableCell>
       <TableCell>{kiekko.paino}</TableCell>
-      <TableCell>{kiekko.dyed && <CheckIcon />}</TableCell>
-      <TableCell>{kiekko.hohto && <CheckIcon />}</TableCell>
-      <TableCell>{kiekko.swirly && <CheckIcon />}</TableCell>
-      <TableCell>{kiekko.spessu && <CheckIcon />}</TableCell>
+      <TableCell>{kiekko.dyed && <CircleIcon />}</TableCell>
+      <TableCell>{kiekko.hohto && <CircleIcon />}</TableCell>
+      <TableCell>{kiekko.swirly && <CircleIcon />}</TableCell>
+      <TableCell>{kiekko.spessu && <CircleIcon />}</TableCell>
       <TableCell>
         <Button
           variant="contained"

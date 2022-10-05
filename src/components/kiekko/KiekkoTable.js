@@ -74,7 +74,6 @@ const Kiekko = props => {
         <NavLink
           to={`/discs/${kiekko.id}`}
           target="_disc"
-          className="nav-link nav-item"
         >
           {kiekko.id}
         </NavLink>
