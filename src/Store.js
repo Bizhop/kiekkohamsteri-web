@@ -36,7 +36,7 @@ const axiosMWConfig = {
     }
     ],
     response: [{
-      success: function ({ _getState, dispatch, _getSourceAction }, res) {
+      success: function ({ dispatch }, res) {
         const sourceActionType = path(["config", "reduxSourceAction", "type"], res)
         const status = path(["status"], res)
         switch (sourceActionType) {
@@ -60,7 +60,7 @@ const axiosMWConfig = {
         }
         return Promise.resolve(res);
       },
-      error: function ({ _getState, dispatch, _getSourceAction }, error) {
+      error: function ({ dispatch }, error) {
         const sourceActionType = path(["config", "reduxSourceAction", "type"], error)
         const status = path(["response", "status"], error)
         switch (sourceActionType) {

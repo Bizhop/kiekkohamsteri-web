@@ -55,7 +55,6 @@ const resizeImage = image =>
           resolve(loadedImage.src)
         }
       } catch (error) {
-        console.log(error)
         reject(error)
       }
     }
@@ -80,14 +79,10 @@ const base64Reader = file =>
 
 const processCrop = (pixelCrop, base64) => 
   new Promise((resolve, reject) => {
-    console.log("processing")
-    console.log(pixelCrop)
-    console.log(base64)
     var img = new Image()
 
     img.onload = event => {
       try {
-        console.log("image loaded")
         const loadedImage = event.target
 
         const canvas = document.createElement("canvas")
@@ -110,7 +105,6 @@ const processCrop = (pixelCrop, base64) =>
         resolve(canvas.toDataURL("image/jpeg"))
       }
       catch (error) {
-        console.log(error)
         reject(error)
       }
     }

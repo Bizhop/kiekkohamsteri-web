@@ -12,8 +12,23 @@ const variDropdown = varit => varit.map(v => ({ name: v.vari, value: v.id }))
 const tussiDropdown = kunto => kunto.map(v => ({ name: v.nimi, value: v.id }))
 const kuntoDropdown = kunto => kunto.map(v => ({ name: v.nimi, value: v.id }))
 
+const required = ({field, value, errors}) => {
+  if(!value || value == "") {
+    errors[field] = "Pakollinen arvo"
+  }
+}
+
 const KiekkoEditForm = props => (
-  <Form onSubmit={props.onSubmit} initialValues={props.initialValues}>
+  <Form 
+    onSubmit={props.onSubmit}
+    initialValues={props.initialValues}
+    validate={values => {
+      const errors = {}
+      required({field: "valmId", value: values.valmId, errors})
+      required({field: "moldId", value: values.moldId, errors})
+      required({field: "muoviId", value: values.muoviId, errors})
+      return errors;
+    }}>
     {({ handleSubmit, pristine, submitting }) => (
       <form onSubmit={handleSubmit} style={{ padding: "10px" }}>
         <Field
@@ -21,7 +36,10 @@ const KiekkoEditForm = props => (
           label="Valmistaja"
           component={RenderSelectInput}
           options={valmistajaDropdown(props.dropdowns.valms)}
-          parse={value => props.getDropdownsByValmistaja(value)}
+          parse={value => {
+            props.getDropdownsByValmistaja(value)
+            return value
+          }}
         />
         <Field
           name="moldId"
