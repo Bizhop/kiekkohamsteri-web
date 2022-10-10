@@ -60,7 +60,6 @@ const groupReducer = (state = initialState, action) => {
             toast.error(`Ryhmä "${groupName}" on jo olemassa`)
             return state
         case COMPLETE_REQUEST_SUCCESS:
-            console.log(action)
             path(["meta", "previousAction", "confirm"])
                 ? toast.success("Pyyntö hyväksytty")
                 : toast.info("Pyyntö poistettu")

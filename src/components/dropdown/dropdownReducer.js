@@ -14,9 +14,7 @@ const initialState = {
 const dropdownReducer = (state = initialState, action) => {
   switch (action.type) {
     case DROPDOWNS_FAILURE:
-      return {
-        ...initialState
-      }
+      return initialState
     case DROPDOWNS_SUCCESS:
       return {
         ...state,

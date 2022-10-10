@@ -11,5 +11,6 @@ export const getDropdowns = () => ({
 
 export const getDropdownsByValmistaja = valmId => ({
   type: DROPDOWNS_REQUEST,
-  payload: getPayload({url: `api/dropdown?valmId=${valmId}`})
+  payload: getPayload({url: `api/dropdown?valmId=${valmId}`}),
+  valmId
 })

@@ -25,6 +25,7 @@ import {
   FOUND_SUCCESS,
   DELETE_DISC_SUCCESS
 } from "./kiekkoActions"
+import { DROPDOWNS_SUCCESS } from "../dropdown/dropdownActions"
 import { defaultSort } from "../shared/text"
 import { getSortColumn, removeFromArrayById } from "../shared/utils"
 
@@ -207,6 +208,22 @@ const kiekkoReducer = (state = initialState, action) => {
         kiekotFiltered: applyFilters(state.predicates, kiekotUpdated)
       }
     }
+    case DROPDOWNS_SUCCESS:
+      const previousManufacturerId = path(["kiekkoInEdit", "valmId"], state)
+      const newManufacturerId = path(["meta", "previousAction", "valmId"], action)
+      return {
+        ...state,
+        kiekkoInEdit: (state.kiekkoInEdit && previousManufacturerId != newManufacturerId)
+          ? {
+            ...state.kiekkoInEdit,
+            valmId: newManufacturerId,
+            mold: null,
+            moldId: "",
+            muovi: null,
+            muoviId: ""
+          }
+          : state.kiekkoInEdit
+      }
     default:
       return state
   }
