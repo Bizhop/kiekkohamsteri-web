@@ -8,7 +8,8 @@ const ThWithButton = props => (
         onClick={() =>
           props.update({
             sort: props.sort,
-            newSortColumn: props.label
+            newSortColumn: props.label,
+            userId: props.userId
           })}
         disabled={props.sortColumn === props.label}
       >

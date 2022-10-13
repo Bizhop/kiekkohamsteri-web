@@ -1,7 +1,8 @@
 import { head, filter, append, reject, path, findIndex, propEq, prop, update } from "ramda"
 import { toast } from "react-toastify"
+import { USER_DETAILS_SUCCESS } from "../user/userActions"
 
-import { COMPLETE_REQUEST_SUCCESS, CREATE_GROUP_FAILURE, CREATE_GROUP_SUCCESS, DELETE_GROUP_FAILURE, DELETE_GROUP_SUCCESS, DEMOTE_SUCCESS, GET_GROUPS_SUCCESS, GET_GROUP_REQUESTS_SUCCESS, GET_GROUP_USERS, GET_GROUP_USERS_FAILURE, GET_GROUP_USERS_SUCCESS, JOIN_GROUP_SUCCESS, KICK_SUCCESS, PROMOTE_SUCCESS } from "./groupActions"
+import { COMPLETE_REQUEST_SUCCESS, CREATE_GROUP_FAILURE, CREATE_GROUP_SUCCESS, DELETE_GROUP_FAILURE, DELETE_GROUP_SUCCESS, DEMOTE_SUCCESS, GET_GROUPS_SUCCESS, GET_GROUP_REQUESTS_SUCCESS, GET_GROUP_USERS, GET_GROUP_USERS_FAILURE, GET_GROUP_USERS_SUCCESS, JOIN_GROUP_SUCCESS, KICK_SUCCESS, PROMOTE_SUCCESS, RESET_GROUP_USERS } from "./groupActions"
 
 const initialState = {
     groups: [],
@@ -22,6 +23,19 @@ const groupReducer = (state = initialState, action) => {
             return {
                 ...state,
                 groups: action.payload.data,
+                users: null,
+                selectedGroup: {}
+            }
+        case USER_DETAILS_SUCCESS: 
+            return {
+            ...state,
+            groups: action.payload.data.groups,
+            users: null,
+            selectedGroup: {}
+        }
+        case RESET_GROUP_USERS:
+            return {
+                ...state,
                 users: null,
                 selectedGroup: {}
             }
