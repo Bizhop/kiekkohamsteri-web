@@ -1,4 +1,4 @@
-import { filter, allPass, keys, prop, propEq, findIndex, update, path, prepend } from "ramda"
+import { filter, allPass, keys, prop, propEq, findIndex, update, path, prepend, length, head, propOr } from "ramda"
 import { toast } from "react-toastify"
 
 import {
@@ -23,7 +23,9 @@ import {
   UPDATE_IMAGE_API_FAILURE,
   UPDATE_IMAGE_API_SUCCESS,
   FOUND_SUCCESS,
-  DELETE_DISC_SUCCESS
+  DELETE_DISC_SUCCESS,
+  OTHER_USER_DISCS,
+  OTHER_USER_DISCS_SUCCESS
 } from "./kiekkoActions"
 import { DROPDOWNS_SUCCESS } from "../dropdown/dropdownActions"
 import { defaultSort } from "../shared/text"
@@ -48,7 +50,9 @@ const initialState = {
   },
   lost: null,
   lostSortColumn: null,
-  imageUploading: false
+  imageUploading: false,
+  otherUserDiscs: false,
+  otherUserName: ""
 }
 
 const updateKiekotArray = (kiekot, updatedKiekko) => {
@@ -68,20 +72,32 @@ const kiekkoReducer = (state = initialState, action) => {
       return {
         ...state,
         kiekot: [],
-        kiekotFiltered: null
+        kiekotFiltered: null,
+        otherUserDiscs: false,
+        otherUserName: ""
       }
-    case KIEKOT_SUCCESS:
+    case OTHER_USER_DISCS:
       return {
         ...state,
-        kiekot: action.payload.data.content,
-        kiekotFiltered: applyFilters(state.predicates, action.payload.data.content),
+        kiekot: [],
+        kiekotFiltered: null,
+        otherUserDiscs: true
+      }
+    case KIEKOT_SUCCESS:
+    case OTHER_USER_DISCS_SUCCESS:
+      const discs = action.payload.data.content
+      return {
+        ...state,
+        kiekot: discs,
+        kiekotFiltered: applyFilters(state.predicates, discs),
         sortColumn: getSortColumn(action),
         isEditOpen: false,
         kiekkoInEdit: null,
         image: null,
         crop: {},
         croppedImage: null,
-        kiekko: null
+        kiekko: null,
+        otherUserName: length(discs) > 0 ? path(["omistaja"], head(discs)) : ""
       }
     case KIEKKO_REQUEST:
       return {

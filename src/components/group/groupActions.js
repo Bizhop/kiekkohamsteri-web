@@ -30,6 +30,7 @@ export const KICK_FAILURE = "groups/KICK_FAIL"
 export const DELETE_GROUP = "groups/DELETE_GROUP"
 export const DELETE_GROUP_SUCCESS = "groups/DELETE_GROUP_SUCCESS"
 export const DELETE_GROUP_FAILURE = "groups/DELETE_GROUP_FAIL"
+export const RESET_GROUP_USERS = "groups/RESET_USERS"
 
 export const getGroups = () => ({
     type: GET_GROUPS,
@@ -119,4 +120,8 @@ export const deleteGroup = groupId => ({
         url: `api/v2/groups/${groupId}`
     }),
     groupId
+})
+
+export const resetGroupUsers = () => ({
+    type: RESET_GROUP_USERS
 })

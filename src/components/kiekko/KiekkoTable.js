@@ -27,6 +27,7 @@ const KiekkoTable = props => (
                 key={t.label}
                 update={props.updateKiekot}
                 sortColumn={props.sortColumn}
+                userId={props.userId}
               />
             ))}
             {props.lostDiscs && (
@@ -35,6 +36,7 @@ const KiekkoTable = props => (
                 sort="createdAt,desc"
                 update={props.updateKiekot}
                 sortColumn={props.sortColumn}
+                userId={props.userId}
               />
             )}
             <TableCell />
@@ -71,12 +73,15 @@ const Kiekko = props => {
         <ZoomImage image={kiekko.kuva} />
       </TableCell>
       <TableCell>
-        <NavLink
-          to={`/discs/${kiekko.id}`}
-          target="_disc"
-        >
-          {kiekko.id}
-        </NavLink>
+        {props.editable || kiekko.publicDisc
+          ? <NavLink
+            to={`/discs/${kiekko.id}`}
+            target="_disc"
+          >
+            {kiekko.id}
+          </NavLink>
+          : kiekko.id
+        }
       </TableCell>
       <TableCell>{kiekko.valmistaja}</TableCell>
       <TableCell>{kiekko.mold}</TableCell>

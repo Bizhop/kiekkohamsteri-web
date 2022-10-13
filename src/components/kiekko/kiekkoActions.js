@@ -35,6 +35,9 @@ export const LOST_FAILURE = "kiekot/GET_LOST_FAIL"
 export const FOUND_REQUEST = "kiekot/FOUND"
 export const FOUND_SUCCESS = "kiekot/FOUND_SUCCESS"
 export const FOUND_FAILURE = "kiekot/FOUND_FAIL"
+export const OTHER_USER_DISCS = "kiekot/GET_OTHER"
+export const OTHER_USER_DISCS_SUCCESS = "kiekot/GET_OTHER_SUCCESS"
+export const OTHER_USER_DISCS_FAILURE = "kiekot/GET_OTHER_FAIL"
 
 const updateFields = [
   "valmId",
@@ -61,6 +64,12 @@ export const getKiekot = params => ({
   type: KIEKOT_REQUEST,
   params,
   payload: getPayload({url: `api/kiekot?size=1000&sort=${params.sort}`})
+})
+
+export const getOtherUserDiscs = params => ({
+  type: OTHER_USER_DISCS,
+  params,
+  payload: getPayload({url: `api/kiekot?userId=${params.userId}&size=1000&sort=${params.sort}`})
 })
 
 export const getKiekko = id => ({

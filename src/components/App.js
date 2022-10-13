@@ -9,6 +9,7 @@ import Header from "./shared/Header"
 import DashContainer from "./dash/DashContainer"
 import KiekkoContainer from "./kiekko/KiekkoContainer"
 import YksiKiekkoContainer from "./kiekko/YksiKiekkoContainer"
+import OneUserContainer from "./user/OneUserContainer"
 import MyytavatContainer from "./myytavat/MyytavatContainer"
 // import RatingContainer from "./rating/RatingContainer"
 import MuutContainer from "./muut/MuutContainer"
@@ -27,6 +28,7 @@ const MyRoutes = () => (
       <Route exact path="/" element={<DashContainer />} />
       <Route exact path="/discs" element={<KiekkoContainer />} />
       <Route exact path="/discs/:id" element={<YksiKiekkoContainer />} />
+      <Route exact path="/users/:id" element={<OneUserContainer />} />
       <Route exact path="/shop" element={<MyytavatContainer />} />
       {/* <Route exact path="/rating" element={<RatingContainer />} /> */}
       <Route exact path="/others" element={<MuutContainer />} />

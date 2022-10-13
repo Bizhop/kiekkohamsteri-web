@@ -11,3 +11,7 @@ p.choose-file {
 .react-confirm-alert-button-group > button.red-button {
     background-color: darkred;
 }
+
+tr.color-on-hover:hover {
+    background-color: #eaeaea;
+}
