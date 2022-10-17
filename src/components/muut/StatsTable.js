@@ -5,7 +5,7 @@ import ThWithButton from "../shared/ThWithButton"
 
 const StatsTable = props => (
   <TableContainer component={Paper}>
-    <Table>
+    <Table size="small">
       <TableHead>
         <TableRow>
           {tableHeaders.map(t => (

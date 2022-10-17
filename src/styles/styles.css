@@ -14,4 +14,5 @@ p.choose-file {
 
 tr.color-on-hover:hover {
     background-color: #eaeaea;
+    cursor: pointer;
 }

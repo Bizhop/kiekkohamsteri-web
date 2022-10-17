@@ -1,7 +1,7 @@
 import React from "react"
 import { confirmAlert } from "react-confirm-alert"
 import "react-confirm-alert/src/react-confirm-alert.css"
-import { NavLink } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
 import { Spinner } from "react-activity"
 import "react-activity/dist/library.css"
 import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, IconButton, Tooltip } from "@mui/material"
@@ -14,65 +14,72 @@ import ThWithButton from "../shared/ThWithButton"
 import { defaultSort } from "../shared/text"
 import ZoomImage from "../shared/ZoomImage"
 
-const KiekkoTable = props => (
-  <TableContainer component={Paper} sx={{ maxHeight: 520 }} >
-    {props.kiekot ? (
-      <Table size="small" stickyHeader>
-        <TableHead>
-          <TableRow>
-            <TableCell />
-            {tableHeaders.map(t => (
-              <ThWithButton
-                {...t}
-                key={t.label}
-                update={props.updateKiekot}
-                sortColumn={props.sortColumn}
-                userId={props.userId}
+const KiekkoTable = props => {
+  const navigate = useNavigate()
+  return (
+    <TableContainer component={Paper} sx={{ maxHeight: 520 }} >
+      {props.kiekot ? (
+        <Table size="small" stickyHeader>
+          <TableHead>
+            <TableRow>
+              <TableCell />
+              {tableHeaders.map(t => (
+                <ThWithButton
+                  {...t}
+                  key={t.label}
+                  update={props.updateKiekot}
+                  sortColumn={props.sortColumn}
+                  userId={props.userId}
+                />
+              ))}
+              {props.lostDiscs && (
+                <ThWithButton
+                  label="Pvm"
+                  sort="createdAt,desc"
+                  update={props.updateKiekot}
+                  sortColumn={props.sortColumn}
+                  userId={props.userId}
+                />
+              )}
+              <TableCell />
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {props.kiekot.map(p => (
+              <Kiekko
+                key={p.id}
+                kiekko={p}
+                toggleEditModal={props.toggleEditModal}
+                deleteDisc={props.deleteDisc}
+                updateImage={props.updateImage}
+                image={props.image}
+                editable={props.editable}
+                lostDiscs={props.lostDiscs}
+                username={props.username}
+                found={props.found}
+                navigate={navigate}
               />
             ))}
-            {props.lostDiscs && (
-              <ThWithButton
-                label="Pvm"
-                sort="createdAt,desc"
-                update={props.updateKiekot}
-                sortColumn={props.sortColumn}
-                userId={props.userId}
-              />
-            )}
-            <TableCell />
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {props.kiekot.map(p => (
-            <Kiekko
-              key={p.id}
-              kiekko={p}
-              toggleEditModal={props.toggleEditModal}
-              deleteDisc={props.deleteDisc}
-              updateImage={props.updateImage}
-              image={props.image}
-              editable={props.editable}
-              lostDiscs={props.lostDiscs}
-              username={props.username}
-              found={props.found}
-            />
-          ))}
-        </TableBody>
-      </Table>
-    ) : (
-      <Spinner />
-    )}
-  </TableContainer>
-)
+          </TableBody>
+        </Table>
+      ) : (
+        <Spinner />
+      )}
+    </TableContainer>
+  )
+}
 
 const Kiekko = props => {
   const kiekko = props.kiekko
   return (
-    <TableRow>
+    <TableRow
+      className={props.editable || kiekko.publicDisc ? "color-on-hover" : ""}
+      onClick={() => (props.editable || kiekko.publicDisc) && props.navigate(`/discs/${kiekko.id}`)}
+    >
       <TableCell>
         <ZoomImage image={kiekko.kuva} />
       </TableCell>
-      <TableCell>
+      {/* <TableCell>
         {props.editable || kiekko.publicDisc
           ? <NavLink
             to={`/discs/${kiekko.id}`}
@@ -82,7 +89,7 @@ const Kiekko = props => {
           </NavLink>
           : kiekko.id
         }
-      </TableCell>
+      </TableCell> */}
       <TableCell>{kiekko.valmistaja}</TableCell>
       <TableCell>{kiekko.mold}</TableCell>
       <TableCell>{kiekko.muovi}</TableCell>
@@ -103,7 +110,7 @@ const Kiekko = props => {
           }
         </TableCell>
       )}
-      <TableCell>
+      <TableCell sx={{ display: "flex" }}>
         {props.editable && (
           <IconButton
             disabled={props.image === null}
@@ -138,10 +145,6 @@ const Kiekko = props => {
 }
 
 const tableHeaders = [
-  {
-    label: "Id",
-    sort: "id,desc"
-  },
   {
     label: "Valmistaja",
     sort: defaultSort.sort

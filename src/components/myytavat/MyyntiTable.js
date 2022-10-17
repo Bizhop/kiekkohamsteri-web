@@ -9,7 +9,7 @@ import ZoomImage from "../shared/ZoomImage"
 
 const MyyntiTable = props => (
   <TableContainer component={Paper}>
-    <Table>
+    <Table size="small">
       <TableHead>
         <TableRow>
           <TableCell />

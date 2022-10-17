@@ -7,7 +7,7 @@ import ZoomImage from "../shared/ZoomImage"
 
 const OstoTable = props => (
   <TableContainer component={Paper}>
-    <Table>
+    <Table size="small">
       <TableHead>
         <TableRow>
           <TableCell />

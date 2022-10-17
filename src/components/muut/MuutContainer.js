@@ -4,7 +4,7 @@ import { connect } from "react-redux"
 import { Navigate } from "react-router-dom"
 import { Spinner } from "react-activity"
 import "react-activity/dist/library.css"
-import { Box, Grid } from "@mui/material"
+import { Box } from "@mui/material"
 
 import { getLost, found } from "../kiekko/kiekkoActions"
 import KiekkoTable from "../kiekko/KiekkoTable"
