@@ -41,7 +41,8 @@ const KiekkoTable = props => {
                   userId={props.userId}
                 />
               )}
-              <TableCell />
+              {props.lostDiscs && <TableCell />}
+              {props.editable && <TableCell />}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -69,27 +70,18 @@ const KiekkoTable = props => {
   )
 }
 
+const clickable = ({ target }) => target.cellIndex && target.cellIndex > 0 && target.cellIndex < 9
+
 const Kiekko = props => {
   const kiekko = props.kiekko
   return (
     <TableRow
       className={props.editable || kiekko.publicDisc ? "color-on-hover" : ""}
-      onClick={() => (props.editable || kiekko.publicDisc) && props.navigate(`/discs/${kiekko.id}`)}
+      onClick={event => (props.editable || kiekko.publicDisc) && clickable(event) && props.navigate(`/discs/${kiekko.id}`)}
     >
       <TableCell>
         <ZoomImage image={kiekko.kuva} />
       </TableCell>
-      {/* <TableCell>
-        {props.editable || kiekko.publicDisc
-          ? <NavLink
-            to={`/discs/${kiekko.id}`}
-            target="_disc"
-          >
-            {kiekko.id}
-          </NavLink>
-          : kiekko.id
-        }
-      </TableCell> */}
       <TableCell>{kiekko.valmistaja}</TableCell>
       <TableCell>{kiekko.mold}</TableCell>
       <TableCell>{kiekko.muovi}</TableCell>
@@ -110,8 +102,8 @@ const Kiekko = props => {
           }
         </TableCell>
       )}
-      <TableCell sx={{ display: "flex" }}>
-        {props.editable && (
+      {props.editable &&
+        <TableCell sx={{ display: "flex" }}>
           <IconButton
             disabled={props.image === null}
             onClick={() =>
@@ -122,13 +114,9 @@ const Kiekko = props => {
           >
             <CloudUploadIcon />
           </IconButton>
-        )}
-        {props.editable && (
           <IconButton onClick={() => props.toggleEditModal(kiekko)}>
             <EditIcon />
           </IconButton>
-        )}
-        {props.editable && (
           <IconButton
             onClick={() =>
               handleDelete({
@@ -138,8 +126,8 @@ const Kiekko = props => {
           >
             <DeleteIcon />
           </IconButton>
-        )}
-      </TableCell>
+        </TableCell>
+      }
     </TableRow>
   )
 }
