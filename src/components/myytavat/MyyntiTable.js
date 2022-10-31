@@ -1,8 +1,18 @@
 import React from "react"
-import { TableContainer, Paper, Table, TableHead, TableRow, TableBody, TableCell, IconButton, Tooltip } from "@mui/material"
+import {
+  TableContainer,
+  Paper,
+  Table,
+  TableHead,
+  TableRow,
+  TableBody,
+  TableCell,
+  IconButton,
+  Tooltip,
+} from "@mui/material"
 import CheckIcon from "@mui/icons-material/Check"
 import CloseIcon from "@mui/icons-material/Close"
-import CircleIcon from '@mui/icons-material/Circle';
+import CircleIcon from "@mui/icons-material/Circle"
 
 import ThWithButton from "../shared/ThWithButton"
 import ZoomImage from "../shared/ZoomImage"
@@ -13,7 +23,9 @@ const MyyntiTable = props => (
       <TableHead>
         <TableRow>
           <TableCell />
-          {tableHeaders.map(t => <ThWithButton {...t} key={t.label} />)}
+          {tableHeaders.map(t => (
+            <ThWithButton {...t} key={t.label} />
+          ))}
           <TableCell />
           <TableCell />
         </TableRow>
@@ -51,20 +63,14 @@ const Myynti = props => {
       <TableCell>{kiekko.spessu && <CircleIcon />}</TableCell>
       <TableCell>
         <Tooltip title={props.accept.label}>
-          <IconButton
-            variant="contained"
-            onClick={() => props.accept.action(props.myynti.id)}
-          >
+          <IconButton variant="contained" onClick={() => props.accept.action(props.myynti.id)}>
             <CheckIcon />
           </IconButton>
         </Tooltip>
       </TableCell>
       <TableCell>
         <Tooltip title={props.cancel.label}>
-          <IconButton
-            variant="contained"
-            onClick={() => props.cancel.action(props.myynti.id)}
-          >
+          <IconButton variant="contained" onClick={() => props.cancel.action(props.myynti.id)}>
             <CloseIcon />
           </IconButton>
         </Tooltip>
@@ -75,38 +81,38 @@ const Myynti = props => {
 
 const tableHeaders = [
   {
-    label: "Id"
+    label: "Id",
   },
   {
-    label: "Ostaja"
+    label: "Ostaja",
   },
   {
-    label: "Hinta"
+    label: "Hinta",
   },
   {
-    label: "Kiekko"
+    label: "Kiekko",
   },
   {
-    label: "Lentonumerot"
+    label: "Lentonumerot",
   },
   {
-    label: "Kunto"
+    label: "Kunto",
   },
   {
-    label: "Paino"
+    label: "Paino",
   },
   {
-    label: "Dyed"
+    label: "Dyed",
   },
   {
-    label: "Hohto"
+    label: "Hohto",
   },
   {
-    label: "Swirly"
+    label: "Swirly",
   },
   {
-    label: "Spessu"
-  }
+    label: "Spessu",
+  },
 ]
 
 export default MyyntiTable

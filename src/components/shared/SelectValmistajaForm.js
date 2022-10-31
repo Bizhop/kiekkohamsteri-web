@@ -4,14 +4,13 @@ import { Grid } from "@mui/material"
 
 import { RenderSelectInput } from "../shared/FormInput"
 
-
 const valmistajaDropdown = valmistajat =>
   valmistajat.map(v => ({ name: v.valmistaja, value: v.id }))
 
 const SelectValmistajaForm = props => (
   <Grid container spacing={1}>
     <Grid item md={4}>
-      <Form onSubmit={() => false} initialValues={{ valmistaja: props.valmId }} >
+      <Form onSubmit={() => false} initialValues={{ valmistaja: props.valmId }}>
         {() => (
           <form>
             <Field

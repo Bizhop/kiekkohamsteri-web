@@ -1,13 +1,19 @@
 import { prepend, pathOr } from "ramda"
 import { removeFromArrayById } from "../shared/utils"
-import { HYVAKSY_OSTO_SUCCESS, OMAT_OSTOT_SUCCESS, OSTA_FAILURE, OSTA_SUCCESS, PERUUTA_OSTO_SUCCESS } from "./ostoActions"
+import {
+  HYVAKSY_OSTO_SUCCESS,
+  OMAT_OSTOT_SUCCESS,
+  OSTA_FAILURE,
+  OSTA_SUCCESS,
+  PERUUTA_OSTO_SUCCESS,
+} from "./ostoActions"
 import { toast } from "react-toastify"
 
 const initialState = {
   data: {
     myyjana: [],
-    ostajana: []
-  }
+    ostajana: [],
+  },
 }
 
 const ostoReducer = (state = initialState, action) => {
@@ -15,7 +21,7 @@ const ostoReducer = (state = initialState, action) => {
     case OMAT_OSTOT_SUCCESS:
       return {
         ...state,
-        data: action.payload.data
+        data: action.payload.data,
       }
     case OSTA_SUCCESS:
       toast.success("Ostopyyntö rekisteröity")
@@ -23,8 +29,8 @@ const ostoReducer = (state = initialState, action) => {
         ...state,
         data: {
           ...state.data,
-          ostajana: prepend(action.payload.data, state.data.ostajana)
-        }
+          ostajana: prepend(action.payload.data, state.data.ostajana),
+        },
       }
     case OSTA_FAILURE:
       toast.error("Olet jo ostamassa tätä kiekkoa")
@@ -34,18 +40,30 @@ const ostoReducer = (state = initialState, action) => {
       return {
         ...state,
         data: {
-          ostajana: removeFromArrayById(state.data.ostajana, pathOr(-1, ["meta", "previousAction", "id"], action)),
-          myyjana: removeFromArrayById(state.data.myyjana, pathOr(-1, ["meta", "previousAction", "id"], action))
-        }
+          ostajana: removeFromArrayById(
+            state.data.ostajana,
+            pathOr(-1, ["meta", "previousAction", "id"], action)
+          ),
+          myyjana: removeFromArrayById(
+            state.data.myyjana,
+            pathOr(-1, ["meta", "previousAction", "id"], action)
+          ),
+        },
       }
     case HYVAKSY_OSTO_SUCCESS:
       toast.success("Osto hyväksytty")
       return {
         ...state,
         data: {
-          ostajana: removeFromArrayById(state.data.ostajana, pathOr(-1, ["meta", "previousAction", "id"], action)),
-          myyjana: removeFromArrayById(state.data.myyjana, pathOr(-1, ["meta", "previousAction", "id"], action))
-        }
+          ostajana: removeFromArrayById(
+            state.data.ostajana,
+            pathOr(-1, ["meta", "previousAction", "id"], action)
+          ),
+          myyjana: removeFromArrayById(
+            state.data.myyjana,
+            pathOr(-1, ["meta", "previousAction", "id"], action)
+          ),
+        },
       }
     default:
       return state

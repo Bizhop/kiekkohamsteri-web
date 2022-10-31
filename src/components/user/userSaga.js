@@ -4,13 +4,11 @@ import { googleLogout } from "@react-oauth/google"
 import { LOGOUT } from "./userActions"
 
 function* logoutSaga() {
-    yield call(googleLogout)
+  yield call(googleLogout)
 }
 
 function* userSaga() {
-    yield all([
-        takeEvery(LOGOUT, logoutSaga),
-    ])
+  yield all([takeEvery(LOGOUT, logoutSaga)])
 }
 
 export default userSaga

@@ -45,7 +45,6 @@ const RoundsForm = props => (
   </Form>
 )
 
-
 const customRow = {
   tournament: "Oma kisa",
   link: "",
@@ -55,7 +54,7 @@ const customRow = {
   rating: 0,
   holes: 18,
   included: true,
-  doubled: true
+  doubled: true,
 }
 
 const Rounds = ({ fields }) => (

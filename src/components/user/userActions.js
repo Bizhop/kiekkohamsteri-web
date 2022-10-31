@@ -17,45 +17,44 @@ export const GET_MY_DETAILS = "users/USER_DETAILS"
 export const USER_DETAILS_SUCCESS = "users/USER_DETAILS_SUCCESS"
 export const USER_DETAILS_FAILURE = "users/USER_DETAILS_FAIL"
 
-
 export const login = params => ({
   type: LOGIN_REQUEST,
-  payload: loginPayload(params)
+  payload: loginPayload(params),
 })
 
 export const googleLoginError = error => ({
   type: GOOGLE_LOGIN_FAILURE,
-  error
+  error,
 })
 
 export const logout = () => ({
-  type: LOGOUT
+  type: LOGOUT,
 })
 
 export const getUsers = () => ({
   type: USERS_REQUEST,
-  payload: getPayload({url: "api/v2/user"})
+  payload: getPayload({ url: "api/v2/user" }),
 })
 
 export const toggleEditModal = user => ({
   type: TOGGLE_EDIT_MODAL,
-  user
+  user,
 })
 
 export const updateUser = user => ({
   type: UPDATE_REQUEST,
   payload: patchPayload({
     url: `api/v2/user/${user.id}`,
-    data: pick(["username", "firstName", "lastName", "pdgaNumber"], user)
-  })
+    data: pick(["username", "firstName", "lastName", "pdgaNumber"], user),
+  }),
 })
 
 export const requestUpdateMe = user => ({
   type: UPDATE_REQUEST,
   payload: patchPayload({
     url: `api/v2/user/${user.id}`,
-    data: pick(["username", "firstName", "lastName", "pdgaNumber", "removeFromGroupId"], user)
-  })
+    data: pick(["username", "firstName", "lastName", "pdgaNumber", "removeFromGroupId"], user),
+  }),
 })
 
 export const promoteUser = userId => ({
@@ -63,9 +62,9 @@ export const promoteUser = userId => ({
   payload: patchPayload({
     url: `api/v2/user/${userId}`,
     data: {
-      addToRole: "ADMIN"
-    }
-  })
+      addToRole: "ADMIN",
+    },
+  }),
 })
 
 export const demoteUser = userId => ({
@@ -73,12 +72,12 @@ export const demoteUser = userId => ({
   payload: patchPayload({
     url: `api/v2/user/${userId}`,
     data: {
-      removeFromRole: "ADMIN"
-    }
-  })
+      removeFromRole: "ADMIN",
+    },
+  }),
 })
 
 export const getMyDetails = () => ({
   type: GET_MY_DETAILS,
-  payload: getPayload({url: "api/v2/user/me"})
+  payload: getPayload({ url: "api/v2/user/me" }),
 })

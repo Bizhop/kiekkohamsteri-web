@@ -6,17 +6,17 @@ export const magnify = image => {
       alt: "kuva",
       src: `${imageUrl}t_thumb/${image}`,
       width: 30,
-      height: 30
+      height: 30,
     },
     magnifiedImageProps: {
       alt: "",
       src: `${imageUrl}t_kiekko/${image}`,
       width: 600,
-      height: 600
+      height: 600,
     },
-    magnifyContainerProps : {
-      height : 600,
-      width : 600
-    }
+    magnifyContainerProps: {
+      height: 600,
+      width: 600,
+    },
   }
 }

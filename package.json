@@ -3,12 +3,14 @@
   "source": "src/index.html",
   "scripts": {
     "start": "parcel",
-    "build": "parcel build"
+    "build": "parcel build",
+    "format": "prettier --print-width 100 --no-semi --arrow-parens avoid --write 'src/**/*.js'"
   },
   "devDependencies": {
     "@parcel/transformer-sass": "^2.5.0",
     "buffer": "^6.0.3",
     "parcel": "^2.5.0",
+    "prettier": "^2.7.1",
     "process": "^0.11.10",
     "redux-devtools-extension": "^2.13.9",
     "util": "^0.12.4"

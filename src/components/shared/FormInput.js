@@ -1,5 +1,14 @@
 import React from "react"
-import { TextField, Checkbox, FormControlLabel, FormControl, InputLabel, MenuItem, Select, FormHelperText } from "@mui/material"
+import {
+  TextField,
+  Checkbox,
+  FormControlLabel,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  FormHelperText,
+} from "@mui/material"
 
 export const RenderTextInput = ({ input, label }) => (
   <TextField margin="normal" autoFocus fullWidth label={label} {...input} type="text" />
@@ -27,6 +36,5 @@ export const RenderCheckbox = ({ input, label }) => (
   <FormControlLabel
     control={<Checkbox {...input} type="checkbox" />}
     label={label}
-  >
-  </FormControlLabel>
+  ></FormControlLabel>
 )

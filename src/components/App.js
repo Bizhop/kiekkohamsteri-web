@@ -40,9 +40,7 @@ const MyRoutes = () => (
 )
 
 const App = () => (
-  <GoogleOAuthProvider
-    clientId="107543052765-lfgp4lke6h51a0l4kp258anilpeegf8v.apps.googleusercontent.com"
-  >
+  <GoogleOAuthProvider clientId="107543052765-lfgp4lke6h51a0l4kp258anilpeegf8v.apps.googleusercontent.com">
     <Container>
       <Header />
       <MyRoutes />

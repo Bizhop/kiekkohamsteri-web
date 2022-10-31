@@ -11,7 +11,7 @@ import {
   LOGOUT,
   USER_DETAILS_SUCCESS,
   GOOGLE_LOGIN_FAILURE,
-  UPDATE_SUCCESS
+  UPDATE_SUCCESS,
 } from "./userActions"
 
 const initialState = {
@@ -19,7 +19,7 @@ const initialState = {
   token: localStorage.getItem("hamsteri-token"),
   users: [],
   isEditModalOpen: false,
-  userInEdit: {}
+  userInEdit: {},
 }
 
 const updateUserArray = (users, updatedUser) => {
@@ -47,7 +47,7 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         user: null,
-        token: null
+        token: null,
       }
     case LOGIN_SUCCESS:
       saveToken(action.payload.data)
@@ -55,13 +55,13 @@ const userReducer = (state = initialState, action) => {
         ...state,
         user: action.payload.data,
         token: action.payload.data.jwt,
-        isEditModalOpen: false
+        isEditModalOpen: false,
       }
     case USER_DETAILS_SUCCESS:
       return {
         ...state,
         user: action.payload.data,
-        isEditModalOpen: false
+        isEditModalOpen: false,
       }
     case USERS_FAILURE:
       toast.error("Käyttäjien haku epäonnistui")
@@ -70,13 +70,13 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         users: action.payload.data,
-        isEditModalOpen: false
+        isEditModalOpen: false,
       }
     case TOGGLE_EDIT_MODAL:
       return {
         ...state,
         isEditModalOpen: !state.isEditModalOpen,
-        userInEdit: action.user
+        userInEdit: action.user,
       }
     case UPDATE_SUCCESS:
       toast.success("Käyttäjä päivitetty")
@@ -85,7 +85,7 @@ const userReducer = (state = initialState, action) => {
         users: updateUserArray(state.users, action.payload.data),
         user: updateCurrentUser(state.user, action.payload.data),
         userInEdit: null,
-        isEditModalOpen: false
+        isEditModalOpen: false,
       }
     case UPDATE_FAILURE:
       toast.error("Käyttäjän päivitys epäonnistui")
@@ -94,7 +94,7 @@ const userReducer = (state = initialState, action) => {
       resetToken()
       return {
         ...initialState,
-        token: null
+        token: null,
       }
     default:
       return state

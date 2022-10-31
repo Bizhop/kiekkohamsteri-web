@@ -1,4 +1,4 @@
-import { DROPDOWNS_SUCCESS, DROPDOWNS_FAILURE } from './dropdownActions'
+import { DROPDOWNS_SUCCESS, DROPDOWNS_FAILURE } from "./dropdownActions"
 
 const initialState = {
   dropdowns: {
@@ -7,8 +7,8 @@ const initialState = {
     muovit: [],
     varit: [],
     kunto: [],
-    tussit: []
-  }
+    tussit: [],
+  },
 }
 
 const dropdownReducer = (state = initialState, action) => {
@@ -18,7 +18,7 @@ const dropdownReducer = (state = initialState, action) => {
     case DROPDOWNS_SUCCESS:
       return {
         ...state,
-        dropdowns: action.payload.data
+        dropdowns: action.payload.data,
       }
     default:
       return state

@@ -14,8 +14,8 @@ import StatsTable from "./StatsTable"
 const MuutContainer = props => (
   <Box sx={{ flexGrow: 1 }}>
     <h1>Kadonneet</h1>
-    {props.lost
-      ? <KiekkoTable
+    {props.lost ? (
+      <KiekkoTable
         kiekot={props.lost}
         editable={false}
         lostDiscs={true}
@@ -24,17 +24,19 @@ const MuutContainer = props => (
         username={props.username}
         found={props.found}
       />
-      : <Spinner />
-    }
+    ) : (
+      <Spinner />
+    )}
     <h1>Statistiikat</h1>
-    {props.stats
-      ? <StatsTable
+    {props.stats ? (
+      <StatsTable
         stats={props.stats}
         sortColumn={props.statsSortColumn}
         update={props.updateStats}
       />
-      : <Spinner />
-    }
+    ) : (
+      <Spinner />
+    )}
     {!props.loggedIn && <Navigate to="/" />}
   </Box>
 )
@@ -45,25 +47,25 @@ const mapStateToProps = state => ({
   statsSortColumn: path(["muut", "sortColumn"], state),
   stats: path(["muut", "stats"], state),
   lost: path(["kiekko", "lost"], state),
-  lostSortColumn: path(["kiekko", "lostSortColumn"], state)
+  lostSortColumn: path(["kiekko", "lostSortColumn"], state),
 })
 
 const mapDispatchToProps = dispatch => ({
   getStats: dispatch(
     getStats({
       sort: "year,desc&sort=month,desc",
-      newSortColumn: "Kuukausi"
+      newSortColumn: "Kuukausi",
     })
   ),
   getLost: dispatch(
     getLost({
       sort: "updatedAt,desc",
-      newSortColumn: "Pvm"
+      newSortColumn: "Pvm",
     })
   ),
   updateLost: params => dispatch(getLost(params)),
   updateStats: params => dispatch(getStats(params)),
-  found: id => dispatch(found(id))
+  found: id => dispatch(found(id)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(MuutContainer)

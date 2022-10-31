@@ -1,4 +1,4 @@
-import { prepend } from 'ramda'
+import { prepend } from "ramda"
 
 import {
   MUOVIT_REQUEST,
@@ -6,7 +6,7 @@ import {
   MUOVIT_FAILURE,
   CREATE_MUOVI_SUCCESS,
   TOGGLE_CREATE_MODAL,
-} from './muoviActions'
+} from "./muoviActions"
 
 const initialState = {
   muovit: {
@@ -39,9 +39,9 @@ const muoviReducer = (state = initialState, action) => {
         ...state,
         muovit: {
           ...state.muovit,
-          content: prepend(action.payload.data, state.muovit.content)
+          content: prepend(action.payload.data, state.muovit.content),
         },
-        isCreateOpen: false
+        isCreateOpen: false,
       }
     }
     case TOGGLE_CREATE_MODAL:

@@ -57,105 +57,105 @@ const updateFields = [
   "swirly",
   "hinta",
   "publicDisc",
-  "lost"
+  "lost",
 ]
 
 export const getKiekot = params => ({
   type: KIEKOT_REQUEST,
   params,
-  payload: getPayload({url: `api/kiekot?size=1000&sort=${params.sort}`})
+  payload: getPayload({ url: `api/kiekot?size=1000&sort=${params.sort}` }),
 })
 
 export const getOtherUserDiscs = params => ({
   type: OTHER_USER_DISCS,
   params,
-  payload: getPayload({url: `api/kiekot?userId=${params.userId}&size=1000&sort=${params.sort}`})
+  payload: getPayload({ url: `api/kiekot?userId=${params.userId}&size=1000&sort=${params.sort}` }),
 })
 
 export const getKiekko = id => ({
   type: KIEKKO_REQUEST,
-  payload: getPayload({url: `api/kiekot/${id}`})
+  payload: getPayload({ url: `api/kiekot/${id}` }),
 })
 
 export const updateDisc = kiekko => ({
   type: UPDATE_KIEKKO_REQUEST,
-  payload: putPayload({url: `api/kiekot/${kiekko.id}`, data: pick(updateFields, kiekko)})
+  payload: putPayload({ url: `api/kiekot/${kiekko.id}`, data: pick(updateFields, kiekko) }),
 })
 
 export const toggleEditModal = kiekko => ({
   type: TOGGLE_KIEKKO_EDIT_MODAL,
-  kiekko
+  kiekko,
 })
 
 export const chooseImage = acceptedFiles => ({
   type: CHOOSE_IMAGE,
-  acceptedFiles
+  acceptedFiles,
 })
 
 export const chooseImageSuccess = base64 => ({
   type: CHOOSE_IMAGE_SUCCESS,
-  base64
+  base64,
 })
 
 export const updateImageDimensions = imageDimensions => ({
   type: UPDATE_IMAGE_DIMENSIONS,
-  imageDimensions
+  imageDimensions,
 })
 
 export const uploadImage = data => ({
   type: UPLOAD_IMAGE,
-  data
+  data,
 })
 
 export const uploadImageApi = data => ({
   type: UPLOAD_IMAGE_API,
-  payload: postPayload({url: "api/kiekot", data: data})
+  payload: postPayload({ url: "api/kiekot", data: data }),
 })
 
 export const updateImage = params => ({
   type: UPDATE_IMAGE,
-  params
+  params,
 })
 
 export const updateImageApi = params => ({
   type: UPDATE_IMAGE_API,
-  payload: patchPayload({url: `api/kiekot/${params.id}/update-image`, data: params.data})
+  payload: patchPayload({ url: `api/kiekot/${params.id}/update-image`, data: params.data }),
 })
 
 export const deleteDisc = id => ({
   type: DELETE_DISC,
-  payload: deletePayload({url: `api/kiekot/${id}`}),
-  id
+  payload: deletePayload({ url: `api/kiekot/${id}` }),
+  id,
 })
 
 export const applyPredicates = form => ({
   type: APPLY_PREDICATES,
-  form
+  form,
 })
 
 export const updateCrop = crop => ({
   type: UPDATE_CROP,
-  crop
+  crop,
 })
 
 export const completeCrop = params => ({
   type: COMPLETE_CROP,
-  ...params
+  ...params,
 })
 
 export const cropComplete = image => ({
   type: CROP_COMPLETE,
-  image
+  image,
 })
 
 export const getLost = params => ({
   type: LOST_REQUEST,
-  payload: getPayload({url: `api/kiekot/lost?size=1000&sort=${params.sort}`}),
-  params
+  payload: getPayload({ url: `api/kiekot/lost?size=1000&sort=${params.sort}` }),
+  params,
 })
 
 export const found = id => ({
   type: FOUND_REQUEST,
-  payload: patchPayload({url: `api/kiekot/${id}/found`}),
-  id
+  payload: patchPayload({ url: `api/kiekot/${id}/found` }),
+  id,
 })

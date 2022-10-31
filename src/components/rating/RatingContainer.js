@@ -64,13 +64,13 @@ const mapStateToProps = state => ({
   customRating: path(["rating", "customRating"], state),
   rating: pathOr({}, ["rating"], state),
   fetching: path(["rating", "fetching"], state),
-  roundsValues: pathOr({}, ["form", "roundsForm", "values"], state)
+  roundsValues: pathOr({}, ["form", "roundsForm", "values"], state),
 })
 
 const mapDispatchToProps = dispatch => ({
   init: dispatch(initRating()),
   getRating: pdga => dispatch(getRating(pdga)),
-  getCustomRating: form => dispatch(getCustomRating(form))
+  getCustomRating: form => dispatch(getCustomRating(form)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(RatingContainer)

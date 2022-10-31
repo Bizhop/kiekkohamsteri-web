@@ -8,10 +8,7 @@ const UserEditModal = props => (
     onRequestClose={() => props.toggleModal(null)}
     contentLabel={props.label}
   >
-    <UserEditForm 
-      onSubmit={props.editUser}
-      initialValues={props.user}
-    />
+    <UserEditForm onSubmit={props.editUser} initialValues={props.user} />
   </Modal>
 )
 

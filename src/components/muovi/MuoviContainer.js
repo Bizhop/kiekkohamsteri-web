@@ -2,7 +2,18 @@ import React from "react"
 import { path, pathOr } from "ramda"
 import { connect } from "react-redux"
 import { Navigate } from "react-router-dom"
-import { Box, Button, Grid, TableContainer, Table, TableBody, TableRow, TableCell, Paper, TableHead } from "@mui/material"
+import {
+  Box,
+  Button,
+  Grid,
+  TableContainer,
+  Table,
+  TableBody,
+  TableRow,
+  TableCell,
+  Paper,
+  TableHead,
+} from "@mui/material"
 
 import { getMuovit, getMuovitByValmistaja, toggleCreateModal, createMuovi } from "./muoviActions"
 import { getDropdowns } from "../dropdown/dropdownActions"
@@ -45,7 +56,9 @@ const MuoviContainer = props => (
           </TableRow>
         </TableHead>
         <TableBody>
-          {props.muovit.map(p => <Muovi key={p.id} muovi={p} />)}
+          {props.muovit.map(p => (
+            <Muovi key={p.id} muovi={p} />
+          ))}
         </TableBody>
       </Table>
     </TableContainer>
@@ -54,11 +67,7 @@ const MuoviContainer = props => (
 )
 
 const MuoviCreateModal = props => (
-  <Modal
-    isOpen={props.isOpen}
-    onRequestClose={() => props.toggleModal()}
-    contentLabel="Uusi muovi"
-  >
+  <Modal isOpen={props.isOpen} onRequestClose={() => props.toggleModal()} contentLabel="Uusi muovi">
     <CreateMuoviForm onSubmit={props.createMuovi} initialValues={{ valmId: props.valmId }} />
   </Modal>
 )
@@ -79,7 +88,7 @@ const mapStateToProps = state => ({
   muovit: path(["muovi", "muovit", "content"], state),
   dropdowns: path(["dropdowns", "dropdowns"], state),
   isCreateOpen: path(["muovi", "isCreateOpen"], state),
-  valmId: path(["muovi", "valmId"], state)
+  valmId: path(["muovi", "valmId"], state),
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -87,7 +96,7 @@ const mapDispatchToProps = dispatch => ({
   getDropdowns: dispatch(getDropdowns()),
   getMuovitByValmistaja: valmId => dispatch(getMuovitByValmistaja(valmId)),
   toggleCreateModal: () => dispatch(toggleCreateModal()),
-  createMuovi: muovi => dispatch(createMuovi(muovi))
+  createMuovi: muovi => dispatch(createMuovi(muovi)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(MuoviContainer)
