@@ -2,7 +2,18 @@ import React from "react"
 import { pathOr, path } from "ramda"
 import { connect } from "react-redux"
 import { Navigate } from "react-router-dom"
-import { Box, Button, Grid, TableContainer, Table, TableBody, TableRow, TableCell, Paper, TableHead } from "@mui/material"
+import {
+  Box,
+  Button,
+  Grid,
+  TableContainer,
+  Table,
+  TableBody,
+  TableRow,
+  TableCell,
+  Paper,
+  TableHead,
+} from "@mui/material"
 
 import { getMolds, getMoldsByValmistaja, toggleCreateModal, createMold } from "./moldActions"
 import { getDropdowns } from "../dropdown/dropdownActions"
@@ -49,7 +60,9 @@ const MoldContainer = props => (
           </TableRow>
         </TableHead>
         <TableBody>
-          {props.molds.map(p => <Mold key={p.id} mold={p} />)}
+          {props.molds.map(p => (
+            <Mold key={p.id} mold={p} />
+          ))}
         </TableBody>
       </Table>
     </TableContainer>
@@ -58,11 +71,7 @@ const MoldContainer = props => (
 )
 
 const MoldCreateModal = props => (
-  <Modal
-    isOpen={props.isOpen}
-    onRequestClose={() => props.toggleModal()}
-    contentLabel="Uusi moldi"
-  >
+  <Modal isOpen={props.isOpen} onRequestClose={() => props.toggleModal()} contentLabel="Uusi moldi">
     <CreateMoldForm onSubmit={props.createMold} initialValues={{ valmId: props.valmId }} />
   </Modal>
 )
@@ -87,7 +96,7 @@ const mapStateToProps = state => ({
   molds: path(["mold", "molds", "content"], state),
   dropdowns: path(["dropdowns", "dropdowns"], state),
   isCreateOpen: path(["mold", "isCreateOpen"], state),
-  valmId: path(["mold", "valmId"], state)
+  valmId: path(["mold", "valmId"], state),
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -95,7 +104,7 @@ const mapDispatchToProps = dispatch => ({
   getDropdowns: dispatch(getDropdowns()),
   getMoldsByValmistaja: valmId => dispatch(getMoldsByValmistaja(valmId)),
   toggleCreateModal: () => dispatch(toggleCreateModal()),
-  createMold: mold => dispatch(createMold(mold))
+  createMold: mold => dispatch(createMold(mold)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(MoldContainer)

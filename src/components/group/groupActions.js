@@ -33,95 +33,95 @@ export const DELETE_GROUP_FAILURE = "groups/DELETE_GROUP_FAIL"
 export const RESET_GROUP_USERS = "groups/RESET_USERS"
 
 export const getGroups = () => ({
-    type: GET_GROUPS,
-    payload: getPayload({url: "api/v2/groups"})
+  type: GET_GROUPS,
+  payload: getPayload({ url: "api/v2/groups" }),
 })
 
 export const getGroupUsers = groupId => ({
-    type: GET_GROUP_USERS,
-    payload: getPayload({url: `api/v2/user?groupId=${groupId}`}),
-    groupId
+  type: GET_GROUP_USERS,
+  payload: getPayload({ url: `api/v2/user?groupId=${groupId}` }),
+  groupId,
 })
 
 export const createGroup = group => ({
-    type: CREATE_GROUP,
-    payload: postPayload({
-        url: "api/v2/groups",
-        data: group
-    })
+  type: CREATE_GROUP,
+  payload: postPayload({
+    url: "api/v2/groups",
+    data: group,
+  }),
 })
 
 export const joinGroup = ({ userId, groupId }) => ({
-    type: JOIN_GROUP,
-    payload: postPayload({
-        url: `api/v2/groups/${groupId}/requests`,
-        data: {
-            targetUserId: userId,
-            type: "JOIN",
-            info: `Pyyntö liittyä ryhmään ${groupId}`
-        }
-    })
+  type: JOIN_GROUP,
+  payload: postPayload({
+    url: `api/v2/groups/${groupId}/requests`,
+    data: {
+      targetUserId: userId,
+      type: "JOIN",
+      info: `Pyyntö liittyä ryhmään ${groupId}`,
+    },
+  }),
 })
 
 export const getGroupRequests = () => ({
-    type: GET_GROUP_REQUESTS,
-    payload: getPayload({ url: "api/v2/groups/requests" })
+  type: GET_GROUP_REQUESTS,
+  payload: getPayload({ url: "api/v2/groups/requests" }),
 })
 
 export const completeRequest = ({ groupId, requestId, confirm }) => ({
-    type: COMPLETE_REQUEST,
-    payload: postPayload({ 
-        url: `api/v2/groups/${groupId}/requests/${requestId}`,
-        data: { confirm }
-    }),
-    requestId,
-    confirm
+  type: COMPLETE_REQUEST,
+  payload: postPayload({
+    url: `api/v2/groups/${groupId}/requests/${requestId}`,
+    data: { confirm },
+  }),
+  requestId,
+  confirm,
 })
 
 export const promote = ({ userId, groupId }) => ({
-    type: PROMOTE,
-    payload: postPayload({
-        url: `api/v2/groups/${groupId}/requests`,
-        data: {
-            targetUserId: userId,
-            type: "PROMOTE",
-            info: `Pyyntö ryhmän ${groupId} ylläpitäjäksi`
-        }
-    })
+  type: PROMOTE,
+  payload: postPayload({
+    url: `api/v2/groups/${groupId}/requests`,
+    data: {
+      targetUserId: userId,
+      type: "PROMOTE",
+      info: `Pyyntö ryhmän ${groupId} ylläpitäjäksi`,
+    },
+  }),
 })
 
 export const demote = ({ userId, groupId }) => ({
-    type: DEMOTE,
-    payload: postPayload({
-        url: `api/v2/groups/${groupId}/requests`,
-        data: {
-            targetUserId: userId,
-            type: "DEMOTE",
-            info: `Pyyntö poistaa ryhmän ${groupId} ylläpitäjä`
-        }
-    })
+  type: DEMOTE,
+  payload: postPayload({
+    url: `api/v2/groups/${groupId}/requests`,
+    data: {
+      targetUserId: userId,
+      type: "DEMOTE",
+      info: `Pyyntö poistaa ryhmän ${groupId} ylläpitäjä`,
+    },
+  }),
 })
 
 export const kick = ({ userId, groupId }) => ({
-    type: KICK,
-    payload: postPayload({
-        url: `api/v2/groups/${groupId}/requests`,
-        data: {
-            targetUserId: userId,
-            type: "KICK",
-            info: `Pyyntö poistaa ryhmästä ${groupId}`
-        }
-    })
+  type: KICK,
+  payload: postPayload({
+    url: `api/v2/groups/${groupId}/requests`,
+    data: {
+      targetUserId: userId,
+      type: "KICK",
+      info: `Pyyntö poistaa ryhmästä ${groupId}`,
+    },
+  }),
 })
 
 export const deleteGroup = groupId => ({
-    type: DELETE_GROUP,
-    payload: deletePayload({
-        url: `api/v2/groups/${groupId}`
-    }),
-    groupId
+  type: DELETE_GROUP,
+  payload: deletePayload({
+    url: `api/v2/groups/${groupId}`,
+  }),
+  groupId,
 })
 
 export const resetGroupUsers = () => ({
-    type: RESET_GROUP_USERS
+  type: RESET_GROUP_USERS,
 })

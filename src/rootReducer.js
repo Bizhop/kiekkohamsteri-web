@@ -23,7 +23,7 @@ const rootReducer = combineReducers({
   osto: ostoReducer,
   muut: muutReducer,
   group: groupReducer,
-  admin: adminReducer
+  admin: adminReducer,
 })
 
 export default rootReducer

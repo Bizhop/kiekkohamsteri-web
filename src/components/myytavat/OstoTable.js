@@ -1,5 +1,14 @@
 import React from "react"
-import { TableContainer, Paper, Table, TableHead, TableRow, TableBody, TableCell, Button } from "@mui/material"
+import {
+  TableContainer,
+  Paper,
+  Table,
+  TableHead,
+  TableRow,
+  TableBody,
+  TableCell,
+  Button,
+} from "@mui/material"
 import CircleIcon from "@mui/icons-material/Circle"
 
 import ThWithButton from "../shared/ThWithButton"
@@ -7,15 +16,19 @@ import ZoomImage from "../shared/ZoomImage"
 
 const OstoTable = props => (
   <TableContainer component={Paper}>
-    <Table>
+    <Table size="small">
       <TableHead>
         <TableRow>
           <TableCell />
-          {tableHeaders.map(t => <ThWithButton {...t} key={t.label} />)}
+          {tableHeaders.map(t => (
+            <ThWithButton {...t} key={t.label} />
+          ))}
         </TableRow>
       </TableHead>
       <TableBody>
-        {props.ostot.map(p => <Osto key={p.id} osto={p} action={props.action} />)}
+        {props.ostot.map(p => (
+          <Osto key={p.id} osto={p} action={props.action} />
+        ))}
       </TableBody>
     </Table>
   </TableContainer>
@@ -58,41 +71,41 @@ const Osto = props => {
 
 const tableHeaders = [
   {
-    label: "Id"
+    label: "Id",
   },
   {
-    label: "Myyjä"
+    label: "Myyjä",
   },
   {
-    label: "Hinta"
+    label: "Hinta",
   },
   {
-    label: "Kiekko"
+    label: "Kiekko",
   },
   {
-    label: "Lentonumerot"
+    label: "Lentonumerot",
   },
   {
-    label: "Kunto"
+    label: "Kunto",
   },
   {
-    label: "Paino"
+    label: "Paino",
   },
   {
-    label: "Dyed"
+    label: "Dyed",
   },
   {
-    label: "Hohto"
+    label: "Hohto",
   },
   {
-    label: "Swirly"
+    label: "Swirly",
   },
   {
-    label: "Spessu"
+    label: "Spessu",
   },
   {
-    label: "Peruuta"
-  }
+    label: "Peruuta",
+  },
 ]
 
 export default OstoTable

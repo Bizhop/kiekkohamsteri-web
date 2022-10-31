@@ -1,20 +1,35 @@
 import React from "react"
-import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material"
+import {
+  TableContainer,
+  Paper,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+} from "@mui/material"
 
 import ThWithButton from "../shared/ThWithButton"
 
 const StatsTable = props => (
   <TableContainer component={Paper}>
-    <Table>
+    <Table size="small">
       <TableHead>
         <TableRow>
           {tableHeaders.map(t => (
-            <ThWithButton {...t} key={t.label} update={props.update} sortColumn={props.sortColumn} />
+            <ThWithButton
+              {...t}
+              key={t.label}
+              update={props.update}
+              sortColumn={props.sortColumn}
+            />
           ))}
         </TableRow>
       </TableHead>
       <TableBody>
-        {props.stats.map(s => <Stats key={s.id} stats={s} />)}
+        {props.stats.map(s => (
+          <Stats key={s.id} stats={s} />
+        ))}
       </TableBody>
     </Table>
   </TableContainer>
@@ -42,32 +57,32 @@ const Stats = props => {
 const tableHeaders = [
   {
     label: "Kuukausi",
-    sort: "year,desc&sort=month,desc"
+    sort: "year,desc&sort=month,desc",
   },
   {
     label: "Uudet käyttäjät",
-    sort: "newUsers,desc"
+    sort: "newUsers,desc",
   },
   {
     label: "Uudet kiekot",
-    sort: "newDiscs,desc"
+    sort: "newDiscs,desc",
   },
   {
     label: "Uudet valmistajat",
-    sort: "newManufacturers,desc"
+    sort: "newManufacturers,desc",
   },
   {
     label: "Uudet moldit",
-    sort: "newMolds,desc"
+    sort: "newMolds,desc",
   },
   {
     label: "Uudet muovit",
-    sort: "newPlastics,desc"
+    sort: "newPlastics,desc",
   },
   {
     label: "Myydyt kiekot",
-    sort: "salesCompleted,desc"
-  }
+    sort: "salesCompleted,desc",
+  },
 ]
 
 export default StatsTable

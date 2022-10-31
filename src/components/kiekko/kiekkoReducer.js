@@ -1,4 +1,17 @@
-import { filter, allPass, keys, prop, propEq, findIndex, update, path, prepend, length, head, propOr } from "ramda"
+import {
+  filter,
+  allPass,
+  keys,
+  prop,
+  propEq,
+  findIndex,
+  update,
+  path,
+  prepend,
+  length,
+  head,
+  propOr,
+} from "ramda"
 import { toast } from "react-toastify"
 
 import {
@@ -25,7 +38,7 @@ import {
   FOUND_SUCCESS,
   DELETE_DISC_SUCCESS,
   OTHER_USER_DISCS,
-  OTHER_USER_DISCS_SUCCESS
+  OTHER_USER_DISCS_SUCCESS,
 } from "./kiekkoActions"
 import { DROPDOWNS_SUCCESS } from "../dropdown/dropdownActions"
 import { defaultSort } from "../shared/text"
@@ -46,13 +59,13 @@ const initialState = {
   croppedImage: null,
   pixelCrop: {
     width: "",
-    height: ""
+    height: "",
   },
   lost: null,
   lostSortColumn: null,
   imageUploading: false,
   otherUserDiscs: false,
-  otherUserName: ""
+  otherUserName: "",
 }
 
 const updateKiekotArray = (kiekot, updatedKiekko) => {
@@ -61,9 +74,7 @@ const updateKiekotArray = (kiekot, updatedKiekko) => {
 }
 
 const applyFilters = (predicates, kiekot) => {
-  return predicates === null
-    ? kiekot
-    : filter(allPass(predicates), kiekot)
+  return predicates === null ? kiekot : filter(allPass(predicates), kiekot)
 }
 
 const kiekkoReducer = (state = initialState, action) => {
@@ -74,14 +85,14 @@ const kiekkoReducer = (state = initialState, action) => {
         kiekot: [],
         kiekotFiltered: null,
         otherUserDiscs: false,
-        otherUserName: ""
+        otherUserName: "",
       }
     case OTHER_USER_DISCS:
       return {
         ...state,
         kiekot: [],
         kiekotFiltered: null,
-        otherUserDiscs: true
+        otherUserDiscs: true,
       }
     case KIEKOT_SUCCESS:
     case OTHER_USER_DISCS_SUCCESS:
@@ -97,31 +108,31 @@ const kiekkoReducer = (state = initialState, action) => {
         crop: {},
         croppedImage: null,
         kiekko: null,
-        otherUserName: length(discs) > 0 ? path(["omistaja"], head(discs)) : ""
+        otherUserName: length(discs) > 0 ? path(["omistaja"], head(discs)) : "",
       }
     case KIEKKO_REQUEST:
       return {
         ...state,
         kiekko: null,
-        oneDiscText: "Haetaan..."
+        oneDiscText: "Haetaan...",
       }
     case KIEKKO_SUCCESS:
       return {
         ...state,
         kiekko: action.payload.data,
-        oneDiscText: ""
+        oneDiscText: "",
       }
     case KIEKKO_FAILURE:
       return {
         ...state,
         kiekko: null,
-        oneDiscText: "Ei saatavilla"
+        oneDiscText: "Ei saatavilla",
       }
     case TOGGLE_KIEKKO_EDIT_MODAL:
       return {
         ...state,
         isEditOpen: !state.isEditOpen,
-        kiekkoInEdit: action.kiekko
+        kiekkoInEdit: action.kiekko,
       }
     case UPDATE_KIEKKO_SUCCESS: {
       toast.success("Kiekon tiedot päivitetty")
@@ -130,7 +141,7 @@ const kiekkoReducer = (state = initialState, action) => {
         ...state,
         isEditOpen: false,
         kiekot: kiekotUpdated,
-        kiekotFiltered: applyFilters(state.predicates, kiekotUpdated)
+        kiekotFiltered: applyFilters(state.predicates, kiekotUpdated),
       }
     }
     case CHOOSE_IMAGE_SUCCESS:
@@ -140,19 +151,19 @@ const kiekkoReducer = (state = initialState, action) => {
         crop: {},
         pixelCrop: {
           width: "",
-          height: ""
-        }
+          height: "",
+        },
       }
     case UPDATE_IMAGE_DIMENSIONS:
       return {
         ...state,
-        imageDimensions: action.imageDimensions
+        imageDimensions: action.imageDimensions,
       }
     case UPLOAD_IMAGE_API:
     case UPDATE_IMAGE_API:
       return {
         ...state,
-        imageUploading: true
+        imageUploading: true,
       }
     case UPLOAD_IMAGE_API_SUCCESS: {
       const kiekotUpdated = prepend(action.payload.data, state.kiekot)
@@ -163,35 +174,35 @@ const kiekkoReducer = (state = initialState, action) => {
         kiekotFiltered: applyFilters(state.predicates, kiekotUpdated),
         isEditOpen: true,
         image: null,
-        imageUploading: false
+        imageUploading: false,
       }
     }
     case UPDATE_IMAGE_API_SUCCESS: {
       return {
         ...state,
         image: null,
-        imageUploading: false
+        imageUploading: false,
       }
     }
     case UPLOAD_IMAGE_API_FAILURE:
     case UPDATE_IMAGE_API_FAILURE:
       return {
         ...state,
-        imageUploading: false
+        imageUploading: false,
       }
     case APPLY_PREDICATES: {
       const predicates = keys(filter(n => n, action.form)).map(p => d => prop(p, d))
       return {
         ...state,
         predicates: predicates,
-        kiekotFiltered: applyFilters(predicates, state.kiekot)
+        kiekotFiltered: applyFilters(predicates, state.kiekot),
       }
     }
     case UPDATE_CROP:
       return {
         ...state,
         crop: action.crop,
-        pixelCrop: action.pixelCrop
+        pixelCrop: action.pixelCrop,
       }
     case CROP_COMPLETE:
       return {
@@ -201,27 +212,30 @@ const kiekkoReducer = (state = initialState, action) => {
     case LOST_REQUEST:
       return {
         ...state,
-        lost: null
+        lost: null,
       }
     case LOST_SUCCESS:
       return {
         ...state,
         lost: action.payload.data.content,
-        lostSortColumn: getSortColumn(action)
+        lostSortColumn: getSortColumn(action),
       }
     case FOUND_SUCCESS:
       toast.success("Kiekko merkitty löytyneeksi")
       return {
         ...state,
-        lost: removeFromArrayById(state.lost, path(["meta", "previousAction", "id"], action))
+        lost: removeFromArrayById(state.lost, path(["meta", "previousAction", "id"], action)),
       }
     case DELETE_DISC_SUCCESS: {
       toast.success("Kiekko poistettu")
-      const kiekotUpdated = removeFromArrayById(state.kiekot, path(["meta", "previousAction", "id"], action))
+      const kiekotUpdated = removeFromArrayById(
+        state.kiekot,
+        path(["meta", "previousAction", "id"], action)
+      )
       return {
         ...state,
         kiekot: kiekotUpdated,
-        kiekotFiltered: applyFilters(state.predicates, kiekotUpdated)
+        kiekotFiltered: applyFilters(state.predicates, kiekotUpdated),
       }
     }
     case DROPDOWNS_SUCCESS:
@@ -229,16 +243,17 @@ const kiekkoReducer = (state = initialState, action) => {
       const newManufacturerId = path(["meta", "previousAction", "valmId"], action)
       return {
         ...state,
-        kiekkoInEdit: (state.kiekkoInEdit && previousManufacturerId != newManufacturerId)
-          ? {
-            ...state.kiekkoInEdit,
-            valmId: newManufacturerId,
-            mold: null,
-            moldId: "",
-            muovi: null,
-            muoviId: ""
-          }
-          : state.kiekkoInEdit
+        kiekkoInEdit:
+          state.kiekkoInEdit && previousManufacturerId != newManufacturerId
+            ? {
+                ...state.kiekkoInEdit,
+                valmId: newManufacturerId,
+                mold: null,
+                moldId: "",
+                muovi: null,
+                muoviId: "",
+              }
+            : state.kiekkoInEdit,
       }
     default:
       return state

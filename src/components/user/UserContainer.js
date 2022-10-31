@@ -2,24 +2,29 @@ import React from "react"
 import { path, pathOr, any, propEq } from "ramda"
 import { connect } from "react-redux"
 import { Navigate } from "react-router-dom"
-import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Button, Box, Tooltip } from "@mui/material"
+import {
+  TableContainer,
+  Paper,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  Button,
+  Box,
+  Tooltip,
+} from "@mui/material"
 import EngineeringIcon from "@mui/icons-material/Engineering"
 import EditIcon from "@mui/icons-material/Edit"
 import PersonAddIcon from "@mui/icons-material/PersonAdd"
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove"
 
-import {
-  getUsers,
-  toggleEditModal,
-  updateUser,
-  promoteUser,
-  demoteUser
-} from "./userActions"
+import { getUsers, toggleEditModal, updateUser, promoteUser, demoteUser } from "./userActions"
 import UserEditModal from "./UserEditModal"
 
 const isAdmin = user => {
   if (!user || !user.roles) return false
-  return any(propEq('name', 'ADMIN'))(user.roles)
+  return any(propEq("name", "ADMIN"))(user.roles)
 }
 
 const UserContainer = props => (
@@ -74,7 +79,13 @@ const User = props => {
       <TableCell>{user.firstName}</TableCell>
       <TableCell>{user.lastName}</TableCell>
       <TableCell>{user.pdgaNumber}</TableCell>
-      <TableCell>{isAdmin(user) && <Tooltip title="Ylläpitäjä"><EngineeringIcon /></Tooltip>}</TableCell>
+      <TableCell>
+        {isAdmin(user) && (
+          <Tooltip title="Ylläpitäjä">
+            <EngineeringIcon />
+          </Tooltip>
+        )}
+      </TableCell>
       <TableCell>
         <Button
           variant="contained"
@@ -85,8 +96,8 @@ const User = props => {
         </Button>
       </TableCell>
       <TableCell>
-        {isAdmin(user)
-          ? <Button
+        {isAdmin(user) ? (
+          <Button
             variant="contained"
             color="error"
             startIcon={<PersonRemoveIcon />}
@@ -94,7 +105,8 @@ const User = props => {
           >
             Poista ylläpitäjä
           </Button>
-          : <Button
+        ) : (
+          <Button
             variant="contained"
             color="secondary"
             startIcon={<PersonAddIcon />}
@@ -102,7 +114,7 @@ const User = props => {
           >
             Lisää ylläpitäjäksi
           </Button>
-        }
+        )}
       </TableCell>
     </TableRow>
   )
@@ -112,7 +124,7 @@ const mapStateToProps = state => ({
   loggedIn: path(["user", "token"], state),
   users: pathOr([], ["user", "users"], state),
   isEditOpen: path(["user", "isEditModalOpen"], state),
-  userInEdit: path(["user", "userInEdit"], state)
+  userInEdit: path(["user", "userInEdit"], state),
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -120,7 +132,7 @@ const mapDispatchToProps = dispatch => ({
   toggleEditModal: user => dispatch(toggleEditModal(user)),
   editUser: user => dispatch(updateUser(user)),
   promote: userId => dispatch(promoteUser(userId)),
-  demote: userId => dispatch(demoteUser(userId))
+  demote: userId => dispatch(demoteUser(userId)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserContainer)

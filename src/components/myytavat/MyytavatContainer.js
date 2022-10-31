@@ -35,7 +35,7 @@ const MyytavatContainer = props => (
       kiekot={props.kiekot}
       action={{
         action: props.buyDisc,
-        label: "Osta"
+        label: "Osta",
       }}
       username={props.username}
     />
@@ -47,21 +47,21 @@ const mapStateToProps = state => ({
   username: path(["user", "user", "username"], state),
   kiekot: pathOr([], ["myytavat", "kiekot"], state),
   sortColumn: path(["myytavat", "sortColumn"], state),
-  kaupat: path(["osto", "data"], state)
+  kaupat: path(["osto", "data"], state),
 })
 
 const mapDispatchToProps = dispatch => ({
   getMyytavat: dispatch(
     getMyytavat({
       sort: "id,asc",
-      newSortColumn: "Id"
+      newSortColumn: "Id",
     })
   ),
   getOstot: dispatch(getOmat()),
   updateMyytavat: params => dispatch(getMyytavat(params)),
   buyDisc: id => dispatch(buyDisc(id)),
   accept: id => dispatch(hyvaksyOsto(id)),
-  peruuta: id => dispatch(peruutaOsto(id))
+  peruuta: id => dispatch(peruutaOsto(id)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyytavatContainer)

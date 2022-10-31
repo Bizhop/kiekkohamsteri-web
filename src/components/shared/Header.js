@@ -40,7 +40,9 @@ const Header = props => (
       {/* {props.loggedIn && <MyNavLink to="/rating" label="Rating" icon={<TrendingUpIcon />} />} */}
       {props.loggedIn && <MyNavLink to="/groups" label="Ryhmät" icon={<GroupsIcon />} />}
       {props.loggedIn && <MyNavLink to="/others" label="Muut" icon={<MoreHorizIcon />} />}
-      {props.loggedIn && isAdmin(props.user) && <MyNavLink to="/admin" label="Ylläpito" icon={<AdminPanelSettingsIcon />} />}
+      {props.loggedIn && isAdmin(props.user) && (
+        <MyNavLink to="/admin" label="Ylläpito" icon={<AdminPanelSettingsIcon />} />
+      )}
       {props.loggedIn && (
         <Grid item md>
           <Box display="flex" justifyContent="flex-end">
@@ -63,7 +65,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getMyDetails: dispatch(getMyDetails()),
-  logout: () => dispatch(logout())
+  logout: () => dispatch(logout()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header)

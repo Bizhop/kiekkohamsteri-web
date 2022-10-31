@@ -3,7 +3,7 @@ import { MYYTAVAT_SUCCESS } from "./myytavatActions"
 
 const initialState = {
   kiekot: [],
-  sortColumn: "Id"
+  sortColumn: "Id",
 }
 
 const myytavatReducer = (state = initialState, action) => {
@@ -12,7 +12,7 @@ const myytavatReducer = (state = initialState, action) => {
       return {
         ...state,
         kiekot: action.payload.data.content,
-        sortColumn: getSortColumn(action)
+        sortColumn: getSortColumn(action),
       }
     default:
       return state

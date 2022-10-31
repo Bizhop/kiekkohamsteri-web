@@ -15,23 +15,23 @@ export const HYVAKSY_OSTO_FAILURE = "ostot/HYVAKSY_FAIL"
 
 export const getOmat = () => ({
   type: OMAT_OSTOT_REQUEST,
-  payload: getPayload({url: "api/ostot/omat"})
+  payload: getPayload({ url: "api/ostot/omat" }),
 })
 
 export const buyDisc = id => ({
   type: OSTA_REQUEST,
-  payload: postPayload({url: `api/kiekot/${id}/buy`}),
-  id
+  payload: postPayload({ url: `api/kiekot/${id}/buy` }),
+  id,
 })
 
 export const peruutaOsto = id => ({
   type: PERUUTA_OSTO_REQUEST,
-  payload: postPayload({url: `api/ostot/${id}/reject`}),
-  id
+  payload: postPayload({ url: `api/ostot/${id}/reject` }),
+  id,
 })
 
 export const hyvaksyOsto = id => ({
   type: HYVAKSY_OSTO_REQUEST,
-  payload: postPayload({url: `api/ostot/${id}/confirm`}),
-  id
+  payload: postPayload({ url: `api/ostot/${id}/confirm` }),
+  id,
 })

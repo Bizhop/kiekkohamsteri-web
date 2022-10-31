@@ -9,15 +9,13 @@ const PredicatesForm = props => (
     {({ handleSubmit, pristine, submitting }) => (
       <form onSubmit={handleSubmit}>
         <FormGroup row>
-          {predicateList.map(p => <MyCheckBox key={p.name} {...p} />)}
+          {predicateList.map(p => (
+            <MyCheckBox key={p.name} {...p} />
+          ))}
         </FormGroup>
         <Grid container spacing={1}>
           <Grid item md={2}>
-            <Button
-              variant="contained"
-              type="submit"
-              disabled={submitting || pristine}
-            >
+            <Button variant="contained" type="submit" disabled={submitting || pristine}>
               Suodata
             </Button>
           </Grid>
@@ -40,32 +38,32 @@ const MyCheckBox = props => (
 const predicateList = [
   {
     name: "hohto",
-    label: "Hohto"
+    label: "Hohto",
   },
   {
     name: "spessu",
-    label: "Spessu"
+    label: "Spessu",
   },
   {
     name: "dyed",
-    label: "Värjätty"
+    label: "Värjätty",
   },
   {
     name: "swirly",
-    label: "Swirly"
+    label: "Swirly",
   },
   {
     name: "loytokiekko",
-    label: "Löytök"
+    label: "Löytök",
   },
   {
     name: "itb",
-    label: "Bägissä"
+    label: "Bägissä",
   },
   {
     name: "myynnissa",
-    label: "Myynn"
-  }
+    label: "Myynn",
+  },
 ]
 
 export default PredicatesForm

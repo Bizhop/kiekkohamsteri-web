@@ -18,7 +18,7 @@ import {
   applyPredicates,
   updateCrop,
   completeCrop,
-  updateImage
+  updateImage,
 } from "./kiekkoActions"
 import { getDropdowns, getDropdownsByValmistaja } from "../dropdown/dropdownActions"
 import Modal from "../shared/Modal"
@@ -28,7 +28,7 @@ import KiekkoTable from "./KiekkoTable"
 import { defaultSort } from "../shared/text"
 
 const extractCropDimensions = crop => {
-  if (typeof crop.width === 'number' && typeof crop.height === 'number') {
+  if (typeof crop.width === "number" && typeof crop.height === "number") {
     return `${Math.round(crop.width)} x ${Math.round(crop.height)}`
   }
   return " x "
@@ -61,10 +61,13 @@ const KiekkoContainer = props => (
         </Button>
       </Grid>
     </Grid>
-    <p><strong>Kiekon lisäys:</strong> valitse ensin kuva, tee rajaus ja paina nappia "Lisää uusi kiekko"</p>
     <p>
-      <strong>Kuvan päivitys:</strong> valitse ensin kuva, tee rajaus ja paina sitten haluamasi kiekon kohdalta
-      upload-nappia <CloudUploadIcon />
+      <strong>Kiekon lisäys:</strong> valitse ensin kuva, tee rajaus ja paina nappia "Lisää uusi
+      kiekko"
+    </p>
+    <p>
+      <strong>Kuvan päivitys:</strong> valitse ensin kuva, tee rajaus ja paina sitten haluamasi
+      kiekon kohdalta upload-nappia <CloudUploadIcon />
     </p>
     {props.image && (
       <div>
@@ -78,10 +81,12 @@ const KiekkoContainer = props => (
         <ReactCrop
           onChange={(crop, _) => props.updateCrop(crop)}
           crop={props.crop}
-          onComplete={(crop, _) => props.completeCrop({
-            crop: crop,
-            image: props.image
-          })}
+          onComplete={(crop, _) =>
+            props.completeCrop({
+              crop: crop,
+              image: props.image,
+            })
+          }
           aspect={1}
         >
           <img src={props.image} />
@@ -143,7 +148,7 @@ const mapStateToProps = state => ({
   croppedImage: path(["kiekko", "croppedImage"], state),
   pixelCrop: path(["kiekko", "pixelCrop"], state),
   imageDimensions: path(["kiekko", "imageDimensions"], state),
-  imageUploading: path(["kiekko", "imageUploading"], state)
+  imageUploading: path(["kiekko", "imageUploading"], state),
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -159,7 +164,7 @@ const mapDispatchToProps = dispatch => ({
   applyPredicates: form => dispatch(applyPredicates(form)),
   updateCrop: crop => dispatch(updateCrop(crop)),
   completeCrop: params => dispatch(completeCrop(params)),
-  updateImage: params => dispatch(updateImage(params))
+  updateImage: params => dispatch(updateImage(params)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(KiekkoContainer)

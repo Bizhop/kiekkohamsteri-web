@@ -9,22 +9,22 @@ import { red } from "@mui/material/colors"
 import App from "./components/App"
 import Store from "./Store"
 
-const emotionCache = createCache({ key: 'css' })
+const emotionCache = createCache({ key: "css" })
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#556cd6"
+      main: "#556cd6",
     },
     secondary: {
-      main: "#19857b"
+      main: "#19857b",
     },
     error: {
-      main: red.A700
+      main: red.A700,
     },
     black: {
-      main: "#000000"
-    }
-  }
+      main: "#000000",
+    },
+  },
 })
 
 const app = document.getElementById("app")

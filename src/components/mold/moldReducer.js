@@ -1,11 +1,11 @@
-import { prepend } from 'ramda'
+import { prepend } from "ramda"
 
 import {
   CREATE_MOLD_SUCCESS,
   MOLDS_REQUEST,
   MOLDS_SUCCESS,
   TOGGLE_CREATE_MODAL,
-} from './moldActions'
+} from "./moldActions"
 
 const initialState = {
   molds: {
@@ -33,9 +33,9 @@ const moldReducer = (state = initialState, action) => {
         ...state,
         molds: {
           ...state.molds,
-          content: prepend(action.payload.data, state.molds.content)
+          content: prepend(action.payload.data, state.molds.content),
         },
-        isCreateOpen: false
+        isCreateOpen: false,
       }
     case TOGGLE_CREATE_MODAL:
       return {

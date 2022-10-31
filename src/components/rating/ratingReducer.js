@@ -5,7 +5,7 @@ import {
   INIT_RATING,
   CUSTOM_RATING_REQUEST,
   CUSTOM_RATING_SUCCESS,
-  CUSTOM_RATING_FAILURE
+  CUSTOM_RATING_FAILURE,
 } from "./ratingActions"
 
 const initialState = {
@@ -13,7 +13,7 @@ const initialState = {
   nextRating: null,
   customRating: null,
   error: null,
-  fetching: false
+  fetching: false,
 }
 
 const ratingReducer = (state = initialState, action) => {
@@ -24,7 +24,7 @@ const ratingReducer = (state = initialState, action) => {
         nextRating: null,
         error: null,
         fetching: false,
-        rounds: []
+        rounds: [],
       }
     case RATING_REQUEST:
       return {
@@ -33,7 +33,7 @@ const ratingReducer = (state = initialState, action) => {
         customRating: null,
         error: null,
         fetching: true,
-        rounds: []
+        rounds: [],
       }
     case RATING_SUCCESS:
       return {
@@ -41,7 +41,7 @@ const ratingReducer = (state = initialState, action) => {
         nextRating: action.payload.data.nextRating,
         rounds: action.payload.data.rounds,
         error: null,
-        fetching: false
+        fetching: false,
       }
     case RATING_FAILURE:
       return {
@@ -50,18 +50,18 @@ const ratingReducer = (state = initialState, action) => {
         rounds: [],
         customRating: null,
         error: "Tietojen haku ei onnistunut",
-        fetching: false
+        fetching: false,
       }
     case CUSTOM_RATING_REQUEST:
     case CUSTOM_RATING_FAILURE:
       return {
         ...state,
-        customRating: null
+        customRating: null,
       }
     case CUSTOM_RATING_SUCCESS:
       return {
         ...state,
-        customRating: action.payload.data
+        customRating: action.payload.data,
       }
     default:
       return state

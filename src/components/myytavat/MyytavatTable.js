@@ -1,5 +1,14 @@
 import React from "react"
-import { TableContainer, Paper, Table, TableHead, TableRow, TableBody, TableCell, Button } from "@mui/material"
+import {
+  TableContainer,
+  Paper,
+  Table,
+  TableHead,
+  TableRow,
+  TableBody,
+  TableCell,
+  Button,
+} from "@mui/material"
 import CircleIcon from "@mui/icons-material/Circle"
 
 import ThWithButton from "../shared/ThWithButton"
@@ -8,7 +17,7 @@ import { tussit } from "../shared/text"
 
 const MyytavatTable = props => (
   <TableContainer component={Paper}>
-    <Table>
+    <Table size="small">
       <TableHead>
         <TableRow>
           <TableCell />
@@ -76,48 +85,48 @@ const Kiekko = props => {
 const tableHeaders = [
   {
     label: "Id",
-    sort: "id,asc"
+    sort: "id,asc",
   },
   {
     label: "Omistaja",
-    sort: "member.username,asc"
+    sort: "member.username,asc",
   },
   {
     label: "Hinta",
-    sort: "hinta,asc"
+    sort: "hinta,asc",
   },
   {
-    label: "Kiekko"
+    label: "Kiekko",
   },
   {
-    label: "Lentonumerot"
+    label: "Lentonumerot",
   },
   {
-    label: "Kunto"
+    label: "Kunto",
   },
   {
-    label: "Tussit"
+    label: "Tussit",
   },
   {
     label: "Paino",
-    sort: "paino,asc"
+    sort: "paino,asc",
   },
   {
     label: "Dyed",
-    sort: "dyed,desc"
+    sort: "dyed,desc",
   },
   {
     label: "Hohto",
-    sort: "hohto,desc"
+    sort: "hohto,desc",
   },
   {
     label: "Swirly",
-    sort: "swirly,desc"
+    sort: "swirly,desc",
   },
   {
     label: "Spessu",
-    sort: "spessu,desc"
-  }
+    sort: "spessu,desc",
+  },
 ]
 
 export default MyytavatTable

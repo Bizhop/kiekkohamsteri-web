@@ -6,6 +6,6 @@ export const MYYTAVAT_FAILURE = "myytavat/GET_FAIL"
 
 export const getMyytavat = params => ({
   type: MYYTAVAT_REQUEST,
-  payload: getPayload({url: `api/kiekot/myytavat?size=1000&sort=${params.sort}`}),
-  params
+  payload: getPayload({ url: `api/kiekot/myytavat?size=1000&sort=${params.sort}` }),
+  params,
 })

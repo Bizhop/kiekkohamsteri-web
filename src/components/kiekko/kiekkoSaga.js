@@ -11,7 +11,7 @@ import {
   uploadImageApi,
   updateImageApi,
   cropComplete,
-  COMPLETE_CROP
+  COMPLETE_CROP,
 } from "./kiekkoActions"
 import { getDropdownsByValmistaja } from "../dropdown/dropdownActions"
 
@@ -33,7 +33,7 @@ const updateFields = [
   "swirly",
   "hinta",
   "publicDisc",
-  "lost"
+  "lost",
 ]
 
 const resizeImage = image =>
@@ -77,7 +77,7 @@ const base64Reader = file =>
     reader.readAsDataURL(file)
   })
 
-const processCrop = (pixelCrop, base64) => 
+const processCrop = (pixelCrop, base64) =>
   new Promise((resolve, reject) => {
     var img = new Image()
 
@@ -101,10 +101,9 @@ const processCrop = (pixelCrop, base64) =>
           pixelCrop.width,
           pixelCrop.height
         )
-        
+
         resolve(canvas.toDataURL("image/jpeg"))
-      }
-      catch (error) {
+      } catch (error) {
         reject(error)
       }
     }
@@ -125,21 +124,25 @@ function* toggleEditModalSaga(action) {
 
 function* uploadImageSaga(action) {
   const resized = yield call(resizeImage, action.data)
-  yield put(uploadImageApi({
-    name: "",
-    data: resized
-  }))
+  yield put(
+    uploadImageApi({
+      name: "",
+      data: resized,
+    })
+  )
 }
 
 function* updateImageSaga(action) {
   const resized = yield call(resizeImage, action.params.image)
-  yield put(updateImageApi({
-    id: action.params.id,
-    data: {
-      name: "",
-      data: resized
-    }
-  }))
+  yield put(
+    updateImageApi({
+      id: action.params.id,
+      data: {
+        name: "",
+        data: resized,
+      },
+    })
+  )
 }
 
 function* updateImageDimensionsSaga(action) {
@@ -153,7 +156,7 @@ function* updateImageDimensionsSaga(action) {
 
 function* readImageBase64(action) {
   try {
-    if(action.acceptedFiles.length == 1) {
+    if (action.acceptedFiles.length == 1) {
       const base64 = yield call(base64Reader, action.acceptedFiles[0])
       yield put(chooseImageSuccess(base64))
     } else {
@@ -171,7 +174,7 @@ function* kiekkoSaga() {
     takeEvery(UPDATE_IMAGE, updateImageSaga),
     takeEvery(CHOOSE_IMAGE, readImageBase64),
     takeEvery(CHOOSE_IMAGE_SUCCESS, updateImageDimensionsSaga),
-    takeEvery(COMPLETE_CROP, completeCropSaga)
+    takeEvery(COMPLETE_CROP, completeCropSaga),
   ])
 }
 

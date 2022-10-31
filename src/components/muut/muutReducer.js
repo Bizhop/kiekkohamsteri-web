@@ -3,7 +3,7 @@ import { STATS_REQUEST, STATS_SUCCESS } from "./muutActions"
 
 const initialState = {
   stats: null,
-  sortColumn: "Kuukausi"
+  sortColumn: "Kuukausi",
 }
 
 const muutReducer = (state = initialState, action) => {
@@ -12,13 +12,13 @@ const muutReducer = (state = initialState, action) => {
       return {
         ...state,
         stats: null,
-        sortColumn: "Kuukausi"
+        sortColumn: "Kuukausi",
       }
     case STATS_SUCCESS:
       return {
         ...state,
         stats: action.payload.data.content,
-        sortColumn: getSortColumn(action)
+        sortColumn: getSortColumn(action),
       }
     default:
       return state
