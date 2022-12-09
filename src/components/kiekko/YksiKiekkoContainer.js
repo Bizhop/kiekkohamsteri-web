@@ -11,7 +11,8 @@ import { tussit } from "../shared/text"
 
 const YksiKiekkoContainer = props => (
   <Box sx={{ flexGrow: 1 }}>
-    {props.kiekko ? (
+    {props.oneDiscText && <h1>{props.oneDiscText}</h1>}
+    {props.kiekko && (
       <div>
         <h1>
           {props.kiekko.valmistaja} {props.kiekko.muovi} {props.kiekko.mold} ({props.kiekko.vari})
@@ -109,9 +110,8 @@ const YksiKiekkoContainer = props => (
           </Grid>
         </Grid>
       </div>
-    ) : (
-      getDiscIdAndDisc(props.getDisc)
     )}
+    {!props.kiekko && !props.oneDiscText && getDiscIdAndDisc(props.getDisc)}
     {!props.loggedIn && <Navigate to="/" />}
   </Box>
 )
@@ -120,12 +120,13 @@ function getDiscIdAndDisc(getDisc) {
   const location = useLocation()
   const id = location.pathname.split("/").pop()
   getDisc(id)
+  return null
 }
 
 const mapStateToProps = state => ({
   loggedIn: path(["user", "token"], state),
   kiekko: path(["kiekko", "kiekko"], state),
-  oneDiscText: path(["kiekko", "oneDiscText"], state),
+  oneDiscText: path(["kiekko", "oneDiscText"], state)
 })
 
 const mapDispatchToProps = dispatch => ({

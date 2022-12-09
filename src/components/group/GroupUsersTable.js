@@ -27,11 +27,13 @@ const GroupUsersTable = props => (
         <TableContainer component={Paper} elevation={3}>
           <Table size="small">
             <TableHead>
-              <TableCell colSpan={3}>
-                <strong>
-                  Käyttäjät ({props.group.name}, {length(props.users)})
-                </strong>
-              </TableCell>
+              <TableRow>
+                <TableCell colSpan={3}>
+                  <strong>
+                    Käyttäjät ({props.group.name}, {length(props.users)})
+                  </strong>
+                </TableCell>
+              </TableRow>
             </TableHead>
             <TableBody>
               {props.users.map(user => {

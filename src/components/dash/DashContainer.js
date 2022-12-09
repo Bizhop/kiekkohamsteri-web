@@ -86,9 +86,11 @@ const DashContainer = props => (
               <TableContainer component={Paper} elevation={3}>
                 <Table size="small">
                   <TableHead>
-                    <TableCell colSpan={3}>
-                      <strong>Ryhmät</strong>
-                    </TableCell>
+                    <TableRow>
+                      <TableCell colSpan={3}>
+                        <strong>Ryhmät</strong>
+                      </TableCell>
+                    </TableRow>
                   </TableHead>
                   <TableBody>
                     {props.user.groups &&

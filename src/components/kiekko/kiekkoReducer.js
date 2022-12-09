@@ -10,7 +10,6 @@ import {
   prepend,
   length,
   head,
-  propOr,
 } from "ramda"
 import { toast } from "react-toastify"
 
@@ -114,19 +113,19 @@ const kiekkoReducer = (state = initialState, action) => {
       return {
         ...state,
         kiekko: null,
-        oneDiscText: "Haetaan...",
+        oneDiscText: "Haetaan..."
       }
     case KIEKKO_SUCCESS:
       return {
         ...state,
         kiekko: action.payload.data,
-        oneDiscText: "",
+        oneDiscText: null
       }
     case KIEKKO_FAILURE:
       return {
         ...state,
         kiekko: null,
-        oneDiscText: "Ei saatavilla",
+        oneDiscText: "Ei saatavilla"
       }
     case TOGGLE_KIEKKO_EDIT_MODAL:
       return {

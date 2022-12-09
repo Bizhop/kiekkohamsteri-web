@@ -4,7 +4,7 @@
   "scripts": {
     "local": "NODE_ENV=local parcel",
     "start": "parcel",
-    "build-dev": "rm -r dist && rm -r .parcel-cache && NODE_ENV=development parcel build && cp src/GDPR.html favicon.ico dist",
+    "build-dev": "rm -r dist && rm -r .parcel-cache && NODE_ENV=development parcel build --no-optimize && cp src/GDPR.html favicon.ico dist",
     "build": "rm -r dist && rm -r .parcel-cache && parcel build && cp src/GDPR.html favicon.ico dist",
     "format": "prettier --print-width 100 --no-semi --arrow-parens avoid --write 'src/**/*.js'"
   },
