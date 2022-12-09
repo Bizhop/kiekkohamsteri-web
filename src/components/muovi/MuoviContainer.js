@@ -46,22 +46,24 @@ const MuoviContainer = props => (
         </Button>
       </Grid>
     </Grid>
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Id</TableCell>
-            <TableCell>Valmistaja</TableCell>
-            <TableCell>Muovi</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {props.muovit.map(p => (
-            <Muovi key={p.id} muovi={p} />
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Box sx={{ marginTop: 3 }}>
+      <TableContainer component={Paper} elevation={3} sx={{ maxHeight: 800 }}>
+        <Table stickyHeader>
+          <TableHead>
+            <TableRow>
+              <TableCell>Id</TableCell>
+              <TableCell>Valmistaja</TableCell>
+              <TableCell>Muovi</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {props.muovit.map(p => (
+              <Muovi key={p.id} muovi={p} />
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
     {!props.loggedIn && <Navigate to="/" />}
   </Box>
 )

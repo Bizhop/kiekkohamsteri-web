@@ -70,7 +70,7 @@ const DashContainer = props => (
               {props.user.pdgaNumber}
             </Grid>
           </Grid>
-          <Grid container spacing={1}>
+          <Grid container mt={1}>
             <Grid item md={2}>
               <Button
                 variant="contained"
@@ -81,9 +81,9 @@ const DashContainer = props => (
               </Button>
             </Grid>
           </Grid>
-          <Grid container spacing={1}>
+          <Grid container spacing={2} mt={3}>
             <Grid item md={6}>
-              <TableContainer component={Paper}>
+              <TableContainer component={Paper} elevation={3}>
                 <Table size="small">
                   <TableHead>
                     <TableCell colSpan={3}>

@@ -37,7 +37,7 @@ const UserContainer = props => (
       label="Muokkaa käyttäjää"
     />
     <h2>Käyttäjät</h2>
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} elevation={3}>
       <Table>
         <TableHead>
           <TableRow>

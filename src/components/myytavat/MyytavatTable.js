@@ -9,14 +9,13 @@ import {
   TableCell,
   Button,
 } from "@mui/material"
-import CircleIcon from "@mui/icons-material/Circle"
 
 import ThWithButton from "../shared/ThWithButton"
 import ZoomImage from "../shared/ZoomImage"
 import { tussit } from "../shared/text"
 
 const MyytavatTable = props => (
-  <TableContainer component={Paper}>
+  <TableContainer component={Paper} elevation={3}>
     <Table size="small">
       <TableHead>
         <TableRow>
@@ -65,10 +64,6 @@ const Kiekko = props => {
       <TableCell>{kiekko.kunto} / 10</TableCell>
       <TableCell>{tussit[kiekko.tussit - 1]}</TableCell>
       <TableCell>{kiekko.paino}</TableCell>
-      <TableCell>{kiekko.dyed && <CircleIcon />}</TableCell>
-      <TableCell>{kiekko.hohto && <CircleIcon />}</TableCell>
-      <TableCell>{kiekko.swirly && <CircleIcon />}</TableCell>
-      <TableCell>{kiekko.spessu && <CircleIcon />}</TableCell>
       <TableCell>
         <Button
           variant="contained"
@@ -110,23 +105,7 @@ const tableHeaders = [
   {
     label: "Paino",
     sort: "paino,asc",
-  },
-  {
-    label: "Dyed",
-    sort: "dyed,desc",
-  },
-  {
-    label: "Hohto",
-    sort: "hohto,desc",
-  },
-  {
-    label: "Swirly",
-    sort: "swirly,desc",
-  },
-  {
-    label: "Spessu",
-    sort: "spessu,desc",
-  },
+  }
 ]
 
 export default MyytavatTable

@@ -1,7 +1,7 @@
 import React from "react"
 import { confirmAlert } from "react-confirm-alert"
 import "react-confirm-alert/src/react-confirm-alert.css"
-import { NavLink, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { Spinner } from "react-activity"
 import "react-activity/dist/library.css"
 import {
@@ -14,6 +14,7 @@ import {
   TableBody,
   IconButton,
   Tooltip,
+  Box
 } from "@mui/material"
 import CloudUploadIcon from "@mui/icons-material/CloudUpload"
 import EditIcon from "@mui/icons-material/Edit"
@@ -27,56 +28,58 @@ import ZoomImage from "../shared/ZoomImage"
 const KiekkoTable = props => {
   const navigate = useNavigate()
   return (
-    <TableContainer component={Paper} sx={{ maxHeight: 520 }}>
-      {props.kiekot ? (
-        <Table size="small" stickyHeader>
-          <TableHead>
-            <TableRow>
-              <TableCell />
-              {tableHeaders.map(t => (
-                <ThWithButton
-                  {...t}
-                  key={t.label}
-                  update={props.updateKiekot}
-                  sortColumn={props.sortColumn}
-                  userId={props.userId}
+    <Box sx={{ marginTop: 3 }}>
+      <TableContainer component={Paper} elevation={3} sx={{ maxHeight: 520 }}>
+        {props.kiekot ? (
+          <Table size="small" stickyHeader>
+            <TableHead>
+              <TableRow>
+                <TableCell />
+                {tableHeaders.map(t => (
+                  <ThWithButton
+                    {...t}
+                    key={t.label}
+                    update={props.updateKiekot}
+                    sortColumn={props.sortColumn}
+                    userId={props.userId}
+                  />
+                ))}
+                {props.lostDiscs && (
+                  <ThWithButton
+                    label="Pvm"
+                    sort="createdAt,desc"
+                    update={props.updateKiekot}
+                    sortColumn={props.sortColumn}
+                    userId={props.userId}
+                  />
+                )}
+                {props.lostDiscs && <TableCell />}
+                {props.editable && <TableCell />}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {props.kiekot.map(p => (
+                <Kiekko
+                  key={p.id}
+                  kiekko={p}
+                  toggleEditModal={props.toggleEditModal}
+                  deleteDisc={props.deleteDisc}
+                  updateImage={props.updateImage}
+                  image={props.image}
+                  editable={props.editable}
+                  lostDiscs={props.lostDiscs}
+                  username={props.username}
+                  found={props.found}
+                  navigate={navigate}
                 />
               ))}
-              {props.lostDiscs && (
-                <ThWithButton
-                  label="Pvm"
-                  sort="createdAt,desc"
-                  update={props.updateKiekot}
-                  sortColumn={props.sortColumn}
-                  userId={props.userId}
-                />
-              )}
-              {props.lostDiscs && <TableCell />}
-              {props.editable && <TableCell />}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {props.kiekot.map(p => (
-              <Kiekko
-                key={p.id}
-                kiekko={p}
-                toggleEditModal={props.toggleEditModal}
-                deleteDisc={props.deleteDisc}
-                updateImage={props.updateImage}
-                image={props.image}
-                editable={props.editable}
-                lostDiscs={props.lostDiscs}
-                username={props.username}
-                found={props.found}
-                navigate={navigate}
-              />
-            ))}
-          </TableBody>
-        </Table>
-      ) : (
-        <Spinner />
-      )}
-    </TableContainer>
+            </TableBody>
+          </Table>
+        ) : (
+          <Spinner />
+        )}
+      </TableContainer>
+    </Box>
   )
 }
 

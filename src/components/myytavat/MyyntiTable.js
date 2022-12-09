@@ -12,13 +12,12 @@ import {
 } from "@mui/material"
 import CheckIcon from "@mui/icons-material/Check"
 import CloseIcon from "@mui/icons-material/Close"
-import CircleIcon from "@mui/icons-material/Circle"
 
 import ThWithButton from "../shared/ThWithButton"
 import ZoomImage from "../shared/ZoomImage"
 
 const MyyntiTable = props => (
-  <TableContainer component={Paper}>
+  <TableContainer component={Paper} elevation={3}>
     <Table size="small">
       <TableHead>
         <TableRow>
@@ -57,10 +56,6 @@ const Myynti = props => {
       </TableCell>
       <TableCell>{kiekko.kunto} / 10</TableCell>
       <TableCell>{kiekko.paino}</TableCell>
-      <TableCell>{kiekko.dyed && <CircleIcon />}</TableCell>
-      <TableCell>{kiekko.hohto && <CircleIcon />}</TableCell>
-      <TableCell>{kiekko.swirly && <CircleIcon />}</TableCell>
-      <TableCell>{kiekko.spessu && <CircleIcon />}</TableCell>
       <TableCell>
         <Tooltip title={props.accept.label}>
           <IconButton variant="contained" onClick={() => props.accept.action(props.myynti.id)}>
@@ -100,19 +95,7 @@ const tableHeaders = [
   },
   {
     label: "Paino",
-  },
-  {
-    label: "Dyed",
-  },
-  {
-    label: "Hohto",
-  },
-  {
-    label: "Swirly",
-  },
-  {
-    label: "Spessu",
-  },
+  }
 ]
 
 export default MyyntiTable

@@ -44,7 +44,7 @@ import GroupUsersTable from "./GroupUsersTable"
 const GroupContainer = props => (
   <Box sx={{ flexGrow: 1 }}>
     <h1>Pyynnöt ({length(props.requests)})</h1>
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} elevation={3}>
       <Table size="small">
         <TableHead>
           <TableRow>
@@ -95,9 +95,9 @@ const GroupContainer = props => (
       </Grid>
     </Grid>
     <h1>Ryhmät ({length(props.groups)})</h1>
-    <Grid container spacing={1}>
+    <Grid container spacing={2}>
       <Grid item md={6}>
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} elevation={3}>
           <Table size="small">
             <TableHead>
               <TableRow>

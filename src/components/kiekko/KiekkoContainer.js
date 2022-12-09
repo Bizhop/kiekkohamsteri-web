@@ -5,7 +5,7 @@ import { Navigate } from "react-router-dom"
 import Dropzone from "react-dropzone"
 import ReactCrop from "react-image-crop"
 import "react-image-crop/dist/ReactCrop.css"
-import { Box, Grid, Button } from "@mui/material"
+import { Box, Grid, Button, Divider } from "@mui/material"
 import CloudUploadIcon from "@mui/icons-material/CloudUpload"
 
 import {
@@ -46,7 +46,7 @@ const KiekkoContainer = props => (
       image={props.image}
     />
     <h1>Kuvan valinta</h1>
-    <Grid container spacing={1}>
+    <Grid container spacing={1} alignItems="center">
       <Grid item md={3}>
         <Dropzone onDrop={props.chooseImage}>{imageDropzone}</Dropzone>
       </Grid>

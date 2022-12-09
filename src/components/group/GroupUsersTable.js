@@ -24,7 +24,7 @@ const GroupUsersTable = props => (
   <div>
     {props.users && (
       <div>
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} elevation={3}>
           <Table size="small">
             <TableHead>
               <TableCell colSpan={3}>

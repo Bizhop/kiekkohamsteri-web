@@ -2,17 +2,26 @@ img.image100 {
     width: 100%;
 }
 
+a {
+    text-decoration: none;
+    color: black;
+}
+
 p.choose-file {
     color: black;
     background-color: #d3d3d3;
     padding: 3px;
 }
 
-.react-confirm-alert-button-group > button.red-button {
+.react-confirm-alert-button-group>button.red-button {
     background-color: darkred;
 }
 
 tr.color-on-hover:hover {
     background-color: #eaeaea;
     cursor: pointer;
+}
+
+div#app {
+    background-color: aliceblue;
 }

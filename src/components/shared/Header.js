@@ -2,12 +2,11 @@ import React from "react"
 import { path, any, propEq } from "ramda"
 import { NavLink } from "react-router-dom"
 import { connect } from "react-redux"
-import { Box, Grid, IconButton, Tooltip } from "@mui/material"
+import { Box, Grid, IconButton, Paper, Tooltip } from "@mui/material"
 import HomeIcon from "@mui/icons-material/Home"
 import LogoutIcon from "@mui/icons-material/Logout"
 import AnimationIcon from "@mui/icons-material/Animation"
 import ShopIcon from "@mui/icons-material/Shop"
-import TrendingUpIcon from "@mui/icons-material/TrendingUp"
 import GroupsIcon from "@mui/icons-material/Groups"
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz"
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings"
@@ -37,7 +36,6 @@ const Header = props => (
       <MyNavLink to="/" label="Etusivu" icon={<HomeIcon />} />
       {props.loggedIn && <MyNavLink to="/discs" label="Kiekot" icon={<AnimationIcon />} />}
       {props.loggedIn && <MyNavLink to="/shop" label="Kaupat" icon={<ShopIcon />} />}
-      {/* {props.loggedIn && <MyNavLink to="/rating" label="Rating" icon={<TrendingUpIcon />} />} */}
       {props.loggedIn && <MyNavLink to="/groups" label="Ryhmät" icon={<GroupsIcon />} />}
       {props.loggedIn && <MyNavLink to="/others" label="Muut" icon={<MoreHorizIcon />} />}
       {props.loggedIn && isAdmin(props.user) && (

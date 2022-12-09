@@ -9,13 +9,12 @@ import {
   TableCell,
   Button,
 } from "@mui/material"
-import CircleIcon from "@mui/icons-material/Circle"
 
 import ThWithButton from "../shared/ThWithButton"
 import ZoomImage from "../shared/ZoomImage"
 
 const OstoTable = props => (
-  <TableContainer component={Paper}>
+  <TableContainer component={Paper} elevation={3}>
     <Table size="small">
       <TableHead>
         <TableRow>
@@ -52,10 +51,6 @@ const Osto = props => {
       </TableCell>
       <TableCell>{kiekko.kunto} / 10</TableCell>
       <TableCell>{kiekko.paino}</TableCell>
-      <TableCell>{kiekko.dyed && <CircleIcon />}</TableCell>
-      <TableCell>{kiekko.hohto && <CircleIcon />}</TableCell>
-      <TableCell>{kiekko.swirly && <CircleIcon />}</TableCell>
-      <TableCell>{kiekko.spessu && <CircleIcon />}</TableCell>
       <TableCell>
         <Button
           variant="contained"
@@ -90,18 +85,6 @@ const tableHeaders = [
   },
   {
     label: "Paino",
-  },
-  {
-    label: "Dyed",
-  },
-  {
-    label: "Hohto",
-  },
-  {
-    label: "Swirly",
-  },
-  {
-    label: "Spessu",
   },
   {
     label: "Peruuta",

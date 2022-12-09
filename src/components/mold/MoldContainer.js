@@ -46,26 +46,28 @@ const MoldContainer = props => (
         </Button>
       </Grid>
     </Grid>
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <th>Id</th>
-            <th>Valmistaja</th>
-            <th>Kiekko</th>
-            <th>Nopeus</th>
-            <th>Liito</th>
-            <th>Vakaus</th>
-            <th>Feidi</th>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {props.molds.map(p => (
-            <Mold key={p.id} mold={p} />
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Box sx={{ marginTop: 3 }}>
+      <TableContainer component={Paper} elevation={3} sx={{ maxHeight: 800 }}>
+        <Table stickyHeader>
+          <TableHead>
+            <TableRow>
+              <TableCell>Id</TableCell>
+              <TableCell>Valmistaja</TableCell>
+              <TableCell>Kiekko</TableCell>
+              <TableCell>Nopeus</TableCell>
+              <TableCell>Liito</TableCell>
+              <TableCell>Vakaus</TableCell>
+              <TableCell>Feidi</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {props.molds.map(p => (
+              <Mold key={p.id} mold={p} />
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
     {!props.loggedIn && <Navigate to="/" />}
   </Box>
 )

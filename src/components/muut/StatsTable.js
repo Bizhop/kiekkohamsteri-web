@@ -12,7 +12,7 @@ import {
 import ThWithButton from "../shared/ThWithButton"
 
 const StatsTable = props => (
-  <TableContainer component={Paper}>
+  <TableContainer component={Paper} elevation={3}>
     <Table size="small">
       <TableHead>
         <TableRow>
