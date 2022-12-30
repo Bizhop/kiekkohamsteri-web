@@ -10,6 +10,7 @@ import { getLost, found } from "../kiekko/kiekkoActions"
 import KiekkoTable from "../kiekko/KiekkoTable"
 import { getStats } from "./muutActions"
 import StatsTable from "./StatsTable"
+import { defaultPagination } from "../shared/constants"
 
 const MuutContainer = props => (
   <Box sx={{ flexGrow: 1 }}>
@@ -20,20 +21,18 @@ const MuutContainer = props => (
         editable={false}
         lostDiscs={true}
         updateKiekot={props.updateLost}
-        sortColumn={props.lostSortColumn}
         username={props.username}
         found={props.found}
+        sort={props.lostSort}
+        pagination={props.lostPagination}
+        filters={[]}
       />
     ) : (
       <Spinner />
     )}
     <h1>Statistiikat</h1>
     {props.stats ? (
-      <StatsTable
-        stats={props.stats}
-        sortColumn={props.statsSortColumn}
-        update={props.updateStats}
-      />
+      <StatsTable stats={props.stats} update={props.updateStats} sort={props.statsSort} />
     ) : (
       <Spinner />
     )}
@@ -44,23 +43,29 @@ const MuutContainer = props => (
 const mapStateToProps = state => ({
   loggedIn: path(["user", "token"], state),
   username: path(["user", "user", "username"], state),
-  statsSortColumn: path(["muut", "sortColumn"], state),
+  statsSort: path(["muut", "statsSort"], state),
   stats: path(["muut", "stats"], state),
   lost: path(["kiekko", "lost"], state),
-  lostSortColumn: path(["kiekko", "lostSortColumn"], state),
+  lostSort: path(["kiekko", "lostSort"], state),
+  lostPagination: path(["kiekko", "lostPagination"], state),
 })
 
 const mapDispatchToProps = dispatch => ({
   getStats: dispatch(
     getStats({
-      sort: "year,desc&sort=month,desc",
-      newSortColumn: "Kuukausi",
+      sort: {
+        sort: "year,desc&sort=month,desc",
+        column: "Kuukausi",
+      },
     })
   ),
   getLost: dispatch(
     getLost({
-      sort: "updatedAt,desc",
-      newSortColumn: "Pvm",
+      sort: {
+        sort: "updatedAt,desc",
+        column: "Pvm",
+      },
+      pagination: { ...defaultPagination, size: 1000 },
     })
   ),
   updateLost: params => dispatch(getLost(params)),

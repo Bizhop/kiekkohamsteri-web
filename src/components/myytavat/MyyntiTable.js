@@ -95,7 +95,7 @@ const tableHeaders = [
   },
   {
     label: "Paino",
-  }
+  },
 ]
 
 export default MyyntiTable

@@ -17,12 +17,7 @@ const StatsTable = props => (
       <TableHead>
         <TableRow>
           {tableHeaders.map(t => (
-            <ThWithButton
-              {...t}
-              key={t.label}
-              update={props.update}
-              sortColumn={props.sortColumn}
-            />
+            <ThWithButton {...t} key={t.label} update={props.update} previousSort={props.sort} />
           ))}
         </TableRow>
       </TableHead>

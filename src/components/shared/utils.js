@@ -1,5 +1,8 @@
 import { path, findIndex, propEq, remove, any } from "ramda"
 
+export const pagingAndSortingQueryParams = (sort, pagination) =>
+  `size=${pagination.size}&page=${pagination.number}&sort=${sort.sort}`
+
 export const getSortColumn = action =>
   path(["meta", "previousAction", "params", "newSortColumn"], action)
 

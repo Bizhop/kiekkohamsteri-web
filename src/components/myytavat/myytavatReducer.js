@@ -1,9 +1,10 @@
+import { defaultSort } from "../shared/constants"
 import { getSortColumn } from "../shared/utils"
 import { MYYTAVAT_SUCCESS } from "./myytavatActions"
 
 const initialState = {
   kiekot: [],
-  sortColumn: "Id",
+  sort: {},
 }
 
 const myytavatReducer = (state = initialState, action) => {
