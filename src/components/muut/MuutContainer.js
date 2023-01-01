@@ -20,7 +20,7 @@ const MuutContainer = props => (
         kiekot={props.lost}
         editable={false}
         lostDiscs={true}
-        updateKiekot={props.updateLost}
+        search={props.updateLost}
         username={props.username}
         found={props.found}
         sort={props.lostSort}
