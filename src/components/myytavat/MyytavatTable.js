@@ -12,7 +12,7 @@ import {
 
 import ThWithButton from "../shared/ThWithButton"
 import ZoomImage from "../shared/ZoomImage"
-import { tussit } from "../shared/text"
+import { tussit } from "../shared/constants"
 
 const MyytavatTable = props => (
   <TableContainer component={Paper} elevation={3}>
@@ -25,7 +25,7 @@ const MyytavatTable = props => (
               {...t}
               key={t.label}
               update={props.updateMyytavat}
-              sortColumn={props.sortColumn}
+              previousSort={props.sort}
             />
           ))}
           <TableCell />
@@ -105,7 +105,7 @@ const tableHeaders = [
   {
     label: "Paino",
     sort: "paino,asc",
-  }
+  },
 ]
 
 export default MyytavatTable

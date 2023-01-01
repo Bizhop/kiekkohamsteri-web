@@ -8,11 +8,7 @@ import { path } from "ramda"
 import rootSaga from "./rootSaga"
 import rootReducer from "./rootReducer"
 import { GET_MY_DETAILS, USERS_REQUEST, logout, getMyDetails } from "./components/user/userActions"
-import {
-  KIEKOT_REQUEST,
-  LOST_REQUEST,
-  UPDATE_KIEKKO_REQUEST,
-} from "./components/kiekko/kiekkoActions"
+import { DISCS_REQUEST, LOST_REQUEST, UPDATE_DISC_REQUEST } from "./components/kiekko/kiekkoActions"
 import { MOLDS_REQUEST } from "./components/mold/moldActions"
 import { MUOVIT_REQUEST } from "./components/muovi/muoviActions"
 import { MYYTAVAT_REQUEST } from "./components/myytavat/myytavatActions"
@@ -84,9 +80,9 @@ const axiosMWConfig = {
           const status = path(["response", "status"], error)
           switch (sourceActionType) {
             case GET_MY_DETAILS:
-            case KIEKOT_REQUEST:
+            case DISCS_REQUEST:
             case USERS_REQUEST:
-            case UPDATE_KIEKKO_REQUEST:
+            case UPDATE_DISC_REQUEST:
             case LOST_REQUEST:
             case MOLDS_REQUEST:
             case MUOVIT_REQUEST:

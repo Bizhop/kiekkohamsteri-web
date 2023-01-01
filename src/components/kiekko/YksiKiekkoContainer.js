@@ -7,7 +7,7 @@ import CircleIcon from "@mui/icons-material/Circle"
 
 import { getKiekko } from "./kiekkoActions"
 import { imageUrl } from "../shared/images"
-import { tussit } from "../shared/text"
+import { tussit } from "../shared/constants"
 
 const YksiKiekkoContainer = props => (
   <Box sx={{ flexGrow: 1 }}>
@@ -126,7 +126,7 @@ function getDiscIdAndDisc(getDisc) {
 const mapStateToProps = state => ({
   loggedIn: path(["user", "token"], state),
   kiekko: path(["kiekko", "kiekko"], state),
-  oneDiscText: path(["kiekko", "oneDiscText"], state)
+  oneDiscText: path(["kiekko", "oneDiscText"], state),
 })
 
 const mapDispatchToProps = dispatch => ({

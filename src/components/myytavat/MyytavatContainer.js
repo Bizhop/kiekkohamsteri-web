@@ -9,6 +9,7 @@ import { buyDisc, getOmat, peruutaOsto, hyvaksyOsto } from "../osto/ostoActions"
 import MyytavatTable from "./MyytavatTable"
 import OstoTable from "./OstoTable"
 import MyyntiTable from "./MyyntiTable"
+import { defaultPagination } from "../shared/constants"
 
 const MyytavatContainer = props => (
   <Box sx={{ flexGrow: 1 }}>
@@ -31,7 +32,7 @@ const MyytavatContainer = props => (
     {!props.loggedIn && <Navigate to="/" />}
     <MyytavatTable
       updateMyytavat={props.updateMyytavat}
-      sortColumn={props.sortColumn}
+      sort={props.sort}
       kiekot={props.kiekot}
       action={{
         action: props.buyDisc,
@@ -46,15 +47,20 @@ const mapStateToProps = state => ({
   loggedIn: path(["user", "token"], state),
   username: path(["user", "user", "username"], state),
   kiekot: pathOr([], ["myytavat", "kiekot"], state),
-  sortColumn: path(["myytavat", "sortColumn"], state),
   kaupat: path(["osto", "data"], state),
+  pagination: path(["kiekko", "pagination"], state),
+  sort: path(["kiekko", "sort"], state),
+  filters: path(["kiekko", "filters"], state),
 })
 
 const mapDispatchToProps = dispatch => ({
   getMyytavat: dispatch(
     getMyytavat({
-      sort: "id,asc",
-      newSortColumn: "Id",
+      sort: {
+        sort: "id,asc",
+        column: "Id",
+      },
+      pagination: defaultPagination,
     })
   ),
   getOstot: dispatch(getOmat()),

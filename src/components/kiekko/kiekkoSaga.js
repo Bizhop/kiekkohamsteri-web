@@ -1,7 +1,7 @@
 import { all, call, put, takeEvery } from "redux-saga/effects"
 
 import {
-  TOGGLE_KIEKKO_EDIT_MODAL,
+  TOGGLE_DISC_EDIT_MODAL,
   UPLOAD_IMAGE,
   UPDATE_IMAGE,
   CHOOSE_IMAGE,
@@ -118,7 +118,7 @@ function* completeCropSaga(action) {
 
 function* toggleEditModalSaga(action) {
   if (action.kiekko) {
-    yield put(getDropdownsByValmistaja(action.kiekko.valmId))
+    yield put(getDropdownsByValmistaja(action.kiekko.mold.manufacturer.id))
   }
 }
 
@@ -169,7 +169,7 @@ function* readImageBase64(action) {
 
 function* kiekkoSaga() {
   yield all([
-    takeEvery(TOGGLE_KIEKKO_EDIT_MODAL, toggleEditModalSaga),
+    takeEvery(TOGGLE_DISC_EDIT_MODAL, toggleEditModalSaga),
     takeEvery(UPLOAD_IMAGE, uploadImageSaga),
     takeEvery(UPDATE_IMAGE, updateImageSaga),
     takeEvery(CHOOSE_IMAGE, readImageBase64),

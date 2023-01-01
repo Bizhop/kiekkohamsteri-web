@@ -1,9 +1,11 @@
-import { getSortColumn } from "../shared/utils"
 import { STATS_REQUEST, STATS_SUCCESS } from "./muutActions"
 
 const initialState = {
   stats: null,
-  sortColumn: "Kuukausi",
+  statsSort: {
+    sort: "year,desc&sort=month,desc",
+    column: "Kuukausi",
+  },
 }
 
 const muutReducer = (state = initialState, action) => {
@@ -12,13 +14,12 @@ const muutReducer = (state = initialState, action) => {
       return {
         ...state,
         stats: null,
-        sortColumn: "Kuukausi",
+        statsSort: action.params.sort,
       }
     case STATS_SUCCESS:
       return {
         ...state,
         stats: action.payload.data.content,
-        sortColumn: getSortColumn(action),
       }
     default:
       return state

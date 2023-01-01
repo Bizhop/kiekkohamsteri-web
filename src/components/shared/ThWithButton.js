@@ -7,12 +7,16 @@ const ThWithButton = props => (
       <Button
         onClick={() =>
           props.update({
-            sort: props.sort,
-            newSortColumn: props.label,
+            sort: {
+              sort: props.sort,
+              column: props.label,
+            },
             userId: props.userId,
+            pagination: props.pagination,
+            filters: props.filters,
           })
         }
-        disabled={props.sortColumn === props.label}
+        disabled={props.previousSort.column === props.label}
       >
         {props.label}
       </Button>

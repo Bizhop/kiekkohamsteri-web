@@ -14,7 +14,9 @@ import {
   TableBody,
   IconButton,
   Tooltip,
-  Box
+  Box,
+  TableFooter,
+  TablePagination,
 } from "@mui/material"
 import CloudUploadIcon from "@mui/icons-material/CloudUpload"
 import EditIcon from "@mui/icons-material/Edit"
@@ -22,10 +24,15 @@ import DeleteIcon from "@mui/icons-material/Delete"
 import CheckIcon from "@mui/icons-material/Check"
 
 import ThWithButton from "../shared/ThWithButton"
-import { defaultSort } from "../shared/text"
+import { defaultSort } from "../shared/constants"
 import ZoomImage from "../shared/ZoomImage"
 
 const KiekkoTable = props => {
+  const { filters, sort, pagination } = props
+
+  const handlePageChange = (_, newPage) =>
+    props.search({ filters, sort, pagination: { ...pagination, number: newPage } })
+
   const navigate = useNavigate()
   return (
     <Box sx={{ marginTop: 3 }}>
@@ -39,18 +46,22 @@ const KiekkoTable = props => {
                   <ThWithButton
                     {...t}
                     key={t.label}
-                    update={props.updateKiekot}
-                    sortColumn={props.sortColumn}
+                    update={props.search}
                     userId={props.userId}
+                    previousSort={sort}
+                    pagination={pagination}
+                    filters={filters}
                   />
                 ))}
                 {props.lostDiscs && (
                   <ThWithButton
                     label="Pvm"
                     sort="createdAt,desc"
-                    update={props.updateKiekot}
-                    sortColumn={props.sortColumn}
+                    update={props.search}
                     userId={props.userId}
+                    previousSort={sort}
+                    pagination={pagination}
+                    filters={filters}
                   />
                 )}
                 {props.lostDiscs && <TableCell />}
@@ -74,6 +85,20 @@ const KiekkoTable = props => {
                 />
               ))}
             </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TableCell colSpan="100%">
+                  <TablePagination
+                    component="div"
+                    count={pagination.totalElements}
+                    rowsPerPageOptions={[pagination.size]}
+                    rowsPerPage={pagination.size}
+                    page={pagination.number}
+                    onPageChange={handlePageChange}
+                  />
+                </TableCell>
+              </TableRow>
+            </TableFooter>
           </Table>
         ) : (
           <Spinner />
@@ -97,20 +122,20 @@ const Kiekko = props => {
       }
     >
       <TableCell>
-        <ZoomImage image={kiekko.kuva} />
+        <ZoomImage image={kiekko.image} />
       </TableCell>
-      <TableCell>{kiekko.valmistaja}</TableCell>
-      <TableCell>{kiekko.mold}</TableCell>
-      <TableCell>{kiekko.muovi}</TableCell>
-      <TableCell>{kiekko.nopeus}</TableCell>
-      <TableCell>{kiekko.liito}</TableCell>
-      <TableCell>{kiekko.vakaus}</TableCell>
-      <TableCell>{kiekko.feidi}</TableCell>
-      <TableCell>{kiekko.paino}</TableCell>
+      <TableCell>{kiekko.mold.manufacturer.name}</TableCell>
+      <TableCell>{kiekko.mold.name}</TableCell>
+      <TableCell>{kiekko.plastic.name}</TableCell>
+      <TableCell>{kiekko.mold.speed}</TableCell>
+      <TableCell>{kiekko.mold.glide}</TableCell>
+      <TableCell>{kiekko.mold.stability}</TableCell>
+      <TableCell>{kiekko.mold.fade}</TableCell>
+      <TableCell>{kiekko.weight}</TableCell>
       {props.lostDiscs && <TableCell>{kiekko.updatedAt}</TableCell>}
       {props.lostDiscs && (
         <TableCell>
-          {props.username === kiekko.omistaja && (
+          {props.username === kiekko.owner.username && (
             <Tooltip title="Löytynyt">
               <IconButton onClick={() => props.found(kiekko.id)}>
                 <CheckIcon />
@@ -158,31 +183,31 @@ const tableHeaders = [
   },
   {
     label: "Mold",
-    sort: "mold.kiekko,asc",
+    sort: "mold.name,asc",
   },
   {
     label: "Muovi",
-    sort: "muovi.muovi,asc",
+    sort: "plastic.name,asc",
   },
   {
     label: "SPD",
-    sort: "mold.nopeus,desc",
+    sort: "mold.speed,desc",
   },
   {
     label: "GLD",
-    sort: "mold.liito,desc",
+    sort: "mold.glide,desc",
   },
   {
     label: "STA",
-    sort: "mold.vakaus,asc",
+    sort: "mold.stability,asc",
   },
   {
     label: "FAD",
-    sort: "mold.feidi,asc",
+    sort: "mold.fade,asc",
   },
   {
     label: "Paino",
-    sort: "paino,desc",
+    sort: "weight,desc",
   },
 ]
 
