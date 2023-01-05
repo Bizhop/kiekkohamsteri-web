@@ -22,7 +22,7 @@ const fieldNamesMap = new Map([
   ["condition", "Kunto"],
 ])
 
-const DiscFilter = ({ searchOperations, search, sort, pagination }) => {
+const DiscsFilter = ({ searchOperations, search, sort, pagination }) => {
   const [filters, setFilters] = useState([])
 
   const addFilter = filter => {
@@ -45,7 +45,7 @@ const DiscFilter = ({ searchOperations, search, sort, pagination }) => {
   return (
     <div>
       <FilterCreator addFilter={addFilter} searchOperations={frontendSupportedOperations} />
-      <h4>Valitut suodattimet</h4>
+      {filters.length > 0 && <h4>Valitut suodattimet</h4>}
       <Stack direction="row" spacing={1}>
         {filters.map((f, i) => (
           <Box component={Paper} padding={1} key={`selected-filter-${i}`}>
@@ -70,8 +70,11 @@ const FilterCreator = ({ addFilter, searchOperations }) => {
       {fieldNamesMap.get(af.field)}
     </MenuItem>
   ))
+
   const handleFilterSelection = event => {
-    const selectedFilter = find(propEq("field", event.target.value))(searchOperations)
+    const { value } = event.target
+    const selectedFilter = value === "" ? { field: "" } : find(propEq("field", value))(searchOperations)
+
     setFilter(selectedFilter)
   }
 
@@ -107,6 +110,7 @@ const NumberFilter = ({ data, addFilter }) => {
       {operationsMap.get(op)}
     </MenuItem>
   ))
+  
   return (
     <Box component={Paper} elevation={3} padding={1}>
       <Stack direction="row" spacing={1}>
@@ -140,4 +144,4 @@ const NumberFilter = ({ data, addFilter }) => {
   )
 }
 
-export default DiscFilter
+export default DiscsFilter

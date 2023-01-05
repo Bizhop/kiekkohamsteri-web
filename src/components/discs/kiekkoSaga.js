@@ -12,7 +12,7 @@ import {
   updateImageApi,
   cropComplete,
   COMPLETE_CROP,
-} from "./kiekkoActions"
+} from "./discsActions"
 import { getDropdownsByManufacturer } from "../dropdown/dropdownActions"
 
 const resizeImage = image =>

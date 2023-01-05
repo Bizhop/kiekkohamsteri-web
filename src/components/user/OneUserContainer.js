@@ -6,8 +6,8 @@ import { path } from "ramda"
 import { Box } from "@mui/material"
 
 import { defaultSort, defaultPagination } from "../shared/constants"
-import { getOtherUserDiscs } from "../kiekko/kiekkoActions"
-import KiekkoTable from "../kiekko/KiekkoTable"
+import { getOtherUserDiscs } from "../discs/discsActions"
+import KiekkoTable from "../discs/DiscsTable"
 
 const OneUserContainer = props => {
   const { sort, pagination, filters } = props

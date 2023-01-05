@@ -6,17 +6,17 @@ import { Spinner } from "react-activity"
 import "react-activity/dist/library.css"
 import { Box } from "@mui/material"
 
-import { getLost, found } from "../kiekko/kiekkoActions"
-import KiekkoTable from "../kiekko/KiekkoTable"
-import { getStats } from "./muutActions"
+import { getLost, found } from "../discs/discsActions"
+import DiscsTable from "../discs/DiscsTable"
+import { getStats } from "./othersActions"
 import StatsTable from "./StatsTable"
 import { defaultPagination } from "../shared/constants"
 
-const MuutContainer = props => (
+const OthersContainer = props => (
   <Box sx={{ flexGrow: 1 }}>
     <h1>Kadonneet</h1>
     {props.lost ? (
-      <KiekkoTable
+      <DiscsTable
         kiekot={props.lost}
         editable={false}
         lostDiscs={true}
@@ -43,11 +43,11 @@ const MuutContainer = props => (
 const mapStateToProps = state => ({
   loggedIn: path(["user", "token"], state),
   username: path(["user", "user", "username"], state),
-  statsSort: path(["muut", "statsSort"], state),
-  stats: path(["muut", "stats"], state),
-  lost: path(["kiekko", "lost"], state),
-  lostSort: path(["kiekko", "lostSort"], state),
-  lostPagination: path(["kiekko", "lostPagination"], state),
+  statsSort: path(["others", "statsSort"], state),
+  stats: path(["others", "stats"], state),
+  lost: path(["discs", "lost"], state),
+  lostSort: path(["discs", "lostSort"], state),
+  lostPagination: path(["discs", "lostPagination"], state),
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -73,4 +73,4 @@ const mapDispatchToProps = dispatch => ({
   found: id => dispatch(found(id)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(MuutContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(OthersContainer)

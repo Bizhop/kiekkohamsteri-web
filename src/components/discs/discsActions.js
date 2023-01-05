@@ -66,7 +66,7 @@ const updateFields = [
   "lost",
 ]
 
-export const getKiekot = ({ sort, pagination }) => ({
+export const getDiscs = ({ sort, pagination }) => ({
   type: DISCS_REQUEST,
   payload: getPayload({ url: `api/v2/discs?${pagingAndSortingQueryParams(sort, pagination)}` }),
   sort,
@@ -83,7 +83,7 @@ export const getOtherUserDiscs = ({ sort, pagination, userId }) => ({
   userId,
 })
 
-export const getKiekko = id => ({
+export const getDisc = id => ({
   type: DISC_REQUEST,
   payload: getPayload({ url: `api/v2/discs/${id}` }),
 })

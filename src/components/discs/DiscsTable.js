@@ -27,7 +27,7 @@ import ThWithButton from "../shared/ThWithButton"
 import { defaultSort } from "../shared/constants"
 import ZoomImage from "../shared/ZoomImage"
 
-const KiekkoTable = props => {
+const DiscsTable = props => {
   const { filters, sort, pagination } = props
 
   const handlePageChange = (_, newPage) =>
@@ -228,4 +228,4 @@ const handleDelete = params => {
   })
 }
 
-export default KiekkoTable
+export default DiscsTable

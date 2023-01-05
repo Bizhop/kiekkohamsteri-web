@@ -1,6 +1,6 @@
 import { all, fork } from "redux-saga/effects"
 
-import kiekkoSaga from "./components/kiekko/kiekkoSaga"
+import kiekkoSaga from "./components/discs/kiekkoSaga"
 import userSaga from "./components/user/userSaga"
 
 function* rootSaga() {

@@ -33,16 +33,16 @@ import {
   SEARCH_DISCS_OPERATIONS_REQUEST,
   SEARCH_DISCS_OPERATIONS_SUCCESS,
   SEARCH_DISCS_OPERATIONS_FAILURE,
-} from "./kiekkoActions"
+} from "./discsActions"
 import { DROPDOWNS_SUCCESS } from "../dropdown/dropdownActions"
 import { removeFromArrayById } from "../shared/utils"
 import { defaultSort, defaultPagination } from "../shared/constants"
 
 const initialState = {
-  kiekot: [],
-  kiekko: null,
+  discs: [],
+  disc: null,
   isEditOpen: false,
-  kiekkoInEdit: null,
+  discInEdit: null,
   image: null,
   imageDimensions: " x ",
   oneDiscText: "",
@@ -64,25 +64,25 @@ const initialState = {
   filters: [],
 }
 
-const updateKiekotArray = (kiekot, updatedKiekko) => {
-  const index = findIndex(propEq("id", prop("id", updatedKiekko)))(kiekot)
-  return update(index, updatedKiekko, kiekot)
+const updateKiekotArray = (discs, updatedKiekko) => {
+  const index = findIndex(propEq("id", prop("id", updatedKiekko)))(discs)
+  return update(index, updatedKiekko, discs)
 }
 
-const kiekkoReducer = (state = initialState, action) => {
+const discsReducer = (state = initialState, action) => {
   switch (action.type) {
     case DISCS_REQUEST:
     case SEARCH_DISCS_REQUEST:
       return {
         ...state,
-        kiekot: [],
+        discs: [],
         otherUserDiscs: false,
         otherUserName: "",
       }
     case OTHER_USER_DISCS:
       return {
         ...state,
-        kiekot: [],
+        discs: [],
         otherUserDiscs: true,
       }
     case DISCS_SUCCESS:
@@ -92,13 +92,13 @@ const kiekkoReducer = (state = initialState, action) => {
       const discs = data.content
       return {
         ...state,
-        kiekot: discs,
+        discs: discs,
         isEditOpen: false,
-        kiekkoInEdit: null,
+        discInEdit: null,
         image: null,
         crop: {},
         croppedImage: null,
-        kiekko: null,
+        disc: null,
         otherUserName: length(discs) > 0 ? path(["omistaja"], head(discs)) : "",
         pagination: pick(["totalElements", "size", "number"], data),
         sort: path(["meta", "previousAction", "sort"], action),
@@ -109,7 +109,7 @@ const kiekkoReducer = (state = initialState, action) => {
       toast.error("Kiekkojen haku epäonnistui")
       return {
         ...state,
-        kiekot: [],
+        discs: [],
       }
     case SEARCH_DISCS_OPERATIONS_REQUEST:
     case SEARCH_DISCS_OPERATIONS_FAILURE:
@@ -125,26 +125,26 @@ const kiekkoReducer = (state = initialState, action) => {
     case DISC_REQUEST:
       return {
         ...state,
-        kiekko: null,
+        disc: null,
         oneDiscText: "Haetaan...",
       }
     case DISC_SUCCESS:
       return {
         ...state,
-        kiekko: action.payload.data,
+        disc: action.payload.data,
         oneDiscText: null,
       }
     case DISC_FAILURE:
       return {
         ...state,
-        kiekko: null,
+        disc: null,
         oneDiscText: "Ei saatavilla",
       }
     case TOGGLE_DISC_EDIT_MODAL:
       return {
         ...state,
         isEditOpen: !state.isEditOpen,
-        kiekkoInEdit: action.disc
+        discInEdit: action.disc
           ? {
               ...action.disc,
               manufacturerId: action.disc.mold.manufacturer.id,
@@ -156,11 +156,11 @@ const kiekkoReducer = (state = initialState, action) => {
       }
     case UPDATE_DISC_SUCCESS: {
       toast.success("Kiekon tiedot päivitetty")
-      const kiekotUpdated = updateKiekotArray(state.kiekot, action.payload.data)
+      const discsUpdated = updateKiekotArray(state.discs, action.payload.data)
       return {
         ...state,
         isEditOpen: false,
-        kiekot: kiekotUpdated,
+        discs: discsUpdated,
       }
     }
     case CHOOSE_IMAGE_SUCCESS:
@@ -190,11 +190,11 @@ const kiekkoReducer = (state = initialState, action) => {
         imageUploading: true,
       }
     case UPLOAD_IMAGE_API_SUCCESS: {
-      const kiekotUpdated = prepend(action.payload.data, state.kiekot)
+      const discsUpdated = prepend(action.payload.data, state.discs)
       return {
         ...state,
-        kiekkoInEdit: action.payload.data,
-        kiekot: kiekotUpdated,
+        discInEdit: action.payload.data,
+        discs: discsUpdated,
         isEditOpen: true,
         image: null,
         imageUploading: false,
@@ -244,35 +244,35 @@ const kiekkoReducer = (state = initialState, action) => {
       }
     case DELETE_DISC_SUCCESS: {
       toast.success("Kiekko poistettu")
-      const kiekotUpdated = removeFromArrayById(
-        state.kiekot,
+      const discsUpdated = removeFromArrayById(
+        state.discs,
         path(["meta", "previousAction", "id"], action)
       )
       return {
         ...state,
-        kiekot: kiekotUpdated,
+        discs: discsUpdated,
       }
     }
     case DROPDOWNS_SUCCESS:
-      const previousManufacturerId = path(["kiekkoInEdit", "mold", "manufacturer", "id"], state)
+      const previousManufacturerId = path(["discInEdit", "mold", "manufacturer", "id"], state)
       const newManufacturerId = path(["meta", "previousAction", "manufacturerId"], action)
       return {
         ...state,
-        kiekkoInEdit:
-          state.kiekkoInEdit && previousManufacturerId != newManufacturerId
+        discInEdit:
+          state.discInEdit && previousManufacturerId != newManufacturerId
             ? {
-                ...state.kiekkoInEdit,
+                ...state.discInEdit,
                 manufacturerId: newManufacturerId,
                 mold: null,
                 moldId: "",
                 plastic: null,
                 plasticId: "",
               }
-            : state.kiekkoInEdit,
+            : state.discInEdit,
       }
     default:
       return state
   }
 }
 
-export default kiekkoReducer
+export default discsReducer

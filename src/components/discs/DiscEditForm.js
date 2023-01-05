@@ -11,7 +11,7 @@ const required = ({ field, value, errors }) => {
   }
 }
 
-const KiekkoEditForm = props => (
+const DiscEditForm = props => (
   <Form
     onSubmit={props.onSubmit}
     initialValues={props.initialValues}
@@ -149,4 +149,4 @@ const KiekkoEditForm = props => (
 )
 
 
-export default KiekkoEditForm
+export default DiscEditForm

@@ -10,7 +10,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload"
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto"
 
 import {
-  getKiekot,
+  getDiscs,
   toggleEditModal,
   updateDisc,
   chooseImage,
@@ -22,13 +22,13 @@ import {
   cancelImageSelection,
   getDiscSearchOperations,
   search,
-} from "./kiekkoActions"
+} from "./discsActions"
 import { getDropdowns, getDropdownsByManufacturer } from "../dropdown/dropdownActions"
 import Modal from "../shared/Modal"
-import KiekkoEditForm from "./KiekkoEditForm"
-import KiekkoTable from "./KiekkoTable"
+import DiscEditForm from "./DiscEditForm"
+import DiscsTable from "./DiscsTable"
 import { defaultSort, defaultPagination } from "../shared/constants"
-import DiscFilter from "./DiscFilter"
+import DiscsFilter from "./DiscsFilter"
 
 const extractCropDimensions = crop => {
   if (typeof crop.width === "number" && typeof crop.height === "number") {
@@ -37,7 +37,7 @@ const extractCropDimensions = crop => {
   return " x "
 }
 
-const KiekkoContainer = props => (
+const DiscsContainer = props => (
   <Box sx={{ flexGrow: 1 }}>
     <KiekkoEditModal
       isOpen={props.isEditOpen}
@@ -94,13 +94,13 @@ const KiekkoContainer = props => (
         </Stack>
       </Box>
     )}
-    {!props.image && <DiscFilter
+    {!props.image && <DiscsFilter
       searchOperations={props.searchOperations}
       search={props.search}
       sort={props.sort}
       pagination={props.pagination}
     />}
-    {!props.image && <KiekkoTable
+    {!props.image && <DiscsTable
       kiekot={props.kiekot}
       search={props.search}
       toggleEditModal={props.toggleEditModal}
@@ -133,7 +133,7 @@ const KiekkoEditModal = props => (
     onRequestClose={() => props.toggleModal()}
     contentLabel="Kiekon muokkaus"
   >
-    <KiekkoEditForm
+    <DiscEditForm
       onSubmit={props.updateDisc}
       initialValues={props.kiekkoInEdit}
       dropdowns={props.dropdowns}
@@ -144,24 +144,23 @@ const KiekkoEditModal = props => (
 
 const mapStateToProps = state => ({
   loggedIn: path(["user", "token"], state),
-  kiekot: path(["kiekko", "kiekot"], state),
-  isEditOpen: path(["kiekko", "isEditOpen"], state),
-  kiekkoInEdit: path(["kiekko", "kiekkoInEdit"], state),
+  kiekot: path(["discs", "kiekot"], state),
+  isEditOpen: path(["discs", "isEditOpen"], state),
+  kiekkoInEdit: path(["discs", "kiekkoInEdit"], state),
   dropdowns: path(["dropdowns", "dropdowns"], state),
-  image: path(["kiekko", "image"], state),
-  crop: path(["kiekko", "crop"], state),
-  croppedImage: path(["kiekko", "croppedImage"], state),
-  pixelCrop: path(["kiekko", "pixelCrop"], state),
-  imageDimensions: path(["kiekko", "imageDimensions"], state),
-  imageUploading: path(["kiekko", "imageUploading"], state),
-  searchOperations: path(["kiekko", "searchOperations"], state),
-  pagination: path(["kiekko", "pagination"], state),
-  sort: path(["kiekko", "sort"], state),
-  filters: path(["kiekko", "filters"], state),
+  image: path(["discs", "image"], state),
+  crop: path(["discs", "crop"], state),
+  croppedImage: path(["discs", "croppedImage"], state),
+  imageDimensions: path(["discs", "imageDimensions"], state),
+  imageUploading: path(["discs", "imageUploading"], state),
+  searchOperations: path(["discs", "searchOperations"], state),
+  pagination: path(["discs", "pagination"], state),
+  sort: path(["discs", "sort"], state),
+  filters: path(["discs", "filters"], state),
 })
 
 const mapDispatchToProps = dispatch => ({
-  getKiekot: dispatch(getKiekot({ sort: defaultSort, pagination: defaultPagination })),
+  getDiscs: dispatch(getDiscs({ sort: defaultSort, pagination: defaultPagination })),
   getDropdowns: dispatch(getDropdowns()),
   getDropdownsByManufacturer: manufacturerId => dispatch(getDropdownsByManufacturer(manufacturerId)),
   getDiscSearchOperations: dispatch(getDiscSearchOperations()),
@@ -177,4 +176,4 @@ const mapDispatchToProps = dispatch => ({
   search: params => dispatch(search(params)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(KiekkoContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(DiscsContainer)
