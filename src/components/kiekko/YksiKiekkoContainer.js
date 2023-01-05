@@ -7,7 +7,7 @@ import CircleIcon from "@mui/icons-material/Circle"
 
 import { getKiekko } from "./kiekkoActions"
 import { imageUrl } from "../shared/images"
-import { tussit } from "../shared/constants"
+import { markings } from "../shared/constants"
 
 const YksiKiekkoContainer = props => (
   <Box sx={{ flexGrow: 1 }}>
@@ -15,11 +15,11 @@ const YksiKiekkoContainer = props => (
     {props.kiekko && (
       <div>
         <h1>
-          {props.kiekko.valmistaja} {props.kiekko.muovi} {props.kiekko.mold} ({props.kiekko.vari})
+          {props.kiekko.mold.manufacturer.name} {props.kiekko.plastic.name} {props.kiekko.mold.name} ({props.kiekko.color.name})
         </h1>
         <Grid container spacing={1}>
           <Grid item md={6}>
-            <img src={`${imageUrl}t_kiekko/${props.kiekko.kuva}`} className="image100" />
+            <img src={`${imageUrl}t_kiekko/${props.kiekko.image}`} className="image100" />
           </Grid>
           <Grid item md={6}>
             <Grid container spacing={1}>
@@ -35,7 +35,7 @@ const YksiKiekkoContainer = props => (
                 <strong>Omistaja</strong>
               </Grid>
               <Grid item md={9}>
-                {props.kiekko.omistaja}
+                {props.kiekko.owner.username}
               </Grid>
             </Grid>
             <Grid container spacing={1}>
@@ -43,8 +43,8 @@ const YksiKiekkoContainer = props => (
                 <strong>Lentoarvot</strong>
               </Grid>
               <Grid item md={9}>
-                {props.kiekko.nopeus} / {props.kiekko.liito} / {props.kiekko.vakaus} /{" "}
-                {props.kiekko.feidi}
+                {props.kiekko.mold.speed} / {props.kiekko.mold.glide} / {props.kiekko.mold.stability} /{" "}
+                {props.kiekko.mold.fade}
               </Grid>
             </Grid>
             <Grid container spacing={1}>
@@ -52,7 +52,7 @@ const YksiKiekkoContainer = props => (
                 <strong>Kunto</strong>
               </Grid>
               <Grid item md={9}>
-                {props.kiekko.kunto} / 10
+                {props.kiekko.condition} / 10
               </Grid>
             </Grid>
             <Grid container spacing={1}>
@@ -60,7 +60,7 @@ const YksiKiekkoContainer = props => (
                 <strong>Tussit</strong>
               </Grid>
               <Grid item md={9}>
-                {tussit[props.kiekko.tussit - 1]}
+                {markings[props.kiekko.markings - 1]}
               </Grid>
             </Grid>
             <Grid container spacing={1}>
@@ -68,7 +68,7 @@ const YksiKiekkoContainer = props => (
                 <strong>Paino</strong>
               </Grid>
               <Grid item md={9}>
-                {props.kiekko.paino}
+                {props.kiekko.weight}
               </Grid>
             </Grid>
             <Grid container spacing={1}>
@@ -76,7 +76,7 @@ const YksiKiekkoContainer = props => (
                 <strong>Muuta</strong>
               </Grid>
               <Grid item md={9}>
-                {props.kiekko.muuta}
+                {props.kiekko.description}
               </Grid>
             </Grid>
             <Grid container spacing={1} marginTop={1}>
@@ -98,13 +98,13 @@ const YksiKiekkoContainer = props => (
                 {props.kiekko.dyed && <CircleIcon />}
               </Grid>
               <Grid item md={3}>
-                {props.kiekko.hohto && <CircleIcon />}
+                {props.kiekko.glow && <CircleIcon />}
               </Grid>
               <Grid item md={3}>
                 {props.kiekko.swirly && <CircleIcon />}
               </Grid>
               <Grid item md={3}>
-                {props.kiekko.spessu && <CircleIcon />}
+                {props.kiekko.special && <CircleIcon />}
               </Grid>
             </Grid>
           </Grid>

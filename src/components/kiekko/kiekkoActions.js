@@ -85,7 +85,7 @@ export const getOtherUserDiscs = ({ sort, pagination, userId }) => ({
 
 export const getKiekko = id => ({
   type: DISC_REQUEST,
-  payload: getPayload({ url: `api/kiekot/${id}` }),
+  payload: getPayload({ url: `api/v2/discs/${id}` }),
 })
 
 export const updateDisc = disc => ({
@@ -93,9 +93,9 @@ export const updateDisc = disc => ({
   payload: putPayload({ url: `api/v2/discs/${disc.id}`, data: pick(updateFields, disc) }),
 })
 
-export const toggleEditModal = kiekko => ({
+export const toggleEditModal = disc => ({
   type: TOGGLE_DISC_EDIT_MODAL,
-  kiekko,
+  disc,
 })
 
 export const chooseImage = acceptedFiles => ({
@@ -120,7 +120,7 @@ export const uploadImage = data => ({
 
 export const uploadImageApi = data => ({
   type: UPLOAD_IMAGE_API,
-  payload: postPayload({ url: "api/kiekot", data }),
+  payload: postPayload({ url: "api/v2/discs", data }),
 })
 
 export const updateImage = params => ({
@@ -130,12 +130,12 @@ export const updateImage = params => ({
 
 export const updateImageApi = ({ id, data }) => ({
   type: UPDATE_IMAGE_API,
-  payload: patchPayload({ url: `api/kiekot/${id}/update-image`, data: data }),
+  payload: patchPayload({ url: `api/v2/discs/${id}/update-image`, data: data }),
 })
 
 export const deleteDisc = id => ({
   type: DELETE_DISC,
-  payload: deletePayload({ url: `api/kiekot/${id}` }),
+  payload: deletePayload({ url: `api/v2/discs/${id}` }),
   id,
 })
 
@@ -156,14 +156,14 @@ export const cropComplete = image => ({
 
 export const getLost = ({ sort, pagination }) => ({
   type: LOST_REQUEST,
-  payload: getPayload({ url: `api/kiekot/lost?${pagingAndSortingQueryParams(sort, pagination)}` }),
+  payload: getPayload({ url: `api/v2/discs/lost?${pagingAndSortingQueryParams(sort, pagination)}` }),
   sort,
   pagination,
 })
 
 export const found = id => ({
   type: FOUND_REQUEST,
-  payload: patchPayload({ url: `api/kiekot/${id}/found` }),
+  payload: patchPayload({ url: `api/v2/discs/${id}/found` }),
   id,
 })
 

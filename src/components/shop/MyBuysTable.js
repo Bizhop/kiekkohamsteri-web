@@ -13,7 +13,7 @@ import {
 import ThWithButton from "../shared/ThWithButton"
 import ZoomImage from "../shared/ZoomImage"
 
-const OstoTable = props => (
+const MyBuysTable = props => (
   <TableContainer component={Paper} elevation={3}>
     <Table size="small">
       <TableHead>
@@ -25,39 +25,39 @@ const OstoTable = props => (
         </TableRow>
       </TableHead>
       <TableBody>
-        {props.ostot.map(p => (
-          <Osto key={p.id} osto={p} action={props.action} />
+        {props.asBuyer.map(buy => (
+          <Buy key={buy.id} buy={buy} action={props.action} />
         ))}
       </TableBody>
     </Table>
   </TableContainer>
 )
 
-const Osto = props => {
-  const kiekko = props.osto.kiekko
+const Buy = ({ buy, action }) => {
+  const { disc } = buy
   return (
     <TableRow>
       <TableCell>
-        <ZoomImage image={kiekko.kuva} />
+        <ZoomImage image={disc.image} />
       </TableCell>
-      <TableCell>{kiekko.id}</TableCell>
-      <TableCell>{props.osto.myyja.username}</TableCell>
-      <TableCell>{kiekko.hinta} €</TableCell>
+      <TableCell>{disc.id}</TableCell>
+      <TableCell>{buy.seller.username}</TableCell>
+      <TableCell>{disc.hinta} €</TableCell>
       <TableCell>
-        {kiekko.mold.valmistaja.valmistaja} {kiekko.muovi.muovi} {kiekko.mold.kiekko}
+        {disc.mold.manufacturer.name} {disc.plastic.name} {disc.mold.name}
       </TableCell>
       <TableCell>
-        {kiekko.mold.nopeus} / {kiekko.mold.liito} / {kiekko.mold.vakaus} / {kiekko.mold.feidi}
+        {disc.mold.speed} / {disc.mold.glide} / {disc.mold.stability} / {disc.mold.fade}
       </TableCell>
-      <TableCell>{kiekko.kunto} / 10</TableCell>
-      <TableCell>{kiekko.paino}</TableCell>
+      <TableCell>{disc.condition} / 10</TableCell>
+      <TableCell>{disc.weight}</TableCell>
       <TableCell>
         <Button
           variant="contained"
           color="error"
-          onClick={() => props.action.action(props.osto.id)}
+          onClick={() => action.action(buy.id)}
         >
-          {props.action.label}
+          {action.label}
         </Button>
       </TableCell>
     </TableRow>
@@ -91,4 +91,4 @@ const tableHeaders = [
   },
 ]
 
-export default OstoTable
+export default MyBuysTable

@@ -10,14 +10,8 @@ import rootReducer from "./rootReducer"
 import { GET_MY_DETAILS, USERS_REQUEST, logout, getMyDetails } from "./components/user/userActions"
 import { DISCS_REQUEST, LOST_REQUEST, UPDATE_DISC_REQUEST } from "./components/kiekko/kiekkoActions"
 import { MOLDS_REQUEST } from "./components/mold/moldActions"
-import { MUOVIT_REQUEST } from "./components/muovi/muoviActions"
-import { MYYTAVAT_REQUEST } from "./components/myytavat/myytavatActions"
-import {
-  HYVAKSY_OSTO_REQUEST,
-  OMAT_OSTOT_REQUEST,
-  OSTA_REQUEST,
-  PERUUTA_OSTO_REQUEST,
-} from "./components/osto/ostoActions"
+import { MUOVIT_REQUEST } from "./components/plastics/plasticsActions"
+import { FOR_SALE_REQUEST, OWN_BUYS_REQUEST, BUY_REQUEST, REJECT_BUY_REQUEST, CONFIRM_BUY_REQUEST } from "./components/shop/shopActions"
 import {
   COMPLETE_REQUEST,
   CREATE_GROUP,
@@ -86,11 +80,11 @@ const axiosMWConfig = {
             case LOST_REQUEST:
             case MOLDS_REQUEST:
             case MUOVIT_REQUEST:
-            case MYYTAVAT_REQUEST:
-            case OMAT_OSTOT_REQUEST:
-            case OSTA_REQUEST:
-            case PERUUTA_OSTO_REQUEST:
-            case HYVAKSY_OSTO_REQUEST:
+            case FOR_SALE_REQUEST:
+            case OWN_BUYS_REQUEST:
+            case BUY_REQUEST:
+            case REJECT_BUY_REQUEST:
+            case CONFIRM_BUY_REQUEST:
               if (status === 403) {
                 dispatch(logout())
               }

@@ -36,7 +36,7 @@ const KiekkoTable = props => {
   const navigate = useNavigate()
   return (
     <Box sx={{ marginTop: 3 }}>
-      <TableContainer component={Paper} elevation={3} sx={{ maxHeight: 520 }}>
+      <TableContainer component={Paper} elevation={3} sx={{ maxHeight: 650 }}>
         {props.kiekot ? (
           <Table size="small" stickyHeader>
             <TableHead>

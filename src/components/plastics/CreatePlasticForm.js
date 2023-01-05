@@ -6,17 +6,17 @@ import SaveAltIcon from "@mui/icons-material/SaveAlt"
 
 import { RenderTextInput } from "../shared/FormInput"
 
-const CreateMuoviForm = props => (
+const CreatePlasticForm = props => (
   <Form onSubmit={props.onSubmit}>
     {({ handleSubmit, pristine, submitting }) => (
       <form onSubmit={handleSubmit} style={{ padding: "10px" }}>
-        <p>Valmistaja (id): {props.initialValues.valmId}</p>
-        <Field name="muovi" label="Muovi" component={RenderTextInput} />
+        <p>Valmistaja (id): {props.initialValues.manufacturerId}</p>
+        <Field name="name" label="Muovi" component={RenderTextInput} />
         <Box display="flex" justifyContent="center">
           <Button
             variant="contained"
             type="submit"
-            disabled={submitting || pristine || props.initialValues.valmId === null}
+            disabled={submitting || pristine || props.initialValues.manufacturerId === null}
             startIcon={<SaveAltIcon />}
           >
             Tallenna
@@ -27,4 +27,4 @@ const CreateMuoviForm = props => (
   </Form>
 )
 
-export default CreateMuoviForm
+export default CreatePlasticForm

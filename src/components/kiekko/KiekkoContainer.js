@@ -1,11 +1,11 @@
 import React from "react"
-import { path, pathOr, length } from "ramda"
+import { path } from "ramda"
 import { connect } from "react-redux"
 import { Navigate } from "react-router-dom"
 import Dropzone from "react-dropzone"
 import ReactCrop from "react-image-crop"
 import "react-image-crop/dist/ReactCrop.css"
-import { Box, Grid, Button, Stack } from "@mui/material"
+import { Box, Button, Stack, Paper } from "@mui/material"
 import CloudUploadIcon from "@mui/icons-material/CloudUpload"
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto"
 
@@ -23,7 +23,7 @@ import {
   getDiscSearchOperations,
   search,
 } from "./kiekkoActions"
-import { getDropdowns, getDropdownsByValmistaja } from "../dropdown/dropdownActions"
+import { getDropdowns, getDropdownsByManufacturer } from "../dropdown/dropdownActions"
 import Modal from "../shared/Modal"
 import KiekkoEditForm from "./KiekkoEditForm"
 import KiekkoTable from "./KiekkoTable"
@@ -45,17 +45,15 @@ const KiekkoContainer = props => (
       updateDisc={props.updateDisc}
       kiekkoInEdit={props.kiekkoInEdit}
       dropdowns={props.dropdowns}
-      getDropdownsByValmistaja={props.getDropdownsByValmistaja}
+      getDropdownsByManufacturer={props.getDropdownsByManufacturer}
       image={props.image}
     />
-    <h1>Kuvan valinta</h1>
-    <Grid container spacing={1} alignItems="center">
-      <Grid item md={3}>
-        <Dropzone onDrop={props.chooseImage}>{imageDropzone}</Dropzone>
-      </Grid>
-    </Grid>
+    <Stack direction="row" alignItems="center" spacing={3}>
+      <h1>Kiekot</h1>
+      <Dropzone onDrop={props.chooseImage}>{imageDropzone}</Dropzone>
+    </Stack>
     {props.image && (
-      <div>
+      <Box component={Paper} elevation={3} padding={1}>
         <h2>Esikatselu</h2>
         <p>
           <strong>Kuvan alkuperäinen koko:</strong> {props.imageDimensions}
@@ -63,20 +61,23 @@ const KiekkoContainer = props => (
         <p>
           <strong>Valinta-alue:</strong> {extractCropDimensions(props.crop)}
         </p>
-        <Stack direction="column" spacing={1}>
-          <ReactCrop
-            onChange={(crop, _) => props.updateCrop(crop)}
-            crop={props.crop}
-            onComplete={(crop, _) =>
-              props.completeCrop({
-                crop: crop,
-                image: props.image,
-              })
-            }
-            aspect={1}
-          >
-            <img src={props.image} />
-          </ReactCrop>
+        <Stack direction="column" spacing={1} marginBottom={1} paddingBottom={10}>
+          <Stack direction="row" spacing={1}>
+            <ReactCrop
+              onChange={(crop, _) => props.updateCrop(crop)}
+              crop={props.crop}
+              onComplete={(crop, _) =>
+                props.completeCrop({
+                  crop: crop,
+                  image: props.image,
+                })
+              }
+              aspect={1}
+              style={{ border: "2px solid grey" }}
+            >
+              <img src={props.image} />
+            </ReactCrop>
+          </Stack>
           <Stack direction="row" spacing={1}>
             <Button
               variant="contained"
@@ -91,17 +92,15 @@ const KiekkoContainer = props => (
             </Button>
           </Stack>
         </Stack>
-      </div>
+      </Box>
     )}
-    <h1>Kiekot</h1>
-    <DiscFilter
+    {!props.image && <DiscFilter
       searchOperations={props.searchOperations}
       search={props.search}
       sort={props.sort}
       pagination={props.pagination}
-    />
-    {!props.loggedIn && <Navigate to="/" />}
-    <KiekkoTable
+    />}
+    {!props.image && <KiekkoTable
       kiekot={props.kiekot}
       search={props.search}
       toggleEditModal={props.toggleEditModal}
@@ -112,7 +111,8 @@ const KiekkoContainer = props => (
       pagination={props.pagination}
       sort={props.sort}
       filters={props.filters}
-    />
+    />}
+    {!props.loggedIn && <Navigate to="/" />}
   </Box>
 )
 
@@ -137,7 +137,7 @@ const KiekkoEditModal = props => (
       onSubmit={props.updateDisc}
       initialValues={props.kiekkoInEdit}
       dropdowns={props.dropdowns}
-      getDropdownsByValmistaja={props.getDropdownsByValmistaja}
+      getDropdownsByManufacturer={props.getDropdownsByManufacturer}
     />
   </Modal>
 )
@@ -163,7 +163,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getKiekot: dispatch(getKiekot({ sort: defaultSort, pagination: defaultPagination })),
   getDropdowns: dispatch(getDropdowns()),
-  getDropdownsByValmistaja: valmId => dispatch(getDropdownsByValmistaja(valmId)),
+  getDropdownsByManufacturer: manufacturerId => dispatch(getDropdownsByManufacturer(manufacturerId)),
   getDiscSearchOperations: dispatch(getDiscSearchOperations()),
   updateDisc: disc => dispatch(updateDisc(disc)),
   toggleEditModal: kiekko => dispatch(toggleEditModal(kiekko)),

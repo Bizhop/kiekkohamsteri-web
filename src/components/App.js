@@ -10,7 +10,7 @@ import DashContainer from "./dash/DashContainer"
 import KiekkoContainer from "./kiekko/KiekkoContainer"
 import YksiKiekkoContainer from "./kiekko/YksiKiekkoContainer"
 import OneUserContainer from "./user/OneUserContainer"
-import MyytavatContainer from "./myytavat/MyytavatContainer"
+import ShopContainer from "./shop/ShopContainer"
 import MuutContainer from "./muut/MuutContainer"
 import GroupContainer from "./group/GroupContainer"
 import AdminContainer from "./admin/AdminContainer"
@@ -29,7 +29,7 @@ const MyRoutes = () => (
       <Route exact path="/discs" element={<KiekkoContainer />} />
       <Route exact path="/discs/:id" element={<YksiKiekkoContainer />} />
       <Route exact path="/users/:id" element={<OneUserContainer />} />
-      <Route exact path="/shop" element={<MyytavatContainer />} />
+      <Route exact path="/shop" element={<ShopContainer />} />
       <Route exact path="/others" element={<MuutContainer />} />
       <Route exact path="/groups" element={<GroupContainer />} />
       <Route exact path="/admin" element={<AdminContainer />} />

@@ -144,13 +144,13 @@ const kiekkoReducer = (state = initialState, action) => {
       return {
         ...state,
         isEditOpen: !state.isEditOpen,
-        kiekkoInEdit: action.kiekko
+        kiekkoInEdit: action.disc
           ? {
-              ...action.kiekko,
-              manufacturerId: action.kiekko.mold.manufacturer.id,
-              moldId: action.kiekko.mold.id,
-              plasticId: action.kiekko.plastic.id,
-              colorId: action.kiekko.color.id,
+              ...action.disc,
+              manufacturerId: action.disc.mold.manufacturer.id,
+              moldId: action.disc.mold.id,
+              plasticId: action.disc.plastic.id,
+              colorId: action.disc.color.id,
             }
           : null,
       }
@@ -255,14 +255,14 @@ const kiekkoReducer = (state = initialState, action) => {
     }
     case DROPDOWNS_SUCCESS:
       const previousManufacturerId = path(["kiekkoInEdit", "mold", "manufacturer", "id"], state)
-      const newManufacturerId = path(["meta", "previousAction", "valmId"], action)
+      const newManufacturerId = path(["meta", "previousAction", "manufacturerId"], action)
       return {
         ...state,
         kiekkoInEdit:
           state.kiekkoInEdit && previousManufacturerId != newManufacturerId
             ? {
                 ...state.kiekkoInEdit,
-                valmId: newManufacturerId,
+                manufacturerId: newManufacturerId,
                 mold: null,
                 moldId: "",
                 plastic: null,

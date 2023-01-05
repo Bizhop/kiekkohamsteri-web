@@ -6,14 +6,14 @@ import {
   MUOVIT_FAILURE,
   CREATE_MUOVI_SUCCESS,
   TOGGLE_CREATE_MODAL,
-} from "./muoviActions"
+} from "./plasticsActions"
 
 const initialState = {
-  muovit: {
+  plastics: {
     content: [],
   },
   isCreateOpen: false,
-  valmId: null,
+  manufacturerId: null,
 }
 
 const muoviReducer = (state = initialState, action) => {
@@ -21,7 +21,7 @@ const muoviReducer = (state = initialState, action) => {
     case MUOVIT_REQUEST:
       return {
         ...state,
-        valmId: action.valmId,
+        manufacturerId: action.manufacturerId,
         isCreateOpen: false,
       }
     case MUOVIT_FAILURE:
@@ -32,14 +32,14 @@ const muoviReducer = (state = initialState, action) => {
     case MUOVIT_SUCCESS:
       return {
         ...state,
-        muovit: action.payload.data,
+        plastics: action.payload.data,
       }
     case CREATE_MUOVI_SUCCESS: {
       return {
         ...state,
-        muovit: {
-          ...state.muovit,
-          content: prepend(action.payload.data, state.muovit.content),
+        plastics: {
+          ...state.plastics,
+          content: prepend(action.payload.data, state.plastics.content),
         },
         isCreateOpen: false,
       }

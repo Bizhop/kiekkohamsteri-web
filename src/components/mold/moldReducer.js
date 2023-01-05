@@ -12,7 +12,7 @@ const initialState = {
     content: [],
   },
   isCreateOpen: false,
-  valmId: null,
+  manufacturerId: null,
 }
 
 const moldReducer = (state = initialState, action) => {
@@ -20,7 +20,7 @@ const moldReducer = (state = initialState, action) => {
     case MOLDS_REQUEST:
       return {
         ...state,
-        valmId: action.valmId,
+        manufacturerId: action.manufacturerId,
         isCreateOpen: false,
       }
     case MOLDS_SUCCESS:

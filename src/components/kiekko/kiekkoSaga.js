@@ -13,28 +13,7 @@ import {
   cropComplete,
   COMPLETE_CROP,
 } from "./kiekkoActions"
-import { getDropdownsByValmistaja } from "../dropdown/dropdownActions"
-
-const updateFields = [
-  "valmId",
-  "moldId",
-  "muoviId",
-  "variId",
-  "kunto",
-  "tussit",
-  "paino",
-  "muuta",
-  "dyed",
-  "hohto",
-  "itb",
-  "loytokiekko",
-  "myynnissa",
-  "spessu",
-  "swirly",
-  "hinta",
-  "publicDisc",
-  "lost",
-]
+import { getDropdownsByManufacturer } from "../dropdown/dropdownActions"
 
 const resizeImage = image =>
   new Promise((resolve, reject) => {
@@ -117,8 +96,8 @@ function* completeCropSaga(action) {
 }
 
 function* toggleEditModalSaga(action) {
-  if (action.kiekko) {
-    yield put(getDropdownsByValmistaja(action.kiekko.mold.manufacturer.id))
+  if (action.disc) {
+    yield put(getDropdownsByManufacturer(action.disc.mold.manufacturer.id))
   }
 }
 

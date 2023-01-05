@@ -10,19 +10,19 @@ export const TOGGLE_CREATE_MODAL = "molds/TOGGLE_CREATE_MODAL"
 
 export const getMolds = () => ({
   type: MOLDS_REQUEST,
-  payload: getPayload({ url: "api/molds?size=1000&sort=kiekko,asc" }),
-  valmId: null,
+  payload: getPayload({ url: "api/v2/discs/molds?size=1000&sort=manufacturer.name,asc&sort=name,asc" }),
+  manufacturerId: null,
 })
 
-export const getMoldsByValmistaja = valmId => ({
+export const getMoldsByManufacturer = manufacturerId => ({
   type: MOLDS_REQUEST,
-  payload: getPayload({ url: `api/molds?size=1000&sort=kiekko,asc&valmId=${valmId}` }),
-  valmId,
+  payload: getPayload({ url: `api/v2/discs/molds?size=1000&sort=name,asc&manufacturerId=${manufacturerId}` }),
+  manufacturerId,
 })
 
 export const createMold = mold => ({
   type: CREATE_MOLD_REQUEST,
-  payload: postPayload({ url: "api/molds", data: mold }),
+  payload: postPayload({ url: "api/v2/discs/molds", data: mold }),
 })
 
 export const createMoldFailure = error => ({
