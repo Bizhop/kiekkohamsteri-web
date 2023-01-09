@@ -134,7 +134,7 @@ const DiscEditForm = props => (
             normalize={v => !!v}
           />
         </FormGroup>
-        <Field name="hinta" label="Hinta" component={RenderTextInput} />
+        <Field name="price" label="Hinta" component={RenderTextInput} />
         <Button
           variant="contained"
           type="submit"
