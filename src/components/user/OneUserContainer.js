@@ -29,7 +29,6 @@ const OneUserContainer = props => (
   </Box>
 )
 
-
 function getUserIdAndDiscs(getDiscs) {
   getDiscs(getUserId())
 }

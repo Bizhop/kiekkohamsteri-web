@@ -15,13 +15,13 @@ const initialState = {
   isCreateOpen: false,
   selectedManufacturer: {
     id: null,
-    name: null
+    name: null,
   },
 }
 
 const handleSelectedManufacturer = (id, molds) => {
-  if(id === null) return { id: null, name: null }
-  if(molds.length == 0) return { id, name: null }
+  if (id === null) return { id: null, name: null }
+  if (molds.length == 0) return { id, name: null }
   return { id, name: molds[0].manufacturer.name }
 }
 
@@ -32,20 +32,23 @@ const moldReducer = (state = initialState, action) => {
         ...state,
         selectedManufacturer: {
           id: action.manufacturerId,
-          name: null
+          name: null,
         },
         isCreateOpen: false,
       }
     case MOLDS_FAILURE:
       return {
         ...state,
-        error: action.error
+        error: action.error,
       }
     case MOLDS_SUCCESS:
       return {
         ...state,
         molds: action.payload.data,
-        selectedManufacturer: handleSelectedManufacturer(state.selectedManufacturer.id, action.payload.data.content)
+        selectedManufacturer: handleSelectedManufacturer(
+          state.selectedManufacturer.id,
+          action.payload.data.content
+        ),
       }
     case CREATE_MOLD_SUCCESS:
       return {

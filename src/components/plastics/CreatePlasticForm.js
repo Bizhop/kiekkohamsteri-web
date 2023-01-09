@@ -16,7 +16,12 @@ const CreatePlasticForm = props => (
           <Button
             variant="contained"
             type="submit"
-            disabled={submitting || pristine || !props.selectedManufacturer || props.selectedManufacturer.id === null}
+            disabled={
+              submitting ||
+              pristine ||
+              !props.selectedManufacturer ||
+              props.selectedManufacturer.id === null
+            }
             startIcon={<SaveAltIcon />}
           >
             Tallenna

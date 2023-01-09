@@ -15,13 +15,13 @@ const initialState = {
   isCreateOpen: false,
   selectedManufacturer: {
     id: null,
-    name: null
+    name: null,
   },
 }
 
 const handleSelectedManufacturer = (id, plastics) => {
-  if(id === null) return { id: null, name: null }
-  if(plastics.length == 0) return { id, name: null }
+  if (id === null) return { id: null, name: null }
+  if (plastics.length == 0) return { id, name: null }
   return { id, name: plastics[0].manufacturer.name }
 }
 
@@ -32,7 +32,7 @@ const muoviReducer = (state = initialState, action) => {
         ...state,
         selectedManufacturer: {
           id: action.manufacturerId,
-          name: null
+          name: null,
         },
         isCreateOpen: false,
       }
@@ -45,7 +45,10 @@ const muoviReducer = (state = initialState, action) => {
       return {
         ...state,
         plastics: action.payload.data,
-        selectedManufacturer: handleSelectedManufacturer(state.selectedManufacturer.id, action.payload.data.content)
+        selectedManufacturer: handleSelectedManufacturer(
+          state.selectedManufacturer.id,
+          action.payload.data.content
+        ),
       }
     case CREATE_PLASTIC_SUCCESS: {
       return {
