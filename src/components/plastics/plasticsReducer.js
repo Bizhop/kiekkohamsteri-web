@@ -25,7 +25,7 @@ const handleSelectedManufacturer = (id, plastics) => {
   return { id, name: plastics[0].manufacturer.name }
 }
 
-const muoviReducer = (state = initialState, action) => {
+const plasticsReducer = (state = initialState, action) => {
   switch (action.type) {
     case PLASTICS_REQUEST:
       return {
@@ -70,4 +70,4 @@ const muoviReducer = (state = initialState, action) => {
   }
 }
 
-export default muoviReducer
+export default plasticsReducer

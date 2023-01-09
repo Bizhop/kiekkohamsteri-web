@@ -17,9 +17,9 @@ const DiscEditForm = props => (
     initialValues={props.initialValues}
     validate={values => {
       const errors = {}
-      required({ field: "valmId", value: values.manufacturerId, errors })
+      required({ field: "manufacturerId", value: values.manufacturerId, errors })
       required({ field: "moldId", value: values.moldId, errors })
-      required({ field: "muoviId", value: values.plasticId, errors })
+      required({ field: "plasticId", value: values.plasticId, errors })
       return errors
     }}
   >
@@ -70,7 +70,7 @@ const DiscEditForm = props => (
         <FormGroup row>
           <Field
             name="dyed"
-            label="Dyed"
+            label="Värjätty"
             type="checkbox"
             component={RenderCheckbox}
             normalize={v => !!v}
@@ -84,7 +84,7 @@ const DiscEditForm = props => (
           />
           <Field
             name="special"
-            label="Spesiaali"
+            label="Erikoiskiekko"
             type="checkbox"
             component={RenderCheckbox}
             normalize={v => !!v}
@@ -100,7 +100,7 @@ const DiscEditForm = props => (
         <FormGroup row>
           <Field
             name="itb"
-            label="In The Bag"
+            label="Bägissä"
             type="checkbox"
             component={RenderCheckbox}
             normalize={v => !!v}

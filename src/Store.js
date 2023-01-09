@@ -10,7 +10,7 @@ import rootReducer from "./rootReducer"
 import { GET_MY_DETAILS, USERS_REQUEST, logout, getMyDetails } from "./components/user/userActions"
 import { DISCS_REQUEST, LOST_REQUEST, UPDATE_DISC_REQUEST } from "./components/discs/discsActions"
 import { MOLDS_REQUEST } from "./components/mold/moldActions"
-import { MUOVIT_REQUEST } from "./components/plastics/plasticsActions"
+import { PLASTICS_REQUEST } from "./components/plastics/plasticsActions"
 import {
   FOR_SALE_REQUEST,
   OWN_BUYS_REQUEST,
@@ -85,7 +85,7 @@ const axiosMWConfig = {
             case UPDATE_DISC_REQUEST:
             case LOST_REQUEST:
             case MOLDS_REQUEST:
-            case MUOVIT_REQUEST:
+            case PLASTICS_REQUEST:
             case FOR_SALE_REQUEST:
             case OWN_BUYS_REQUEST:
             case BUY_REQUEST:

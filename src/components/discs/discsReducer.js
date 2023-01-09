@@ -47,8 +47,7 @@ const initialState = {
   otherUserName: "",
   searchOperations: [],
   pagination: defaultPagination,
-  sort: defaultSort,
-  filters: [],
+  sort: defaultSort
 }
 
 const updateDiscsArray = (inputArray, disc) => {
@@ -85,8 +84,7 @@ const discsReducer = (state = initialState, action) => {
         disc: null,
         otherUserName: length(discs) > 0 ? path(["owner", "username"], head(discs)) : "",
         pagination: pick(["totalElements", "size", "number"], data),
-        sort: path(["meta", "previousAction", "sort"], action),
-        filters: pathOr([], ["meta", "previousAction", "filters"], action),
+        sort: path(["meta", "previousAction", "sort"], action)
       }
     case DISCS_FAILURE:
     case SEARCH_DISCS_FAILURE:

@@ -1,6 +1,6 @@
 import React, { useState } from "react"
-import { Box, MenuItem, TextField, Paper, Stack, Button, IconButton } from "@mui/material"
-import { append, filter, find, includes, propEq, remove } from "ramda"
+import { Box, MenuItem, TextField, Paper, Stack, Button, IconButton, Radio, RadioGroup, FormControlLabel, FormControl } from "@mui/material"
+import { append, assoc, compose, filter, find, includes, map, propEq, remove } from "ramda"
 import DeleteIcon from "@mui/icons-material/Delete"
 
 import FilterSelect from "./FilterSelect"
@@ -11,20 +11,32 @@ const operationsMap = new Map([
   ["LESS_THAN", "<"],
   ["LESS_THAN_EQUAL", "<="],
   ["EQUAL", "="],
-  ["NOT_EQUAL", "≠"],
-  ["IN", "sisältää"],
-  ["NOT_IN", "ei sisällä"],
+  ["NOT_EQUAL", "≠"]
 ])
 
-const fieldNamesMap = new Map([
+const supportedFieldNamesMap = new Map([
   ["weight", "Paino"],
   ["price", "Hinta"],
   ["condition", "Kunto"],
+  ["dyed", "Värjätty"],
+  ["special", "Erikoiskiekko"],
+  ["swirly", "Swirly"],
+  ["forSale", "Myynnissä"],
+  ["lostAndFound", "Löytökiekko"],
+  ["itb", "Bägissä"],
+  ["publicDisc", "Julkinen"]
 ])
 
-const DiscsFilter = ({ searchOperations, search, sort, pagination }) => {
-  const [filters, setFilters] = useState([])
+const supportedOperationsList = [
+  "GREATER_THAN",
+  "GREATER_THAN_EQUAL",
+  "LESS_THAN",
+  "LESS_THAN_EQUAL",
+  "EQUAL",
+  "NOT_EQUAL"
+]
 
+const DiscsFilter = ({ searchOperations, search, sort, pagination, filters, setFilters }) => {
   const addFilter = filter => {
     const newFilters = append(filter, filters)
     search({ filters: newFilters, sort, pagination })
@@ -37,10 +49,13 @@ const DiscsFilter = ({ searchOperations, search, sort, pagination }) => {
     setFilters(newFilters)
   }
 
-  const frontendSupportedOperations = filter(
-    so => includes(so.field, [...fieldNamesMap.keys()]),
-    searchOperations
-  )
+  const supportedFields = so => includes(so.field, [...supportedFieldNamesMap.keys()])
+  const supportedOperations = so => assoc("operations", filter(op => supportedOperationsList.includes(op), so.operations), so)
+
+  const frontendSupportedOperations = compose(
+    filter(supportedFields),
+    map(supportedOperations)
+  )(searchOperations)
 
   return (
     <div>
@@ -50,8 +65,10 @@ const DiscsFilter = ({ searchOperations, search, sort, pagination }) => {
         {filters.map((f, i) => (
           <Box component={Paper} padding={1} key={`selected-filter-${i}`}>
             <Stack direction="row" spacing={1}>
-              <p>{`${fieldNamesMap.get(f.key)} ${operationsMap.get(f.operation)} ${f.value}`}</p>
-              <IconButton onClick={() => removeFilter(i)}>
+              <p>{`${supportedFieldNamesMap.get(f.key)} ${operationsMap.get(f.operation)} ${f.value}`}</p>
+              <IconButton
+                color="error"
+                onClick={() => removeFilter(i)}>
                 <DeleteIcon />
               </IconButton>
             </Stack>
@@ -67,7 +84,7 @@ const FilterCreator = ({ addFilter, searchOperations }) => {
 
   const optionsList = searchOperations.map(af => (
     <MenuItem key={af.field} value={af.field}>
-      {fieldNamesMap.get(af.field)}
+      {supportedFieldNamesMap.get(af.field)}
     </MenuItem>
   ))
 
@@ -97,6 +114,8 @@ const Filter = ({ data, addFilter }) => {
   switch (data.type) {
     case "number":
       return <NumberFilter data={data} addFilter={addFilter} />
+    case "boolean":
+      return <BooleanFilter data={data} addFilter={addFilter} />
     default:
       return null
   }
@@ -136,6 +155,46 @@ const NumberFilter = ({ data, addFilter }) => {
           disabled={!operation}
           onClick={() =>
             addFilter({ key: data.field, description: data.description, operation, value })
+          }
+        >
+          Lisää
+        </Button>
+      </Stack>
+    </Box>
+  )
+}
+
+const BooleanFilter = ({ data, addFilter }) => {
+  const operation = "EQUAL"
+  const [value, setValue] = useState("true")
+
+  const handleChange = event => setValue(event.target.value)
+
+  return (
+    <Box component={Paper} elevation={3} padding={1}>
+      <Stack direction="row" spacing={1}>
+        <FormControl>
+          <RadioGroup
+            row
+            onChange={handleChange}
+            value={value}
+          >
+            <FormControlLabel
+              value={"true"}
+              label="Kyllä"
+              control={<Radio />}
+            />
+            <FormControlLabel
+              value={"false"}
+              label="Ei"
+              control={<Radio />}
+            />
+          </RadioGroup>
+        </FormControl>
+        <Button
+          variant="contained"
+          onClick={() =>
+            addFilter({ key: data.field, description: data.description, operation, value: value === "true" })
           }
         >
           Lisää

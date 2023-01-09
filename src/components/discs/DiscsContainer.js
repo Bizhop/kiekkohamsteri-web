@@ -27,6 +27,7 @@ import ImageCrop from "./ImageCrop"
 const DiscsContainer = props => {
   const [newImage, setNewImage] = useState({ id: null, image: null })
   const [isImageCropOpen, setImageCropOpen] = useState(false)
+  const [filters, setFilters] = useState([])
 
   const toggleImageCropModal = () => setImageCropOpen(!isImageCropOpen)
 
@@ -76,6 +77,8 @@ const DiscsContainer = props => {
         search={props.search}
         sort={props.sort}
         pagination={props.pagination}
+        filters={filters}
+        setFilters={setFilters}
       />
       <DiscsTable
         discs={props.discs}
@@ -85,7 +88,7 @@ const DiscsContainer = props => {
         editable={true}
         pagination={props.pagination}
         sort={props.sort}
-        filters={props.filters}
+        filters={filters}
         handleAcceptedFiles={handleAcceptedFiles}
         imageDropzone={imageDropzone}
       />
@@ -138,8 +141,7 @@ const mapStateToProps = state => ({
   imageUploading: path(["discs", "imageUploading"], state),
   searchOperations: path(["discs", "searchOperations"], state),
   pagination: path(["discs", "pagination"], state),
-  sort: path(["discs", "sort"], state),
-  filters: path(["discs", "filters"], state),
+  sort: path(["discs", "sort"], state)
 })
 
 const mapDispatchToProps = dispatch => ({
