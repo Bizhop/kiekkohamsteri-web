@@ -9,7 +9,7 @@ const CreateMoldForm = props => (
   <Form onSubmit={props.onSubmit}>
     {({ handleSubmit, pristine, submitting }) => (
       <form onSubmit={handleSubmit} style={{ padding: "10px" }}>
-        <p>Valmistaja (id): {props.initialValues.manufacturerId}</p>
+        <p>Valmistaja: {props.selectedManufacturer.name}</p>
         <Field name="name" label="Kiekko" component={RenderTextInput} />
         <Field name="speed" label="Nopeus" component={RenderTextInput} />
         <Field name="glide" label="Liito" component={RenderTextInput} />
@@ -19,7 +19,7 @@ const CreateMoldForm = props => (
           <Button
             variant="contained"
             type="submit"
-            disabled={submitting || pristine || props.initialValues.manufacturerId === null}
+            disabled={submitting || pristine || !props.selectedManufacturer || props.selectedManufacturer.id === null}
             startIcon={<SaveAltIcon />}
           >
             Tallenna

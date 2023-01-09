@@ -8,10 +8,16 @@ import { path } from "ramda"
 import rootSaga from "./rootSaga"
 import rootReducer from "./rootReducer"
 import { GET_MY_DETAILS, USERS_REQUEST, logout, getMyDetails } from "./components/user/userActions"
-import { DISCS_REQUEST, LOST_REQUEST, UPDATE_DISC_REQUEST } from "./components/kiekko/discsActions"
+import { DISCS_REQUEST, LOST_REQUEST, UPDATE_DISC_REQUEST } from "./components/discs/discsActions"
 import { MOLDS_REQUEST } from "./components/mold/moldActions"
 import { MUOVIT_REQUEST } from "./components/plastics/plasticsActions"
-import { FOR_SALE_REQUEST, OWN_BUYS_REQUEST, BUY_REQUEST, REJECT_BUY_REQUEST, CONFIRM_BUY_REQUEST } from "./components/shop/shopActions"
+import {
+  FOR_SALE_REQUEST,
+  OWN_BUYS_REQUEST,
+  BUY_REQUEST,
+  REJECT_BUY_REQUEST,
+  CONFIRM_BUY_REQUEST,
+} from "./components/shop/shopActions"
 import {
   COMPLETE_REQUEST,
   CREATE_GROUP,

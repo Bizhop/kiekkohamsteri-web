@@ -31,3 +31,44 @@ export const isGroupMember = ({ user, groupId }) => {
   if (!user || !groupId || !user.groups) return false
   return any(propEq("id", groupId))(user.groups)
 }
+
+export const base64Reader = file =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = () => resolve(reader.result)
+    reader.onerror = reject
+    reader.readAsDataURL(file)
+  })
+
+export const loadImage = base64 =>
+  new Promise((resolve, reject) => {
+    const img = new Image()
+    img.onload = () => resolve(img)
+    img.onerror = reject
+    img.src = base64
+  })
+
+export const resizeImage = image =>
+  new Promise((resolve, reject) => {
+    const img = new Image()
+    img.onload = event => {
+      try {
+        const loadedImage = event.target
+        if (loadedImage.naturalWidth > 600) {
+          const canvas = document.createElement("canvas")
+          canvas.width = 600
+          canvas.height = 600
+          const ctx = canvas.getContext("2d")
+
+          ctx.drawImage(loadedImage, 0, 0, 600, 600)
+
+          resolve(canvas.toDataURL("image/jpeg"))
+        } else {
+          resolve(loadedImage.src)
+        }
+      } catch (error) {
+        reject(error)
+      }
+    }
+    img.src = image
+  })

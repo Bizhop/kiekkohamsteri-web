@@ -2,6 +2,7 @@ import { prepend } from "ramda"
 
 import {
   CREATE_MOLD_SUCCESS,
+  MOLDS_FAILURE,
   MOLDS_REQUEST,
   MOLDS_SUCCESS,
   TOGGLE_CREATE_MODAL,
@@ -12,7 +13,16 @@ const initialState = {
     content: [],
   },
   isCreateOpen: false,
-  manufacturerId: null,
+  selectedManufacturer: {
+    id: null,
+    name: null
+  },
+}
+
+const handleSelectedManufacturer = (id, molds) => {
+  if(id === null) return { id: null, name: null }
+  if(molds.length == 0) return { id, name: null }
+  return { id, name: molds[0].manufacturer.name }
 }
 
 const moldReducer = (state = initialState, action) => {
@@ -20,13 +30,22 @@ const moldReducer = (state = initialState, action) => {
     case MOLDS_REQUEST:
       return {
         ...state,
-        manufacturerId: action.manufacturerId,
+        selectedManufacturer: {
+          id: action.manufacturerId,
+          name: null
+        },
         isCreateOpen: false,
+      }
+    case MOLDS_FAILURE:
+      return {
+        ...state,
+        error: action.error
       }
     case MOLDS_SUCCESS:
       return {
         ...state,
         molds: action.payload.data,
+        selectedManufacturer: handleSelectedManufacturer(state.selectedManufacturer.id, action.payload.data.content)
       }
     case CREATE_MOLD_SUCCESS:
       return {

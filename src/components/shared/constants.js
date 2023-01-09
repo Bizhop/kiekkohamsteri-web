@@ -1,4 +1,11 @@
-export const markings = ["Ei ole", "Rimmissä", "Pohjassa", "Rimmi + pohja", "Kannessa", "Kaikkialla"]
+export const markings = [
+  "Ei ole",
+  "Rimmissä",
+  "Pohjassa",
+  "Rimmi + pohja",
+  "Kannessa",
+  "Kaikkialla",
+]
 
 export const defaultSort = {
   sort: "mold.manufacturer.name,asc&sort=mold.speed,asc&sort=mold.name,asc&sort=plastic.name,asc",

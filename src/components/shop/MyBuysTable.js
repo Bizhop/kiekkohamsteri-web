@@ -52,11 +52,7 @@ const Buy = ({ buy, action }) => {
       <TableCell>{disc.condition} / 10</TableCell>
       <TableCell>{disc.weight}</TableCell>
       <TableCell>
-        <Button
-          variant="contained"
-          color="error"
-          onClick={() => action.action(buy.id)}
-        >
+        <Button variant="contained" color="error" onClick={() => action.action(buy.id)}>
           {action.label}
         </Button>
       </TableCell>

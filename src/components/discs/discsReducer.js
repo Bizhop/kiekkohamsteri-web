@@ -6,17 +6,12 @@ import {
   DISCS_SUCCESS,
   DISCS_FAILURE,
   TOGGLE_DISC_EDIT_MODAL,
-  CHOOSE_IMAGE_SUCCESS,
-  CANCEL_IMAGE_SELECTION,
-  UPDATE_IMAGE_DIMENSIONS,
   DISC_SUCCESS,
   DISC_REQUEST,
   DISC_FAILURE,
   SEARCH_DISCS_REQUEST,
   SEARCH_DISCS_SUCCESS,
   SEARCH_DISCS_FAILURE,
-  UPDATE_CROP,
-  CROP_COMPLETE,
   LOST_REQUEST,
   LOST_SUCCESS,
   UPDATE_DISC_SUCCESS,
@@ -43,15 +38,7 @@ const initialState = {
   disc: null,
   isEditOpen: false,
   discInEdit: null,
-  image: null,
-  imageDimensions: " x ",
   oneDiscText: "",
-  crop: {},
-  croppedImage: null,
-  pixelCrop: {
-    width: "",
-    height: "",
-  },
   lost: null,
   lostSort: null,
   lostPagination: null,
@@ -64,9 +51,9 @@ const initialState = {
   filters: [],
 }
 
-const updateKiekotArray = (discs, updatedKiekko) => {
-  const index = findIndex(propEq("id", prop("id", updatedKiekko)))(discs)
-  return update(index, updatedKiekko, discs)
+const updateDiscsArray = (inputArray, disc) => {
+  const index = findIndex(propEq("id", prop("id", disc)))(inputArray)
+  return update(index, disc, inputArray)
 }
 
 const discsReducer = (state = initialState, action) => {
@@ -95,11 +82,8 @@ const discsReducer = (state = initialState, action) => {
         discs: discs,
         isEditOpen: false,
         discInEdit: null,
-        image: null,
-        crop: {},
-        croppedImage: null,
         disc: null,
-        otherUserName: length(discs) > 0 ? path(["omistaja"], head(discs)) : "",
+        otherUserName: length(discs) > 0 ? path(["owner", "username"], head(discs)) : "",
         pagination: pick(["totalElements", "size", "number"], data),
         sort: path(["meta", "previousAction", "sort"], action),
         filters: pathOr([], ["meta", "previousAction", "filters"], action),
@@ -156,33 +140,13 @@ const discsReducer = (state = initialState, action) => {
       }
     case UPDATE_DISC_SUCCESS: {
       toast.success("Kiekon tiedot päivitetty")
-      const discsUpdated = updateKiekotArray(state.discs, action.payload.data)
+      const discsUpdated = updateDiscsArray(state.discs, action.payload.data)
       return {
         ...state,
         isEditOpen: false,
         discs: discsUpdated,
       }
     }
-    case CHOOSE_IMAGE_SUCCESS:
-      return {
-        ...state,
-        image: action.base64,
-        crop: {},
-        pixelCrop: {
-          width: "",
-          height: "",
-        },
-      }
-    case CANCEL_IMAGE_SELECTION:
-      return {
-        ...state,
-        image: null,
-      }
-    case UPDATE_IMAGE_DIMENSIONS:
-      return {
-        ...state,
-        imageDimensions: action.imageDimensions,
-      }
     case UPLOAD_IMAGE_API:
     case UPDATE_IMAGE_API:
       return {
@@ -196,14 +160,12 @@ const discsReducer = (state = initialState, action) => {
         discInEdit: action.payload.data,
         discs: discsUpdated,
         isEditOpen: true,
-        image: null,
         imageUploading: false,
       }
     }
     case UPDATE_IMAGE_API_SUCCESS: {
       return {
         ...state,
-        image: null,
         imageUploading: false,
       }
     }
@@ -212,17 +174,6 @@ const discsReducer = (state = initialState, action) => {
       return {
         ...state,
         imageUploading: false,
-      }
-    case UPDATE_CROP:
-      return {
-        ...state,
-        crop: action.crop,
-        pixelCrop: action.pixelCrop,
-      }
-    case CROP_COMPLETE:
-      return {
-        ...state,
-        croppedImage: action.image,
       }
     case LOST_REQUEST:
       return {

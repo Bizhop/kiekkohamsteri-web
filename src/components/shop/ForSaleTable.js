@@ -21,12 +21,7 @@ const ForSaleTable = props => (
         <TableRow>
           <TableCell />
           {tableHeaders.map(t => (
-            <ThWithButton
-              {...t}
-              key={t.label}
-              update={props.update}
-              previousSort={props.sort}
-            />
+            <ThWithButton {...t} key={t.label} update={props.update} previousSort={props.sort} />
           ))}
           <TableCell />
         </TableRow>

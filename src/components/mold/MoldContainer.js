@@ -27,20 +27,20 @@ const MoldContainer = props => (
       isOpen={props.isCreateOpen}
       toggleModal={props.toggleCreateModal}
       createMold={props.createMold}
-      manufacturerId={props.manufacturerId}
+      selectedManufacturer={props.selectedManufacturer}
     />
     <h2>Moldit</h2>
     <SelectManufacturerForm
       manufacturers={pathOr([], ["dropdowns", "manufacturers"], props)}
       getByManufacturer={props.getMoldsByManufacturer}
-      manufacturerId={props.manufacturerId}
+      manufacturerId={props.selectedManufacturer.id}
     />
     <Grid container spacing={1}>
       <Grid item md={4}>
         <Button
           variant="contained"
           onClick={() => props.toggleCreateModal()}
-          disabled={props.manufacturerId === null || props.manufacturerId === ""}
+          disabled={!props.selectedManufacturer.id}
         >
           Uusi moldi
         </Button>
@@ -72,9 +72,12 @@ const MoldContainer = props => (
   </Box>
 )
 
-const MoldCreateModal = ({ isOpen, toggleModal, createMold, manufacturerId }) => (
+const MoldCreateModal = ({ isOpen, toggleModal, createMold, selectedManufacturer }) => (
   <Modal isOpen={isOpen} onRequestClose={() => toggleModal()} contentLabel="Uusi moldi">
-    <CreateMoldForm onSubmit={values => createMold({ ...values, manufacturerId })} initialValues={{ manufacturerId }} />
+    <CreateMoldForm
+      onSubmit={values => createMold({ ...values, manufacturerId: selectedManufacturer.id })}
+      selectedManufacturer={selectedManufacturer}
+    />
   </Modal>
 )
 
@@ -95,7 +98,7 @@ const mapStateToProps = state => ({
   molds: path(["mold", "molds", "content"], state),
   dropdowns: path(["dropdowns", "dropdowns"], state),
   isCreateOpen: path(["mold", "isCreateOpen"], state),
-  manufacturerId: path(["mold", "manufacturerId"], state),
+  selectedManufacturer: path(["mold", "selectedManufacturer"], state),
 })
 
 const mapDispatchToProps = dispatch => ({

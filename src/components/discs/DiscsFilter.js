@@ -73,7 +73,8 @@ const FilterCreator = ({ addFilter, searchOperations }) => {
 
   const handleFilterSelection = event => {
     const { value } = event.target
-    const selectedFilter = value === "" ? { field: "" } : find(propEq("field", value))(searchOperations)
+    const selectedFilter =
+      value === "" ? { field: "" } : find(propEq("field", value))(searchOperations)
 
     setFilter(selectedFilter)
   }
@@ -110,7 +111,7 @@ const NumberFilter = ({ data, addFilter }) => {
       {operationsMap.get(op)}
     </MenuItem>
   ))
-  
+
   return (
     <Box component={Paper} elevation={3} padding={1}>
       <Stack direction="row" spacing={1}>

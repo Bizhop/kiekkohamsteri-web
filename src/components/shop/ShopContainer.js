@@ -14,10 +14,7 @@ const ShopContainer = props => (
   <Box sx={{ flexGrow: 1 }}>
     <h1>Omat ostot</h1>
     {props.asBuyer && (
-      <MyBuysTable
-        asBuyer={props.asBuyer}
-        action={{ action: props.reject, label: "Peruuta" }}
-      />
+      <MyBuysTable asBuyer={props.asBuyer} action={{ action: props.reject, label: "Peruuta" }} />
     )}
     <h1>Omat myynnit</h1>
     {props.asSeller && (
@@ -49,7 +46,7 @@ const mapStateToProps = state => ({
   asBuyer: path(["shop", "asBuyer"], state),
   asSeller: path(["shop", "asSeller"], state),
   pagination: path(["shop", "pagination"], state),
-  sort: path(["shop", "sort"], state)
+  sort: path(["shop", "sort"], state),
 })
 
 const mapDispatchToProps = dispatch => ({

@@ -1,10 +1,10 @@
 import { prepend } from "ramda"
 
 import {
-  MUOVIT_REQUEST,
-  MUOVIT_SUCCESS,
-  MUOVIT_FAILURE,
-  CREATE_MUOVI_SUCCESS,
+  PLASTICS_REQUEST,
+  PLASTICS_SUCCESS,
+  PLASTICS_FAILURE,
+  CREATE_PLASTIC_SUCCESS,
   TOGGLE_CREATE_MODAL,
 } from "./plasticsActions"
 
@@ -13,28 +13,41 @@ const initialState = {
     content: [],
   },
   isCreateOpen: false,
-  manufacturerId: null,
+  selectedManufacturer: {
+    id: null,
+    name: null
+  },
+}
+
+const handleSelectedManufacturer = (id, plastics) => {
+  if(id === null) return { id: null, name: null }
+  if(plastics.length == 0) return { id, name: null }
+  return { id, name: plastics[0].manufacturer.name }
 }
 
 const muoviReducer = (state = initialState, action) => {
   switch (action.type) {
-    case MUOVIT_REQUEST:
+    case PLASTICS_REQUEST:
       return {
         ...state,
-        manufacturerId: action.manufacturerId,
+        selectedManufacturer: {
+          id: action.manufacturerId,
+          name: null
+        },
         isCreateOpen: false,
       }
-    case MUOVIT_FAILURE:
+    case PLASTICS_FAILURE:
       return {
         ...state,
         error: action.error,
       }
-    case MUOVIT_SUCCESS:
+    case PLASTICS_SUCCESS:
       return {
         ...state,
         plastics: action.payload.data,
+        selectedManufacturer: handleSelectedManufacturer(state.selectedManufacturer.id, action.payload.data.content)
       }
-    case CREATE_MUOVI_SUCCESS: {
+    case CREATE_PLASTIC_SUCCESS: {
       return {
         ...state,
         plastics: {

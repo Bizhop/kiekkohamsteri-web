@@ -18,7 +18,6 @@ import {
   TableFooter,
   TablePagination,
 } from "@mui/material"
-import CloudUploadIcon from "@mui/icons-material/CloudUpload"
 import EditIcon from "@mui/icons-material/Edit"
 import DeleteIcon from "@mui/icons-material/Delete"
 import CheckIcon from "@mui/icons-material/Check"
@@ -37,7 +36,7 @@ const DiscsTable = props => {
   return (
     <Box sx={{ marginTop: 3 }}>
       <TableContainer component={Paper} elevation={3} sx={{ maxHeight: 650 }}>
-        {props.kiekot ? (
+        {props.discs ? (
           <Table size="small" stickyHeader>
             <TableHead>
               <TableRow>
@@ -69,10 +68,10 @@ const DiscsTable = props => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {props.kiekot.map(p => (
-                <Kiekko
-                  key={p.id}
-                  kiekko={p}
+              {props.discs.map(disc => (
+                <Disc
+                  key={disc.id}
+                  disc={disc}
                   toggleEditModal={props.toggleEditModal}
                   deleteDisc={props.deleteDisc}
                   updateImage={props.updateImage}
@@ -110,61 +109,57 @@ const DiscsTable = props => {
 
 const clickable = ({ target }) => target.cellIndex && target.cellIndex > 0 && target.cellIndex < 9
 
-const Kiekko = props => {
-  const kiekko = props.kiekko
+const Disc = ({
+  disc,
+  editable,
+  lostDiscs,
+  username,
+  found,
+  toggleEditModal,
+  deleteDisc,
+  navigate,
+}) => {
   return (
     <TableRow
-      className={props.editable || kiekko.publicDisc ? "color-on-hover" : ""}
+      className={editable || disc.publicDisc ? "color-on-hover" : ""}
       onClick={event =>
-        (props.editable || kiekko.publicDisc) &&
-        clickable(event) &&
-        props.navigate(`/discs/${kiekko.id}`)
+        (editable || disc.publicDisc) && clickable(event) && navigate(`/discs/${disc.id}`)
       }
     >
       <TableCell>
-        <ZoomImage image={kiekko.image} />
+        <ZoomImage image={disc.image} />
       </TableCell>
-      <TableCell>{kiekko.mold.manufacturer.name}</TableCell>
-      <TableCell>{kiekko.mold.name}</TableCell>
-      <TableCell>{kiekko.plastic.name}</TableCell>
-      <TableCell>{kiekko.mold.speed}</TableCell>
-      <TableCell>{kiekko.mold.glide}</TableCell>
-      <TableCell>{kiekko.mold.stability}</TableCell>
-      <TableCell>{kiekko.mold.fade}</TableCell>
-      <TableCell>{kiekko.weight}</TableCell>
-      {props.lostDiscs && <TableCell>{kiekko.updatedAt}</TableCell>}
-      {props.lostDiscs && (
+      <TableCell>{disc.mold.manufacturer.name}</TableCell>
+      <TableCell>{disc.mold.name}</TableCell>
+      <TableCell>{disc.plastic.name}</TableCell>
+      <TableCell>{disc.mold.speed}</TableCell>
+      <TableCell>{disc.mold.glide}</TableCell>
+      <TableCell>{disc.mold.stability}</TableCell>
+      <TableCell>{disc.mold.fade}</TableCell>
+      <TableCell>{disc.weight}</TableCell>
+      {lostDiscs && <TableCell>{disc.updatedAt}</TableCell>}
+      {lostDiscs && (
         <TableCell>
-          {props.username === kiekko.owner.username && (
+          {username === disc.owner.username && (
             <Tooltip title="Löytynyt">
-              <IconButton onClick={() => props.found(kiekko.id)}>
+              <IconButton onClick={() => found(disc.id)}>
                 <CheckIcon />
               </IconButton>
             </Tooltip>
           )}
         </TableCell>
       )}
-      {props.editable && (
+      {editable && (
         <TableCell sx={{ display: "flex" }}>
-          <IconButton
-            disabled={props.image === null}
-            onClick={() =>
-              props.updateImage({
-                id: kiekko.id,
-                image: props.image,
-              })
-            }
-          >
-            <CloudUploadIcon />
-          </IconButton>
-          <IconButton onClick={() => props.toggleEditModal(kiekko)}>
+          <IconButton color="secondary" onClick={() => toggleEditModal(disc)}>
             <EditIcon />
           </IconButton>
           <IconButton
+            color="error"
             onClick={() =>
               handleDelete({
-                id: kiekko.id,
-                confirm: props.deleteDisc,
+                id: disc.id,
+                confirm: deleteDisc,
               })
             }
           >

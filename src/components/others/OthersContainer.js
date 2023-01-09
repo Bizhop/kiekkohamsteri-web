@@ -17,7 +17,7 @@ const OthersContainer = props => (
     <h1>Kadonneet</h1>
     {props.lost ? (
       <DiscsTable
-        kiekot={props.lost}
+        discs={props.lost}
         editable={false}
         lostDiscs={true}
         search={props.updateLost}

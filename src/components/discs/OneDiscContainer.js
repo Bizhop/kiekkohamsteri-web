@@ -43,8 +43,7 @@ const OneDiscContainer = ({ loggedIn, disc, oneDiscText, getDisc }) => (
                 <strong>Lentoarvot</strong>
               </Grid>
               <Grid item md={9}>
-                {disc.mold.speed} / {disc.mold.glide} / {disc.mold.stability} /{" "}
-                {disc.mold.fade}
+                {disc.mold.speed} / {disc.mold.glide} / {disc.mold.stability} / {disc.mold.fade}
               </Grid>
             </Grid>
             <Grid container spacing={1}>
@@ -125,7 +124,7 @@ function getDiscIdAndDisc(getDisc) {
 
 const mapStateToProps = state => ({
   loggedIn: path(["user", "token"], state),
-  disc: path(["discs", "kiekko"], state),
+  disc: path(["discs", "disc"], state),
   oneDiscText: path(["discs", "oneDiscText"], state),
 })
 

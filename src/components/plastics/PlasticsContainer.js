@@ -15,7 +15,12 @@ import {
   TableHead,
 } from "@mui/material"
 
-import { getPlastics, getPlasticsByManufacturer, toggleCreateModal, createPlastic } from "./plasticsActions"
+import {
+  getPlastics,
+  getPlasticsByManufacturer,
+  toggleCreateModal,
+  createPlastic,
+} from "./plasticsActions"
 import { getDropdowns } from "../dropdown/dropdownActions"
 import SelectManufacturerForm from "../shared/SelectManufacturerForm"
 import Modal from "../shared/Modal"
@@ -27,20 +32,20 @@ const PlasticsContainer = props => (
       isOpen={props.isCreateOpen}
       toggleModal={props.toggleCreateModal}
       createPlastic={props.createPlastic}
-      manufacturerId={props.manufacturerId}
+      selectedManufacturer={props.selectedManufacturer}
     />
     <h2>Muovit</h2>
     <SelectManufacturerForm
       manufacturers={pathOr([], ["dropdowns", "manufacturers"], props)}
       getByManufacturer={props.getPlasticsByManufacturer}
-      manufacturerId={props.manufacturerId}
+      manufacturerId={props.selectedManufacturer.id}
     />
     <Grid container spacing={1}>
       <Grid item md={4}>
         <Button
           variant="contained"
           onClick={() => props.toggleCreateModal()}
-          disabled={props.manufacturerId === null || props.manufacturerId === ""}
+          disabled={!props.selectedManufacturer.id}
         >
           Uusi muovi
         </Button>
@@ -68,9 +73,12 @@ const PlasticsContainer = props => (
   </Box>
 )
 
-const CreatePlasticModal = ({ isOpen, toggleModal, createPlastic, manufacturerId }) => (
+const CreatePlasticModal = ({ isOpen, toggleModal, createPlastic, selectedManufacturer }) => (
   <Modal isOpen={isOpen} onRequestClose={() => toggleModal()} contentLabel="Uusi muovi">
-    <CreatePlasticForm onSubmit={values => createPlastic({...values, manufacturerId})} initialValues={{ manufacturerId }} />
+    <CreatePlasticForm
+      onSubmit={values => createPlastic({ ...values, manufacturerId: selectedManufacturer.id })}
+      selectedManufacturer={selectedManufacturer}
+    />
   </Modal>
 )
 
@@ -82,13 +90,12 @@ const Plastic = ({ plastic }) => (
   </TableRow>
 )
 
-
 const mapStateToProps = state => ({
   loggedIn: path(["user", "token"], state),
   plastics: path(["plastic", "plastics", "content"], state),
   dropdowns: path(["dropdowns", "dropdowns"], state),
   isCreateOpen: path(["plastic", "isCreateOpen"], state),
-  manufacturerId: path(["plastic", "manufacturerId"], state),
+  selectedManufacturer: path(["plastic", "selectedManufacturer"], state),
 })
 
 const mapDispatchToProps = dispatch => ({
