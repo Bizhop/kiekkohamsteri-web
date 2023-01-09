@@ -74,8 +74,6 @@ const DiscsTable = props => {
                   disc={disc}
                   toggleEditModal={props.toggleEditModal}
                   deleteDisc={props.deleteDisc}
-                  updateImage={props.updateImage}
-                  image={props.image}
                   editable={props.editable}
                   lostDiscs={props.lostDiscs}
                   username={props.username}

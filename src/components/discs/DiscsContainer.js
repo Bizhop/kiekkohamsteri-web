@@ -12,7 +12,6 @@ import {
   updateDisc,
   uploadImageApi,
   deleteDisc,
-  updateImage,
   getDiscSearchOperations,
   search,
 } from "./discsActions"
@@ -83,7 +82,6 @@ const DiscsContainer = props => {
         search={props.search}
         toggleEditModal={props.toggleEditModal}
         deleteDisc={props.deleteDisc}
-        updateImage={props.updateImage}
         editable={true}
         pagination={props.pagination}
         sort={props.sort}
@@ -154,7 +152,6 @@ const mapDispatchToProps = dispatch => ({
   toggleEditModal: disc => dispatch(toggleEditModal(disc)),
   uploadImage: data => dispatch(uploadImageApi(data)),
   deleteDisc: id => dispatch(deleteDisc(id)),
-  updateImage: params => dispatch(updateImage(params)),
   search: params => dispatch(search(params)),
 })
 
