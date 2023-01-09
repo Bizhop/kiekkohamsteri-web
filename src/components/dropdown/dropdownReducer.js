@@ -3,11 +3,11 @@ import { DROPDOWNS_SUCCESS, DROPDOWNS_FAILURE } from "./dropdownActions"
 const initialState = {
   dropdowns: {
     molds: [],
-    valms: [],
-    muovit: [],
-    varit: [],
-    kunto: [],
-    tussit: [],
+    manufacturers: [],
+    plastics: [],
+    colors: [],
+    conditions: [],
+    markings: [],
   },
 }
 

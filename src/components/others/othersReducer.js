@@ -1,4 +1,4 @@
-import { STATS_REQUEST, STATS_SUCCESS } from "./muutActions"
+import { STATS_REQUEST, STATS_SUCCESS } from "./othersActions"
 
 const initialState = {
   stats: null,
@@ -8,7 +8,7 @@ const initialState = {
   },
 }
 
-const muutReducer = (state = initialState, action) => {
+const othersReducer = (state = initialState, action) => {
   switch (action.type) {
     case STATS_REQUEST:
       return {
@@ -26,4 +26,4 @@ const muutReducer = (state = initialState, action) => {
   }
 }
 
-export default muutReducer
+export default othersReducer

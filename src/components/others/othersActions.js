@@ -6,6 +6,6 @@ export const STATS_FAILURE = "stats/GET_FAIL"
 
 export const getStats = params => ({
   type: STATS_REQUEST,
-  payload: getPayload({ url: `api/stats?size=1000&sort=${params.sort.sort}` }),
+  payload: getPayload({ url: `api/v2/stats?size=1000&sort=${params.sort.sort}` }),
   params,
 })

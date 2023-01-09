@@ -5,21 +5,21 @@ import { Navigate, useLocation } from "react-router-dom"
 import { Box, Grid } from "@mui/material"
 import CircleIcon from "@mui/icons-material/Circle"
 
-import { getKiekko } from "./kiekkoActions"
+import { getDisc } from "./discsActions"
 import { imageUrl } from "../shared/images"
-import { tussit } from "../shared/constants"
+import { markings } from "../shared/constants"
 
-const YksiKiekkoContainer = props => (
+const OneDiscContainer = ({ loggedIn, disc, oneDiscText, getDisc }) => (
   <Box sx={{ flexGrow: 1 }}>
-    {props.oneDiscText && <h1>{props.oneDiscText}</h1>}
-    {props.kiekko && (
+    {oneDiscText && <h1>{oneDiscText}</h1>}
+    {disc && (
       <div>
         <h1>
-          {props.kiekko.valmistaja} {props.kiekko.muovi} {props.kiekko.mold} ({props.kiekko.vari})
+          {disc.mold.manufacturer.name} {disc.plastic.name} {disc.mold.name} ({disc.color.name})
         </h1>
         <Grid container spacing={1}>
           <Grid item md={6}>
-            <img src={`${imageUrl}t_kiekko/${props.kiekko.kuva}`} className="image100" />
+            <img src={`${imageUrl}t_kiekko/${disc.image}`} className="image100" />
           </Grid>
           <Grid item md={6}>
             <Grid container spacing={1}>
@@ -27,7 +27,7 @@ const YksiKiekkoContainer = props => (
                 <strong>Id</strong>
               </Grid>
               <Grid item md={9}>
-                {props.kiekko.id}
+                {disc.id}
               </Grid>
             </Grid>
             <Grid container spacing={1}>
@@ -35,7 +35,7 @@ const YksiKiekkoContainer = props => (
                 <strong>Omistaja</strong>
               </Grid>
               <Grid item md={9}>
-                {props.kiekko.omistaja}
+                {disc.owner.username}
               </Grid>
             </Grid>
             <Grid container spacing={1}>
@@ -43,8 +43,7 @@ const YksiKiekkoContainer = props => (
                 <strong>Lentoarvot</strong>
               </Grid>
               <Grid item md={9}>
-                {props.kiekko.nopeus} / {props.kiekko.liito} / {props.kiekko.vakaus} /{" "}
-                {props.kiekko.feidi}
+                {disc.mold.speed} / {disc.mold.glide} / {disc.mold.stability} / {disc.mold.fade}
               </Grid>
             </Grid>
             <Grid container spacing={1}>
@@ -52,7 +51,7 @@ const YksiKiekkoContainer = props => (
                 <strong>Kunto</strong>
               </Grid>
               <Grid item md={9}>
-                {props.kiekko.kunto} / 10
+                {disc.condition} / 10
               </Grid>
             </Grid>
             <Grid container spacing={1}>
@@ -60,7 +59,7 @@ const YksiKiekkoContainer = props => (
                 <strong>Tussit</strong>
               </Grid>
               <Grid item md={9}>
-                {tussit[props.kiekko.tussit - 1]}
+                {markings[disc.markings - 1]}
               </Grid>
             </Grid>
             <Grid container spacing={1}>
@@ -68,7 +67,7 @@ const YksiKiekkoContainer = props => (
                 <strong>Paino</strong>
               </Grid>
               <Grid item md={9}>
-                {props.kiekko.paino}
+                {disc.weight}
               </Grid>
             </Grid>
             <Grid container spacing={1}>
@@ -76,7 +75,7 @@ const YksiKiekkoContainer = props => (
                 <strong>Muuta</strong>
               </Grid>
               <Grid item md={9}>
-                {props.kiekko.muuta}
+                {disc.description}
               </Grid>
             </Grid>
             <Grid container spacing={1} marginTop={1}>
@@ -95,24 +94,24 @@ const YksiKiekkoContainer = props => (
             </Grid>
             <Grid container spacing={1}>
               <Grid item md={3}>
-                {props.kiekko.dyed && <CircleIcon />}
+                {disc.dyed && <CircleIcon />}
               </Grid>
               <Grid item md={3}>
-                {props.kiekko.hohto && <CircleIcon />}
+                {disc.glow && <CircleIcon />}
               </Grid>
               <Grid item md={3}>
-                {props.kiekko.swirly && <CircleIcon />}
+                {disc.swirly && <CircleIcon />}
               </Grid>
               <Grid item md={3}>
-                {props.kiekko.spessu && <CircleIcon />}
+                {disc.special && <CircleIcon />}
               </Grid>
             </Grid>
           </Grid>
         </Grid>
       </div>
     )}
-    {!props.kiekko && !props.oneDiscText && getDiscIdAndDisc(props.getDisc)}
-    {!props.loggedIn && <Navigate to="/" />}
+    {!disc && !oneDiscText && getDiscIdAndDisc(getDisc)}
+    {!loggedIn && <Navigate to="/" />}
   </Box>
 )
 
@@ -125,12 +124,12 @@ function getDiscIdAndDisc(getDisc) {
 
 const mapStateToProps = state => ({
   loggedIn: path(["user", "token"], state),
-  kiekko: path(["kiekko", "kiekko"], state),
-  oneDiscText: path(["kiekko", "oneDiscText"], state),
+  disc: path(["discs", "disc"], state),
+  oneDiscText: path(["discs", "oneDiscText"], state),
 })
 
 const mapDispatchToProps = dispatch => ({
-  getDisc: id => dispatch(getKiekko(id)),
+  getDisc: id => dispatch(getDisc(id)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(YksiKiekkoContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(OneDiscContainer)

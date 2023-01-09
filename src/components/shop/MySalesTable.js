@@ -16,7 +16,7 @@ import CloseIcon from "@mui/icons-material/Close"
 import ThWithButton from "../shared/ThWithButton"
 import ZoomImage from "../shared/ZoomImage"
 
-const MyyntiTable = props => (
+const MySalesTable = props => (
   <TableContainer component={Paper} elevation={3}>
     <Table size="small">
       <TableHead>
@@ -30,42 +30,42 @@ const MyyntiTable = props => (
         </TableRow>
       </TableHead>
       <TableBody>
-        {props.myynnit.map(p => (
-          <Myynti key={p.id} myynti={p} accept={props.accept} cancel={props.cancel} />
+        {props.asSeller.map(sale => (
+          <Sale key={sale.id} sale={sale} accept={props.accept} cancel={props.cancel} />
         ))}
       </TableBody>
     </Table>
   </TableContainer>
 )
 
-const Myynti = props => {
-  const kiekko = props.myynti.kiekko
+const Sale = ({ sale, accept, cancel }) => {
+  const { disc } = sale
   return (
     <TableRow>
       <TableCell>
-        <ZoomImage image={kiekko.kuva} />
+        <ZoomImage image={disc.image} />
       </TableCell>
-      <TableCell>{kiekko.id}</TableCell>
-      <TableCell>{props.myynti.ostaja.username}</TableCell>
-      <TableCell>{kiekko.hinta} €</TableCell>
+      <TableCell>{disc.id}</TableCell>
+      <TableCell>{sale.buyer.username}</TableCell>
+      <TableCell>{disc.price} €</TableCell>
       <TableCell>
-        {kiekko.mold.valmistaja.valmistaja} {kiekko.muovi.muovi} {kiekko.mold.kiekko}
+        {disc.mold.manufacturer.name} {disc.plastic.name} {disc.mold.name}
       </TableCell>
       <TableCell>
-        {kiekko.mold.nopeus} / {kiekko.mold.liito} / {kiekko.mold.vakaus} / {kiekko.mold.feidi}
+        {disc.mold.speed} / {disc.mold.glide} / {disc.mold.stability} / {disc.mold.fade}
       </TableCell>
-      <TableCell>{kiekko.kunto} / 10</TableCell>
-      <TableCell>{kiekko.paino}</TableCell>
+      <TableCell>{disc.condition} / 10</TableCell>
+      <TableCell>{disc.weight}</TableCell>
       <TableCell>
-        <Tooltip title={props.accept.label}>
-          <IconButton variant="contained" onClick={() => props.accept.action(props.myynti.id)}>
+        <Tooltip title={accept.label}>
+          <IconButton variant="contained" onClick={() => accept.action(sale.id)}>
             <CheckIcon />
           </IconButton>
         </Tooltip>
       </TableCell>
       <TableCell>
-        <Tooltip title={props.cancel.label}>
-          <IconButton variant="contained" onClick={() => props.cancel.action(props.myynti.id)}>
+        <Tooltip title={cancel.label}>
+          <IconButton variant="contained" onClick={() => cancel.action(sale.id)}>
             <CloseIcon />
           </IconButton>
         </Tooltip>
@@ -98,4 +98,4 @@ const tableHeaders = [
   },
 ]
 
-export default MyyntiTable
+export default MySalesTable

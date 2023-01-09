@@ -1,15 +1,15 @@
 import { prepend } from "ramda"
 
 import {
-  CREATE_MOLD_SUCCESS,
-  MOLDS_FAILURE,
-  MOLDS_REQUEST,
-  MOLDS_SUCCESS,
+  PLASTICS_REQUEST,
+  PLASTICS_SUCCESS,
+  PLASTICS_FAILURE,
+  CREATE_PLASTIC_SUCCESS,
   TOGGLE_CREATE_MODAL,
-} from "./moldActions"
+} from "./plasticsActions"
 
 const initialState = {
-  molds: {
+  plastics: {
     content: [],
   },
   isCreateOpen: false,
@@ -19,15 +19,15 @@ const initialState = {
   },
 }
 
-const handleSelectedManufacturer = (id, molds) => {
+const handleSelectedManufacturer = (id, plastics) => {
   if (id === null) return { id: null, name: null }
-  if (molds.length == 0) return { id, name: null }
-  return { id, name: molds[0].manufacturer.name }
+  if (plastics.length == 0) return { id, name: null }
+  return { id, name: plastics[0].manufacturer.name }
 }
 
-const moldReducer = (state = initialState, action) => {
+const plasticsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case MOLDS_REQUEST:
+    case PLASTICS_REQUEST:
       return {
         ...state,
         selectedManufacturer: {
@@ -36,29 +36,30 @@ const moldReducer = (state = initialState, action) => {
         },
         isCreateOpen: false,
       }
-    case MOLDS_FAILURE:
+    case PLASTICS_FAILURE:
       return {
         ...state,
         error: action.error,
       }
-    case MOLDS_SUCCESS:
+    case PLASTICS_SUCCESS:
       return {
         ...state,
-        molds: action.payload.data,
+        plastics: action.payload.data,
         selectedManufacturer: handleSelectedManufacturer(
           state.selectedManufacturer.id,
           action.payload.data.content
         ),
       }
-    case CREATE_MOLD_SUCCESS:
+    case CREATE_PLASTIC_SUCCESS: {
       return {
         ...state,
-        molds: {
-          ...state.molds,
-          content: prepend(action.payload.data, state.molds.content),
+        plastics: {
+          ...state.plastics,
+          content: prepend(action.payload.data, state.plastics.content),
         },
         isCreateOpen: false,
       }
+    }
     case TOGGLE_CREATE_MODAL:
       return {
         ...state,
@@ -69,4 +70,4 @@ const moldReducer = (state = initialState, action) => {
   }
 }
 
-export default moldReducer
+export default plasticsReducer
