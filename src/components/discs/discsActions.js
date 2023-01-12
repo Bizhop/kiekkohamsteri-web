@@ -93,16 +93,16 @@ export const toggleEditModal = disc => ({
   disc,
 })
 
-export const uploadImageApi = data => ({
+export const uploadImageApi = base64 => ({
   type: UPLOAD_IMAGE_API,
-  payload: postPayload({ url: "api/v2/discs", data }),
-  data,
+  payload: postPayload({ url: "api/v2/discs", data: { data: base64 } }),
+  base64,
 })
 
-export const updateImageApi = ({ id, data }) => ({
+export const updateImageApi = ({ id, base64 }) => ({
   type: UPDATE_IMAGE_API,
-  payload: patchPayload({ url: `api/v2/discs/${id}/update-image`, data: data }),
-  data,
+  payload: patchPayload({ url: `api/v2/discs/${id}/update-image`, data: { data: base64 } }),
+  base64,
 })
 
 export const deleteDisc = id => ({
