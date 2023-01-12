@@ -46,6 +46,7 @@ const DiscsContainer = props => {
   const resizeAndUploadImage = base64 => {
     resizeImage(base64).then(resizedImage => {
       props.uploadImage(resizedImage)
+      setImageCropOpen(false)
     })
   }
 
