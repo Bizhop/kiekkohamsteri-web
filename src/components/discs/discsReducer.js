@@ -204,7 +204,7 @@ const discsReducer = (state = initialState, action) => {
     }
     case DROPDOWNS_SUCCESS:
       const previousManufacturerId = path(["discInEdit", "mold", "manufacturer", "id"], state)
-      const newManufacturerId = path(["meta", "previousAction", "manufacturerId"], action)
+      const newManufacturerId = path(["meta", "previousAction", "meta", "manufacturerId"], action)
       return {
         ...state,
         discInEdit:

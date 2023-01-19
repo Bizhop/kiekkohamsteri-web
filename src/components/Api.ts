@@ -1,8 +1,19 @@
+import { IRequestPayload } from "../types"
+
 export const loginPayload = props => ({
   request: {
     url: "api/v2/login",
     headers: {
       Authorization: props.credential,
+    },
+  },
+})
+
+export const getPayloadTs = (url: string): IRequestPayload => ({
+  request: {
+    url,
+    headers: {
+      Authorization: localStorage.getItem("hamsteri-token"),
     },
   },
 })

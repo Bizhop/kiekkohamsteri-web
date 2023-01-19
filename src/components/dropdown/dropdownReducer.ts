@@ -1,6 +1,7 @@
+import { DropdownActions, IDropdownsState } from "../../types"
 import { DROPDOWNS_SUCCESS, DROPDOWNS_FAILURE } from "./dropdownActions"
 
-const initialState = {
+const initialState: IDropdownsState = {
   dropdowns: {
     molds: [],
     manufacturers: [],
@@ -11,7 +12,7 @@ const initialState = {
   },
 }
 
-const dropdownReducer = (state = initialState, action) => {
+const dropdownReducer = (state: IDropdownsState = initialState, action: DropdownActions): IDropdownsState => {
   switch (action.type) {
     case DROPDOWNS_FAILURE:
       return initialState
