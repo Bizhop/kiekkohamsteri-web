@@ -6,11 +6,13 @@
     "start": "parcel",
     "build-dev": "rm -r dist && rm -r .parcel-cache && NODE_ENV=development parcel build --no-optimize && cp src/GDPR.html favicon.ico dist",
     "build": "rm -r dist && rm -r .parcel-cache && parcel build && cp src/GDPR.html favicon.ico dist",
-    "format": "prettier --print-width 100 --no-semi --arrow-parens avoid --write 'src/**/*.js'"
+    "format": "prettier --print-width 100 --no-semi --arrow-parens avoid --write 'src/**/*.js'",
+    "generate-types": "openapi-typescript backend.yaml --output src/schemas/"
   },
   "devDependencies": {
     "@parcel/transformer-sass": "^2.5.0",
     "buffer": "^6.0.3",
+    "openapi-typescript": "^6.1.0",
     "parcel": "^2.5.0",
     "prettier": "^2.7.1",
     "process": "^0.11.10",
