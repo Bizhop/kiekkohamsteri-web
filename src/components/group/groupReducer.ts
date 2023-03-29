@@ -1,6 +1,7 @@
-import { head, filter, append, reject, path, findIndex, propEq, prop, update } from "ramda"
+import { append, reject, path, findIndex, update } from "ramda"
 import { toast } from "react-toastify"
-import { USER_DETAILS_SUCCESS } from "../user/userActions"
+import { IGroupsState, TUser, GroupActions, TGroupRequest, TGroup } from "../../types"
+import { updateUserArray } from "../shared/utils"
 
 import {
   COMPLETE_REQUEST_SUCCESS,
@@ -20,40 +21,28 @@ import {
   RESET_GROUP_USERS,
 } from "./groupActions"
 
-const initialState = {
+const initialState: IGroupsState = {
   groups: [],
   fetchingUsers: false,
-  users: null,
-  selectedGroup: {},
+  users: [],
+  selectedGroup: null,
   requests: [],
 }
 
-const updateUserArray = (users, updatedUser) => {
-  const index = findIndex(propEq("id", prop("id", updatedUser)))(users)
-  return update(index, updatedUser, users)
-}
-
-const groupReducer = (state = initialState, action) => {
+const groupReducer = (state: IGroupsState = initialState, action: GroupActions): IGroupsState => {
   switch (action.type) {
     case GET_GROUPS_SUCCESS:
       return {
         ...state,
         groups: action.payload.data,
-        users: null,
-        selectedGroup: {},
-      }
-    case USER_DETAILS_SUCCESS:
-      return {
-        ...state,
-        groups: action.payload.data.groups,
-        users: null,
-        selectedGroup: {},
+        users: [],
+        selectedGroup: null,
       }
     case RESET_GROUP_USERS:
       return {
         ...state,
-        users: null,
-        selectedGroup: {},
+        users: [],
+        selectedGroup: null,
       }
     case GET_GROUP_REQUESTS_SUCCESS:
       return {
@@ -63,9 +52,9 @@ const groupReducer = (state = initialState, action) => {
     case GET_GROUP_USERS:
       return {
         ...state,
-        users: null,
+        users: [],
         fetchingUsers: true,
-        selectedGroup: head(filter(g => g.id == action.groupId, state.groups)),
+        selectedGroup: action.meta.group
       }
     case GET_GROUP_USERS_SUCCESS:
       return {
@@ -76,7 +65,7 @@ const groupReducer = (state = initialState, action) => {
     case GET_GROUP_USERS_FAILURE:
       return {
         ...state,
-        users: null,
+        users: [],
         fetchingUsers: false,
       }
     case CREATE_GROUP_SUCCESS:
@@ -93,27 +82,26 @@ const groupReducer = (state = initialState, action) => {
       toast.error(`Ryhmä "${groupName}" on jo olemassa`)
       return state
     case COMPLETE_REQUEST_SUCCESS:
-      path(["meta", "previousAction", "confirm"])
+      path(["meta", "previousAction", "meta", "confirm"], action)
         ? toast.success("Pyyntö hyväksytty")
         : toast.info("Pyyntö poistettu")
       return {
         ...state,
-        requests: reject(r => r.id == action.meta.previousAction.requestId, state.requests),
+        requests: reject((r: TGroupRequest) => r.id == path(["meta", "previousAction", "meta", "requestId"], action), state.requests),
       }
     case DELETE_GROUP_SUCCESS:
       toast.success("Ryhmä poistettu")
       return {
         ...state,
-        groups: reject(g => g.id == action.meta.previousAction.groupId, state.groups),
+        groups: reject((g: TGroup) => g.id == path(["meta", "previousAction", "meta", "groupId"], action), state.groups),
       }
     case DELETE_GROUP_FAILURE:
       path(["error", "response", "status"], action) == 409 &&
         toast.error("Vain tyhjän ryhmän voi poistaa")
       return state
     case JOIN_GROUP_SUCCESS:
-      path(["payload", "data", "status"], action) == "REQUESTED" &&
-        toast.info("Pyyntö rekisteröity")
-      var completed = path(["payload", "data", "status"], action) == "COMPLETED"
+      action.payload.data.status == "REQUESTED" && toast.info("Pyyntö rekisteröity")
+      var completed = action.payload.data.status == "COMPLETED"
       completed && toast.success("Toiminto suoritettu")
       return {
         ...state,
@@ -121,22 +109,20 @@ const groupReducer = (state = initialState, action) => {
           completed && state.users ? append(action.payload.data.target, state.users) : state.users,
       }
     case KICK_SUCCESS:
-      path(["payload", "data", "status"], action) == "REQUESTED" &&
+      action.payload.data.status == "REQUESTED" &&
         toast.info("Pyyntö rekisteröity")
-      var completed = path(["payload", "data", "status"], action) == "COMPLETED"
+      var completed = action.payload.data.status == "COMPLETED"
       completed && toast.success("Toiminto suoritettu")
       return {
         ...state,
         users: completed
-          ? reject(u => u.id == action.payload.data.target.id, state.users)
+          ? reject((u: TUser) => u.id == action.payload.data.target.id, state.users)
           : state.users,
       }
     case PROMOTE_SUCCESS:
     case DEMOTE_SUCCESS:
-      path(["payload", "data", "status"], action) == "REQUESTED" &&
-        toast.info("Pyyntö rekisteröity")
-      path(["payload", "data", "status"], action) == "COMPLETED" &&
-        toast.success("Toiminto suoritettu")
+      action.payload.data.status == "REQUESTED" && toast.info("Pyyntö rekisteröity")
+      action.payload.data.status == "COMPLETED" && toast.success("Toiminto suoritettu")
       return {
         ...state,
         users: updateUserArray(state.users, action.payload.data.target),

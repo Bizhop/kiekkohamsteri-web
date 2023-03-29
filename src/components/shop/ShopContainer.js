@@ -61,7 +61,7 @@ const mapDispatchToProps = dispatch => ({
   ),
   getOwnBuys: dispatch(getOwnBuys()),
   updateForSale: params => dispatch(getForSale(params)),
-  buyDisc: id => dispatch(buyDisc(id)),
+  buyDisc: uuid => dispatch(buyDisc(uuid)),
   confirm: id => dispatch(confirmBuy(id)),
   reject: id => dispatch(rejectBuy(id)),
 })

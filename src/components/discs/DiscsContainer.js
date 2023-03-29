@@ -2,18 +2,17 @@ import React, { useState } from "react"
 import { path } from "ramda"
 import { connect } from "react-redux"
 import { Navigate } from "react-router-dom"
-import Dropzone from "react-dropzone"
 import { Box, Stack, Button } from "@mui/material"
-import AddAPhotoIcon from "@mui/icons-material/AddAPhoto"
 
 import {
   getDiscs,
   toggleEditModal,
   updateDisc,
-  uploadImageApi,
   deleteDisc,
   getDiscSearchOperations,
   search,
+  createDisc,
+  updateImageApi,
 } from "./discsActions"
 import { getDropdowns, getDropdownsByManufacturer } from "../dropdown/dropdownActions"
 import Modal from "../shared/Modal"
@@ -25,17 +24,17 @@ import { base64Reader, resizeImage } from "../shared/utils"
 import ImageCrop from "./ImageCrop"
 
 const DiscsContainer = props => {
-  const [newImage, setNewImage] = useState({ id: null, image: null })
+  const [newImage, setNewImage] = useState({ uuid: null, image: null })
   const [isImageCropOpen, setImageCropOpen] = useState(false)
   const [filters, setFilters] = useState([])
 
   const toggleImageCropModal = () => setImageCropOpen(!isImageCropOpen)
 
-  const handleAcceptedFiles = ({ acceptedFiles, id }) => {
+  const handleAcceptedFiles = ({ acceptedFiles, uuid }) => {
     if (acceptedFiles.length == 1) {
       const file = acceptedFiles[0]
       base64Reader(file).then(base64 => {
-        setNewImage({ id, image: base64 })
+        setNewImage({ uuid, image: base64 })
         setImageCropOpen(true)
       })
     } else {
@@ -43,9 +42,9 @@ const DiscsContainer = props => {
     }
   }
 
-  const resizeAndUploadImage = base64 => {
+  const resizeAndUpdateImage = (uuid, base64) => {
     resizeImage(base64).then(resizedImage => {
-      props.uploadImage(resizedImage)
+      props.updateImage(uuid, resizedImage)
       setImageCropOpen(false)
     })
   }
@@ -65,13 +64,13 @@ const DiscsContainer = props => {
         imageUploading={props.imageUploading}
         toggleModal={toggleImageCropModal}
         newImage={newImage}
-        uploadImage={resizeAndUploadImage}
+        updateImage={resizeAndUpdateImage}
       />
       <Stack direction="row" alignItems="center" spacing={3}>
         <h1>Kiekot</h1>
-        <Dropzone onDrop={acceptedFiles => handleAcceptedFiles({ id: null, acceptedFiles })}>
-          {imageDropzone}
-        </Dropzone>
+        <Button variant="contained" onClick={() => props.createDisc()}>
+          Uusi kiekko
+        </Button>
       </Stack>
       <DiscsFilter
         searchOperations={props.searchOperations}
@@ -91,23 +90,20 @@ const DiscsContainer = props => {
         sort={props.sort}
         filters={filters}
         handleAcceptedFiles={handleAcceptedFiles}
-        imageDropzone={imageDropzone}
+        sortOptions={sortOptions}
       />
       {!props.loggedIn && <Navigate to="/" />}
     </Box>
   )
 }
 
-const imageDropzone = ({ getRootProps, getInputProps }) => {
-  return (
-    <div className="dropzone" {...getRootProps()}>
-      <input {...getInputProps()} />
-      <Button variant="contained" startIcon={<AddAPhotoIcon />}>
-        Uusi kiekko
-      </Button>
-    </div>
-  )
-}
+const sortOptions = [
+  defaultSort,
+  {
+    column: "Paino",
+    sort: "weight,desc"
+  }
+]
 
 const DiscEditModal = ({
   isOpen,
@@ -127,9 +123,9 @@ const DiscEditModal = ({
   </Modal>
 )
 
-const ImageCropModal = ({ isOpen, toggleModal, newImage, imageUploading, uploadImage }) => (
+const ImageCropModal = ({ isOpen, toggleModal, newImage, imageUploading, updateImage }) => (
   <Modal isOpen={isOpen} onRequestClose={() => toggleModal()} contentLabel="Kuvan rajaus">
-    <ImageCrop image={newImage} imageUploading={imageUploading} uploadImage={uploadImage} />
+    <ImageCrop image={newImage} imageUploading={imageUploading} updateImage={updateImage} />
   </Modal>
 )
 
@@ -146,16 +142,17 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  getDiscs: dispatch(getDiscs({ sort: defaultSort, pagination: defaultPagination })),
+  getDiscs: dispatch(getDiscs(defaultSort, defaultPagination)),
   getDropdowns: dispatch(getDropdowns()),
   getDropdownsByManufacturer: manufacturerId =>
     dispatch(getDropdownsByManufacturer(manufacturerId)),
   getDiscSearchOperations: dispatch(getDiscSearchOperations()),
   updateDisc: disc => dispatch(updateDisc(disc)),
+  createDisc: () => dispatch(createDisc()),
   toggleEditModal: disc => dispatch(toggleEditModal(disc)),
-  uploadImage: data => dispatch(uploadImageApi(data)),
-  deleteDisc: id => dispatch(deleteDisc(id)),
-  search: params => dispatch(search(params)),
+  deleteDisc: uuid => dispatch(deleteDisc(uuid)),
+  search: (sort, pagination, criteria) => dispatch(search(sort, pagination, criteria)),
+  updateImage: (uuid, base64) => dispatch(updateImageApi(uuid, base64))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(DiscsContainer)

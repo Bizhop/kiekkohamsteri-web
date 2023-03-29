@@ -31,10 +31,10 @@ export const getOwnBuys = () => ({
   payload: getPayload({ url: "api/v2/buys/own" }),
 })
 
-export const buyDisc = id => ({
+export const buyDisc = uuid => ({
   type: BUY_REQUEST,
-  payload: postPayload({ url: `api/v2/discs/${id}/buy` }),
-  id,
+  payload: postPayload({ url: `api/v2/discs/${uuid}/buy` }),
+  uuid,
 })
 
 export const rejectBuy = id => ({

@@ -17,7 +17,7 @@ const AdminContainer = props => {
       <Tabs value={tab} onChange={(_, newValue) => updateTab(newValue)}>
         <Tab label="Käyttäjät" value={1} />
         <Tab label="Muovit" value={2} />
-        <Tab label="Moldit" value={3} />
+        <Tab label="Mallit" value={3} />
       </Tabs>
       {tab === 1 && <UserContainer />}
       {tab === 2 && <PlasticsContainer />}

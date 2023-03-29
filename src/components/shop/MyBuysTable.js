@@ -10,18 +10,23 @@ import {
   Button,
 } from "@mui/material"
 
-import ThWithButton from "../shared/ThWithButton"
 import ZoomImage from "../shared/ZoomImage"
 
-const MyBuysTable = props => (
-  <TableContainer component={Paper} elevation={3}>
+const MyBuysTable = props => {
+  if(props.asBuyer.length == 0) return <p>Ei ostoja</p>
+  return (
+    <TableContainer component={Paper} elevation={3}>
     <Table size="small">
       <TableHead>
         <TableRow>
           <TableCell />
-          {tableHeaders.map(t => (
-            <ThWithButton {...t} key={t.label} />
-          ))}
+          <TableCell>Myyjä</TableCell>
+          <TableCell>Hinta</TableCell>
+          <TableCell>Kiekko</TableCell>
+          <TableCell>Lentoarvot</TableCell>
+          <TableCell>Kunto</TableCell>
+          <TableCell>Paino</TableCell>
+          <TableCell />
         </TableRow>
       </TableHead>
       <TableBody>
@@ -31,7 +36,7 @@ const MyBuysTable = props => (
       </TableBody>
     </Table>
   </TableContainer>
-)
+)}
 
 const Buy = ({ buy, action }) => {
   const { disc } = buy
@@ -40,7 +45,6 @@ const Buy = ({ buy, action }) => {
       <TableCell>
         <ZoomImage image={disc.image} />
       </TableCell>
-      <TableCell>{disc.id}</TableCell>
       <TableCell>{buy.seller.username}</TableCell>
       <TableCell>{disc.hinta} €</TableCell>
       <TableCell>
@@ -59,32 +63,5 @@ const Buy = ({ buy, action }) => {
     </TableRow>
   )
 }
-
-const tableHeaders = [
-  {
-    label: "Id",
-  },
-  {
-    label: "Myyjä",
-  },
-  {
-    label: "Hinta",
-  },
-  {
-    label: "Kiekko",
-  },
-  {
-    label: "Lentonumerot",
-  },
-  {
-    label: "Kunto",
-  },
-  {
-    label: "Paino",
-  },
-  {
-    label: "Peruuta",
-  },
-]
 
 export default MyBuysTable

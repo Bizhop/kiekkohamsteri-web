@@ -60,13 +60,7 @@ const mapDispatchToProps = dispatch => ({
     })
   ),
   getLost: dispatch(
-    getLost({
-      sort: {
-        sort: "updatedAt,desc",
-        column: "Pvm",
-      },
-      pagination: { ...defaultPagination, size: 1000 },
-    })
+    getLost({ sort: "updatedAt,desc", column: "Pvm" }, { ...defaultPagination, size: 1000 })
   ),
   updateLost: params => dispatch(getLost(params)),
   updateStats: params => dispatch(getStats(params)),

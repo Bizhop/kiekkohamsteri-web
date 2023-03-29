@@ -6,7 +6,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload"
 
 import { loadImage } from "../shared/utils"
 
-const ImageCrop = ({ image, uploadImage, imageUploading }) => {
+const ImageCrop = ({ image, updateImage, imageUploading }) => {
   const [croppedImage, setCroppedImage] = useState(null)
   const [imageDimensions, setImageDimensions] = useState(null)
   const [crop, setCrop] = useState({})
@@ -47,10 +47,10 @@ const ImageCrop = ({ image, uploadImage, imageUploading }) => {
           <Button
             variant="contained"
             startIcon={<CloudUploadIcon />}
-            onClick={() => uploadImage(croppedImage)}
+            onClick={() => updateImage(image.uuid, croppedImage)}
             disabled={croppedImage === null || imageUploading}
           >
-            Luo uusi kiekko
+            Päivitä kuva
           </Button>
         </Stack>
       </Stack>

@@ -49,7 +49,7 @@ const App = () => (
         </Stack>
         <Footer />
       </Box>
-      <ToastContainer autoClose={2000} position="top-center" />
+      <ToastContainer autoClose={1500} position="top-center" />
     </Container>
   </GoogleOAuthProvider>
 )

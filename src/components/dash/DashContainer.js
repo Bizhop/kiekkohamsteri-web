@@ -97,7 +97,7 @@ const DashContainer = props => (
                       props.user.groups.map(g => (
                         <TableRow
                           key={g.id}
-                          onClick={() => props.listUsers(g.id)}
+                          onClick={() => props.listUsers(g)}
                           className="color-on-hover"
                         >
                           <TableCell>{g.name}</TableCell>
@@ -184,7 +184,7 @@ const mapDispatchToProps = dispatch => ({
   loginError: response => dispatch(googleLoginError(response)),
   toggleEditModal: user => dispatch(toggleEditModal(user)),
   editUser: user => dispatch(requestUpdateMe(user)),
-  listUsers: groupId => dispatch(getGroupUsers(groupId)),
+  listUsers: group => dispatch(getGroupUsers(group)),
   promote: params => dispatch(promote(params)),
   demote: params => dispatch(demote(params)),
   kick: params => dispatch(kick(params)),

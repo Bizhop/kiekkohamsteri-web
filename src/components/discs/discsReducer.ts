@@ -15,9 +15,6 @@ import {
   LOST_REQUEST,
   LOST_SUCCESS,
   UPDATE_DISC_SUCCESS,
-  UPLOAD_IMAGE_API,
-  UPLOAD_IMAGE_API_SUCCESS,
-  UPLOAD_IMAGE_API_FAILURE,
   UPDATE_IMAGE_API,
   UPDATE_IMAGE_API_FAILURE,
   UPDATE_IMAGE_API_SUCCESS,
@@ -28,12 +25,14 @@ import {
   SEARCH_DISCS_OPERATIONS_REQUEST,
   SEARCH_DISCS_OPERATIONS_SUCCESS,
   SEARCH_DISCS_OPERATIONS_FAILURE,
+  CREATE_DISC_SUCCESS,
 } from "./discsActions"
 import { DROPDOWNS_SUCCESS } from "../dropdown/dropdownActions"
-import { removeFromArrayById } from "../shared/utils"
+import { removeFromArrayByUuid } from "../shared/utils"
 import { defaultSort, defaultPagination } from "../shared/constants"
+import { DiscsActions, DropdownActions, IDiscsState, TDisc, TDiscInEdit } from "../../types"
 
-const initialState = {
+const initialState: IDiscsState = {
   discs: [],
   disc: null,
   isEditOpen: false,
@@ -50,12 +49,23 @@ const initialState = {
   sort: defaultSort
 }
 
-const updateDiscsArray = (inputArray, disc) => {
-  const index = findIndex(propEq("id", prop("id", disc)))(inputArray)
+const updateDiscsArray = (inputArray: TDisc[], disc: TDisc): TDisc[] => {
+  const index = findIndex(propEq("uuid", prop("uuid", disc)))(inputArray)
   return update(index, disc, inputArray)
 }
 
-const discsReducer = (state = initialState, action) => {
+const prepareDiscInEdit = (input: TDisc): TDiscInEdit | null => {
+  return input ? {
+      ...input,
+      manufacturerId: input.mold?.manufacturer.id,
+      moldId: input.mold?.id,
+      plasticId: input.plastic?.id,
+      colorId: input.color.id,
+    }
+  : null
+}
+
+const discsReducer = (state: IDiscsState = initialState, action: DiscsActions | DropdownActions): IDiscsState => {
   switch (action.type) {
     case DISCS_REQUEST:
     case SEARCH_DISCS_REQUEST:
@@ -82,9 +92,9 @@ const discsReducer = (state = initialState, action) => {
         isEditOpen: false,
         discInEdit: null,
         disc: null,
-        otherUserName: length(discs) > 0 ? path(["owner", "username"], head(discs)) : "",
+        otherUserName: length(discs) > 0 ? pathOr("", ["owner", "username"], head(discs)) : "",
         pagination: pick(["totalElements", "size", "number"], data),
-        sort: path(["meta", "previousAction", "sort"], action)
+        sort: pathOr(defaultSort, ["meta", "previousAction", "meta", "sort"], action)
       }
     case DISCS_FAILURE:
     case SEARCH_DISCS_FAILURE:
@@ -114,7 +124,7 @@ const discsReducer = (state = initialState, action) => {
       return {
         ...state,
         disc: action.payload.data,
-        oneDiscText: null,
+        oneDiscText: "",
       }
     case DISC_FAILURE:
       return {
@@ -123,18 +133,11 @@ const discsReducer = (state = initialState, action) => {
         oneDiscText: "Ei saatavilla",
       }
     case TOGGLE_DISC_EDIT_MODAL:
+      const disc = action.payload.disc
       return {
         ...state,
         isEditOpen: !state.isEditOpen,
-        discInEdit: action.disc
-          ? {
-              ...action.disc,
-              manufacturerId: action.disc.mold.manufacturer.id,
-              moldId: action.disc.mold.id,
-              plasticId: action.disc.plastic.id,
-              colorId: action.disc.color.id,
-            }
-          : null,
+        discInEdit: prepareDiscInEdit(disc),
       }
     case UPDATE_DISC_SUCCESS: {
       toast.success("Kiekon tiedot päivitetty")
@@ -145,29 +148,27 @@ const discsReducer = (state = initialState, action) => {
         discs: discsUpdated,
       }
     }
-    case UPLOAD_IMAGE_API:
+    case CREATE_DISC_SUCCESS: {
+      return {
+        ...state,
+        discInEdit: prepareDiscInEdit(action.payload.data),
+        isEditOpen: true
+      }
+    }
     case UPDATE_IMAGE_API:
       return {
         ...state,
         imageUploading: true,
       }
-    case UPLOAD_IMAGE_API_SUCCESS: {
-      const discsUpdated = prepend(action.payload.data, state.discs)
-      return {
-        ...state,
-        discInEdit: action.payload.data,
-        discs: discsUpdated,
-        isEditOpen: true,
-        imageUploading: false,
-      }
-    }
     case UPDATE_IMAGE_API_SUCCESS: {
+      toast.success("Kiekon kuva päivitetty")
+      const discsUpdated = updateDiscsArray(state.discs, action.payload.data)
       return {
         ...state,
         imageUploading: false,
+        discs: discsUpdated,
       }
     }
-    case UPLOAD_IMAGE_API_FAILURE:
     case UPDATE_IMAGE_API_FAILURE:
       return {
         ...state,
@@ -177,34 +178,36 @@ const discsReducer = (state = initialState, action) => {
       return {
         ...state,
         lost: null,
-        lostSort: action.sort,
-        lostPagination: action.pagination,
+        lostSort: action.meta.sort,
       }
-    case LOST_SUCCESS:
+    case LOST_SUCCESS: {
+      const data = action.payload.data
       return {
         ...state,
-        lost: action.payload.data.content,
+        lost: data.content,
+        lostPagination: pick(["totalElements", "size", "number"], data),
       }
+    }
     case FOUND_SUCCESS:
       toast.success("Kiekko merkitty löytyneeksi")
       return {
         ...state,
-        lost: removeFromArrayById(state.lost, path(["meta", "previousAction", "id"], action)),
+        lost: removeFromArrayByUuid(state.lost, pathOr("", ["meta", "previousAction", "uuid"], action)),
       }
     case DELETE_DISC_SUCCESS: {
       toast.success("Kiekko poistettu")
-      const discsUpdated = removeFromArrayById(
+      const discsUpdated = removeFromArrayByUuid(
         state.discs,
-        path(["meta", "previousAction", "id"], action)
+        pathOr("", ["meta", "previousAction", "meta", "uuid"], action)
       )
       return {
         ...state,
-        discs: discsUpdated,
+        discs: discsUpdated ? discsUpdated : [],
       }
     }
     case DROPDOWNS_SUCCESS:
       const previousManufacturerId = path(["discInEdit", "mold", "manufacturer", "id"], state)
-      const newManufacturerId = path(["meta", "previousAction", "manufacturerId"], action)
+      const newManufacturerId = pathOr(undefined, ["meta", "previousAction", "meta", "manufacturerId"], action)
       return {
         ...state,
         discInEdit:
@@ -212,10 +215,10 @@ const discsReducer = (state = initialState, action) => {
             ? {
                 ...state.discInEdit,
                 manufacturerId: newManufacturerId,
-                mold: null,
-                moldId: "",
-                plastic: null,
-                plasticId: "",
+                mold: undefined,
+                moldId: undefined,
+                plastic: undefined,
+                plasticId: undefined,
               }
             : state.discInEdit,
       }

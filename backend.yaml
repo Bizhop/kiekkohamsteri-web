@@ -1,0 +1,1483 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+paths:
+  /api/v2/discs/{uuid}:
+    get:
+      tags:
+      - disc-controller
+      operationId: getDisc
+      parameters:
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiscOutputDto'
+    put:
+      tags:
+      - disc-controller
+      operationId: updateDisc
+      parameters:
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DiscInputDto'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiscOutputDto'
+    delete:
+      tags:
+      - disc-controller
+      operationId: deleteDisc
+      parameters:
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+  /api/v2/groups:
+    get:
+      tags:
+      - group-controller
+      operationId: getGroups
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GroupDto'
+    post:
+      tags:
+      - group-controller
+      operationId: createGroup
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupCreateDto'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupDto'
+  /api/v2/groups/{groupId}/requests:
+    post:
+      tags:
+      - group-controller
+      operationId: registerGroupRequest
+      parameters:
+      - name: groupId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupRequestDto'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupRequestOutputDto'
+  /api/v2/groups/{groupId}/requests/{requestId}:
+    post:
+      tags:
+      - group-controller
+      operationId: completeRequest
+      parameters:
+      - name: groupId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: requestId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompleteGroupRequestDto'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserOutputDto'
+  /api/v2/discs:
+    get:
+      tags:
+      - disc-controller
+      operationId: getDiscs
+      parameters:
+      - name: userId
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 20
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageDiscOutputDto'
+    post:
+      tags:
+      - disc-controller
+      operationId: createDisc
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiscOutputDto'
+  /api/v2/discs/{uuid}/buy:
+    post:
+      tags:
+      - disc-controller
+      operationId: buyDisc
+      parameters:
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BuyOutputDto'
+  /api/v2/discs/search:
+    get:
+      tags:
+      - disc-controller
+      operationId: supportedSearchOperations
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SupportedOperation'
+    post:
+      tags:
+      - disc-controller
+      operationId: search
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 20
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DiscSearchDto'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageDiscOutputDto'
+  /api/v2/discs/plastics:
+    get:
+      tags:
+      - disc-controller
+      operationId: getPlastics
+      parameters:
+      - name: manufacturerId
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 20
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagePlasticOutputDto'
+    post:
+      tags:
+      - disc-controller
+      operationId: createMuovi
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlasticCreateDto'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PlasticOutputDto'
+  /api/v2/discs/molds:
+    get:
+      tags:
+      - disc-controller
+      operationId: getMolds
+      parameters:
+      - name: manufacturerId
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 20
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageMoldOutputDto'
+    post:
+      tags:
+      - disc-controller
+      operationId: createMold
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MoldCreateDto'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MoldOutputDto'
+  /api/v2/buys/{id}/reject:
+    post:
+      tags:
+      - buy-controller
+      operationId: reject
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+  /api/v2/buys/{id}/confirm:
+    post:
+      tags:
+      - buy-controller
+      operationId: confirm
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+  /api/rating:
+    post:
+      tags:
+      - rating-controller
+      operationId: getRating
+      parameters:
+      - name: byRoundsOnly
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/RoundDto'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int32
+  /api/v2/user/{id}:
+    get:
+      tags:
+      - user-controller
+      operationId: getDetails
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserOutputDto'
+    patch:
+      tags:
+      - user-controller
+      operationId: updateDetails
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdateDto'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserOutputDto'
+  /api/v2/discs/{uuid}/update-image:
+    patch:
+      tags:
+      - disc-controller
+      operationId: updateImage
+      parameters:
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UploadDto'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiscOutputDto'
+  /api/v2/discs/{uuid}/found:
+    patch:
+      tags:
+      - disc-controller
+      operationId: markFound
+      parameters:
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+  /api/v2/user:
+    get:
+      tags:
+      - user-controller
+      operationId: getUsers
+      parameters:
+      - name: groupId
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserOutputDto'
+  /api/v2/user/me:
+    get:
+      tags:
+      - user-controller
+      operationId: getMe
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserOutputDto'
+  /api/v2/stats:
+    get:
+      tags:
+      - stats-controller
+      operationId: getStats
+      parameters:
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageStats'
+  /api/v2/login:
+    get:
+      tags:
+      - user-controller
+      operationId: login
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserOutputDto'
+  /api/v2/groups/requests:
+    get:
+      tags:
+      - group-controller
+      operationId: getGroupRequests
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GroupRequestOutputDto'
+  /api/v2/dropdowns:
+    get:
+      tags:
+      - dropdowns-controller
+      operationId: getDropdowns
+      parameters:
+      - name: manufacturerId
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DropdownsDto'
+  /api/v2/discs/lost:
+    get:
+      tags:
+      - disc-controller
+      operationId: getLost
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 20
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageDiscOutputDto'
+  /api/v2/discs/for-sale:
+    get:
+      tags:
+      - disc-controller
+      operationId: getDiscsForSale
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 20
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageDiscOutputDto'
+  /api/v2/buys:
+    get:
+      tags:
+      - buy-controller
+      operationId: listing
+      parameters:
+      - name: status
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - REQUESTED
+          - CONFIRMED
+          - REJECTED
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BuyOutputDto'
+  /api/v2/buys/own:
+    get:
+      tags:
+      - buy-controller
+      operationId: summary
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/BuySummaryDto'
+  /api/rating/{pdga}:
+    get:
+      tags:
+      - rating-controller
+      operationId: getRounds
+      parameters:
+      - name: pdga
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RatingDto'
+  /api/v2/groups/{groupId}:
+    delete:
+      tags:
+      - group-controller
+      operationId: deleteGroup
+      parameters:
+      - name: groupId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+components:
+  schemas:
+    DiscInputDto:
+      type: object
+      properties:
+        moldId:
+          type: integer
+          format: int64
+        plasticId:
+          type: integer
+          format: int64
+        colorId:
+          type: integer
+          format: int64
+        image:
+          type: string
+        weight:
+          type: integer
+          format: int32
+        condition:
+          type: integer
+          format: int32
+        glow:
+          type: boolean
+        special:
+          type: boolean
+        dyed:
+          type: boolean
+        swirly:
+          type: boolean
+        markings:
+          type: integer
+          format: int32
+        forSale:
+          type: boolean
+        price:
+          type: integer
+          format: int32
+        description:
+          type: string
+        lostAndFound:
+          type: boolean
+        itb:
+          type: boolean
+        publicDisc:
+          type: boolean
+        lost:
+          type: boolean
+    ColorOutputDto:
+      required:
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+    DiscOutputDto:
+      required:
+      - color
+      - condition
+      - dyed
+      - image
+      - itb
+      - lost
+      - markings
+      - owner
+      - price
+      - publicDisc
+      - swirly
+      - updatedAt
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+        owner:
+          $ref: '#/components/schemas/UserOutputDto'
+        mold:
+          $ref: '#/components/schemas/MoldOutputDto'
+        plastic:
+          $ref: '#/components/schemas/PlasticOutputDto'
+        color:
+          $ref: '#/components/schemas/ColorOutputDto'
+        image:
+          type: string
+        weight:
+          type: integer
+          format: int32
+        condition:
+          type: integer
+          format: int32
+        glow:
+          type: boolean
+        special:
+          type: boolean
+        dyed:
+          type: boolean
+        swirly:
+          type: boolean
+        markings:
+          type: integer
+          format: int32
+        forSale:
+          type: boolean
+        price:
+          type: integer
+          format: int32
+        description:
+          type: string
+        lostAndFound:
+          type: boolean
+        itb:
+          type: boolean
+        publicDisc:
+          type: boolean
+        lost:
+          type: boolean
+        updatedAt:
+          type: string
+          format: date-time
+    GroupDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+    ManufacturerOutputDto:
+      required:
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+    MoldOutputDto:
+      required:
+      - fade
+      - glide
+      - id
+      - manufacturer
+      - name
+      - speed
+      - stability
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        manufacturer:
+          $ref: '#/components/schemas/ManufacturerOutputDto'
+        name:
+          type: string
+        speed:
+          type: number
+          format: double
+        glide:
+          type: number
+          format: double
+        stability:
+          type: number
+          format: double
+        fade:
+          type: number
+          format: double
+    PlasticOutputDto:
+      required:
+      - id
+      - manufacturer
+      - name
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        manufacturer:
+          $ref: '#/components/schemas/ManufacturerOutputDto'
+        name:
+          type: string
+    RoleDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        groupId:
+          type: integer
+          format: int64
+    UserOutputDto:
+      required:
+      - email
+      - firstName
+      - id
+      - lastName
+      - pdgaNumber
+      - username
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        pdgaNumber:
+          type: integer
+          format: int32
+        jwt:
+          type: string
+        roles:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleDto'
+        groups:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupDto'
+        error:
+          type: string
+    GroupCreateDto:
+      type: object
+      properties:
+        name:
+          type: string
+    GroupRequestDto:
+      required:
+      - targetUserId
+      - type
+      type: object
+      properties:
+        targetUserId:
+          type: integer
+          format: int64
+        type:
+          type: string
+          enum:
+          - JOIN
+          - KICK
+          - PROMOTE
+          - DEMOTE
+        info:
+          type: string
+    GroupRequestOutputDto:
+      required:
+      - group
+      - id
+      - source
+      - status
+      - target
+      - type
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        group:
+          $ref: '#/components/schemas/GroupDto'
+        source:
+          $ref: '#/components/schemas/UserOutputDto'
+        target:
+          $ref: '#/components/schemas/UserOutputDto'
+        type:
+          type: string
+          enum:
+          - JOIN
+          - KICK
+          - PROMOTE
+          - DEMOTE
+        status:
+          type: string
+          enum:
+          - REQUESTED
+          - COMPLETED
+          - REJECTED
+        info:
+          type: string
+        error:
+          type: string
+    CompleteGroupRequestDto:
+      type: object
+      properties:
+        confirm:
+          type: boolean
+    BuyOutputDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        disc:
+          $ref: '#/components/schemas/DiscOutputDto'
+        seller:
+          $ref: '#/components/schemas/UserOutputDto'
+        buyer:
+          $ref: '#/components/schemas/UserOutputDto'
+        status:
+          type: string
+          enum:
+          - REQUESTED
+          - CONFIRMED
+          - REJECTED
+    DiscSearchDto:
+      type: object
+      properties:
+        criteria:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchCriteria'
+    SearchCriteria:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: object
+        operation:
+          type: string
+          enum:
+          - EQUAL
+          - NOT_EQUAL
+          - GREATER_THAN
+          - GREATER_THAN_EQUAL
+          - LESS_THAN
+          - LESS_THAN_EQUAL
+          - IN
+          - NOT_IN
+    PageDiscOutputDto:
+      type: object
+      properties:
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int32
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: '#/components/schemas/SortObject'
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/DiscOutputDto'
+        pageable:
+          $ref: '#/components/schemas/PageableObject'
+        numberOfElements:
+          type: integer
+          format: int32
+        first:
+          type: boolean
+        last:
+          type: boolean
+        empty:
+          type: boolean
+    PageableObject:
+      type: object
+      properties:
+        sort:
+          $ref: '#/components/schemas/SortObject'
+        offset:
+          type: integer
+          format: int64
+        pageNumber:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        paged:
+          type: boolean
+        unpaged:
+          type: boolean
+    SortObject:
+      type: object
+      properties:
+        sorted:
+          type: boolean
+        unsorted:
+          type: boolean
+        empty:
+          type: boolean
+    PlasticCreateDto:
+      type: object
+      properties:
+        manufacturerId:
+          type: integer
+          format: int64
+        name:
+          type: string
+    MoldCreateDto:
+      type: object
+      properties:
+        manufacturerId:
+          type: integer
+          format: int64
+        name:
+          type: string
+        speed:
+          type: number
+          format: double
+        glide:
+          type: number
+          format: double
+        stability:
+          type: number
+          format: double
+        fade:
+          type: number
+          format: double
+    RoundDto:
+      type: object
+      properties:
+        tournament:
+          type: string
+        link:
+          type: string
+        date:
+          type: string
+        round:
+          type: integer
+          format: int32
+        score:
+          type: integer
+          format: int32
+        rating:
+          type: integer
+          format: int32
+        holes:
+          type: integer
+          format: int32
+        included:
+          type: boolean
+        doubled:
+          type: boolean
+    UserUpdateDto:
+      type: object
+      properties:
+        username:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        pdgaNumber:
+          type: integer
+          format: int32
+        addToRole:
+          type: string
+        removeFromRole:
+          type: string
+        removeFromGroupId:
+          type: integer
+          format: int64
+    UploadDto:
+      type: object
+      properties:
+        data:
+          type: string
+    Pageable:
+      type: object
+      properties:
+        page:
+          minimum: 0
+          type: integer
+          format: int32
+        size:
+          minimum: 1
+          type: integer
+          format: int32
+        sort:
+          type: array
+          items:
+            type: string
+    PageStats:
+      type: object
+      properties:
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int32
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: '#/components/schemas/SortObject'
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Stats'
+        pageable:
+          $ref: '#/components/schemas/PageableObject'
+        numberOfElements:
+          type: integer
+          format: int32
+        first:
+          type: boolean
+        last:
+          type: boolean
+        empty:
+          type: boolean
+    Stats:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        id:
+          type: integer
+          format: int64
+        year:
+          type: integer
+          format: int32
+        month:
+          type: integer
+          format: int32
+        newDiscs:
+          type: integer
+          format: int32
+        newUsers:
+          type: integer
+          format: int32
+        newManufacturers:
+          type: integer
+          format: int32
+        newPlastics:
+          type: integer
+          format: int32
+        newMolds:
+          type: integer
+          format: int32
+        salesCompleted:
+          type: integer
+          format: int32
+    DropdownOutputDto:
+      type: object
+      properties:
+        value:
+          type: integer
+          format: int64
+        name:
+          type: string
+    DropdownsDto:
+      type: object
+      properties:
+        manufacturers:
+          type: array
+          items:
+            $ref: '#/components/schemas/DropdownOutputDto'
+        molds:
+          type: array
+          items:
+            $ref: '#/components/schemas/DropdownOutputDto'
+        plastics:
+          type: array
+          items:
+            $ref: '#/components/schemas/DropdownOutputDto'
+        colors:
+          type: array
+          items:
+            $ref: '#/components/schemas/DropdownOutputDto'
+        conditions:
+          type: array
+          items:
+            $ref: '#/components/schemas/DropdownOutputDto'
+        markings:
+          type: array
+          items:
+            $ref: '#/components/schemas/DropdownOutputDto'
+    SupportedOperation:
+      type: object
+      properties:
+        field:
+          type: string
+        type:
+          type: string
+        operations:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+            enum:
+            - EQUAL
+            - NOT_EQUAL
+            - GREATER_THAN
+            - GREATER_THAN_EQUAL
+            - LESS_THAN
+            - LESS_THAN_EQUAL
+            - IN
+            - NOT_IN
+    PagePlasticOutputDto:
+      type: object
+      properties:
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int32
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: '#/components/schemas/SortObject'
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlasticOutputDto'
+        pageable:
+          $ref: '#/components/schemas/PageableObject'
+        numberOfElements:
+          type: integer
+          format: int32
+        first:
+          type: boolean
+        last:
+          type: boolean
+        empty:
+          type: boolean
+    PageMoldOutputDto:
+      type: object
+      properties:
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int32
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: '#/components/schemas/SortObject'
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/MoldOutputDto'
+        pageable:
+          $ref: '#/components/schemas/PageableObject'
+        numberOfElements:
+          type: integer
+          format: int32
+        first:
+          type: boolean
+        last:
+          type: boolean
+        empty:
+          type: boolean
+    BuySummaryDto:
+      type: object
+      properties:
+        asBuyer:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyOutputDto'
+        asSeller:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyOutputDto'
+    RatingDto:
+      type: object
+      properties:
+        rounds:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoundDto'
+        nextRating:
+          type: integer
+          format: int32

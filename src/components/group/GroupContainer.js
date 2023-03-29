@@ -43,50 +43,52 @@ import GroupUsersTable from "./GroupUsersTable"
 
 const GroupContainer = props => (
   <Box sx={{ flexGrow: 1 }}>
-    <h1>Pyynnöt ({length(props.requests)})</h1>
-    <TableContainer component={Paper} elevation={3}>
-      <Table size="small">
-        <TableHead>
-          <TableRow>
-            <TableCell>Id</TableCell>
-            <TableCell>Ryhmä</TableCell>
-            <TableCell>Pyytäjä</TableCell>
-            <TableCell>Kohde</TableCell>
-            <TableCell>Tyyppi</TableCell>
-            <TableCell />
-            <TableCell />
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {props.requests &&
-            props.requests.map(r => (
-              <TableRow key={r.id}>
-                <TableCell>{r.id}</TableCell>
-                <TableCell>{r.group.name}</TableCell>
-                <TableCell>{r.source.username}</TableCell>
-                <TableCell>{r.target.username}</TableCell>
-                <TableCell>{r.type}</TableCell>
-                <TableCell>
-                  <CompleteRequestInput
-                    completeRequest={props.completeRequest}
-                    groupId={r.group.id}
-                    requestId={r.id}
-                    confirm={true}
-                  />
-                </TableCell>
-                <TableCell>
-                  <CompleteRequestInput
-                    completeRequest={props.completeRequest}
-                    groupId={r.group.id}
-                    requestId={r.id}
-                    confirm={false}
-                  />
-                </TableCell>
-              </TableRow>
-            ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <h1>Pyynnöt</h1>
+    {props.requests.length == 0 ? <p>Ei pyyntöjä</p> :
+      <TableContainer component={Paper} elevation={3}>
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell>Id</TableCell>
+              <TableCell>Ryhmä</TableCell>
+              <TableCell>Pyytäjä</TableCell>
+              <TableCell>Kohde</TableCell>
+              <TableCell>Tyyppi</TableCell>
+              <TableCell />
+              <TableCell />
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {props.requests &&
+              props.requests.map(r => (
+                <TableRow key={r.id}>
+                  <TableCell>{r.id}</TableCell>
+                  <TableCell>{r.group.name}</TableCell>
+                  <TableCell>{r.source.username}</TableCell>
+                  <TableCell>{r.target.username}</TableCell>
+                  <TableCell>{r.type}</TableCell>
+                  <TableCell>
+                    <CompleteRequestInput
+                      completeRequest={props.completeRequest}
+                      groupId={r.group.id}
+                      requestId={r.id}
+                      confirm={true}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <CompleteRequestInput
+                      completeRequest={props.completeRequest}
+                      groupId={r.group.id}
+                      requestId={r.id}
+                      confirm={false}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    }
     <h1>Uusi ryhmä</h1>
     <p>Kun luot uuden ryhmän, sinusta tulee automaattisesti ryhmän ensimmäinen ylläpitäjä</p>
     <Grid container spacing={1}>
@@ -113,7 +115,7 @@ const GroupContainer = props => (
                 return (
                   <TableRow
                     key={g.id}
-                    onClick={() => props.listUsers(g.id)}
+                    onClick={() => props.listUsers(g)}
                     className={(isAdmin(userGroup) || isGroupMember(userGroup)) && "color-on-hover"}
                   >
                     <TableCell>{g.id}</TableCell>

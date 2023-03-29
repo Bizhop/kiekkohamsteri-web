@@ -1,4 +1,6 @@
-export const markings = [
+import { IPagination, ISort } from "../../types"
+
+export const markings: string[] = [
   "Ei ole",
   "Rimmissä",
   "Pohjassa",
@@ -7,12 +9,12 @@ export const markings = [
   "Kaikkialla",
 ]
 
-export const defaultSort = {
+export const defaultSort: ISort = {
   sort: "mold.manufacturer.name,asc&sort=mold.speed,asc&sort=mold.name,asc&sort=plastic.name,asc",
   column: "Valmistaja",
 }
 
-export const defaultPagination = {
+export const defaultPagination: IPagination = {
   number: 0,
   size: 10,
   totalElements: 0,

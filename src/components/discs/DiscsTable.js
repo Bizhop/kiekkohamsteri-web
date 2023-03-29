@@ -3,6 +3,7 @@ import { confirmAlert } from "react-confirm-alert"
 import "react-confirm-alert/src/react-confirm-alert.css"
 import { useNavigate } from "react-router-dom"
 import { Spinner } from "react-activity"
+import Dropzone from "react-dropzone"
 import "react-activity/dist/library.css"
 import {
   TableContainer,
@@ -17,52 +18,51 @@ import {
   Box,
   TableFooter,
   TablePagination,
+  MenuItem,
+  Divider,
 } from "@mui/material"
 import EditIcon from "@mui/icons-material/Edit"
 import DeleteIcon from "@mui/icons-material/Delete"
 import CheckIcon from "@mui/icons-material/Check"
+import AddAPhotoIcon from "@mui/icons-material/AddAPhoto"
 
-import ThWithButton from "../shared/ThWithButton"
-import { defaultSort } from "../shared/constants"
 import ZoomImage from "../shared/ZoomImage"
+import Selector from "../shared/Selector"
+import { defaultSort } from "../shared/constants"
 
 const DiscsTable = props => {
   const { filters, sort, pagination } = props
 
   const handlePageChange = (_, newPage) =>
-    props.search({ filters, sort, pagination: { ...pagination, number: newPage } })
+    props.search(sort, { ...pagination, number: newPage }, filters)
+
+  const handleNewSort = (event) =>
+    props.search(event.target.value, pagination, filters)
 
   const navigate = useNavigate()
   return (
     <Box sx={{ marginTop: 3 }}>
+      {props.sortOptions &&
+        <SortSelector
+          handleNewSort={handleNewSort}
+          sortOptions={props.sortOptions}
+        />
+      }
+      <Divider />
       <TableContainer component={Paper} elevation={3} sx={{ maxHeight: 650 }}>
         {props.discs ? (
-          <Table size="small" stickyHeader>
+          <Table size="small">
             <TableHead>
               <TableRow>
                 <TableCell />
-                {tableHeaders.map(t => (
-                  <ThWithButton
-                    {...t}
-                    key={t.label}
-                    update={props.search}
-                    userId={props.userId}
-                    previousSort={sort}
-                    pagination={pagination}
-                    filters={filters}
-                  />
-                ))}
-                {props.lostDiscs && (
-                  <ThWithButton
-                    label="Pvm"
-                    sort="createdAt,desc"
-                    update={props.search}
-                    userId={props.userId}
-                    previousSort={sort}
-                    pagination={pagination}
-                    filters={filters}
-                  />
-                )}
+                <TableCell>Valmistaja</TableCell>
+                <TableCell>Malli</TableCell>
+                <TableCell>Muovi</TableCell>
+                <TableCell>Lentoarvot</TableCell>
+                <TableCell>Kunto</TableCell>
+                <TableCell>Paino</TableCell>
+                <TableCell>Päivitetty</TableCell>
+                {props.lostDiscs && <TableCell />}
                 {props.lostDiscs && <TableCell />}
                 {props.editable && <TableCell />}
               </TableRow>
@@ -70,7 +70,7 @@ const DiscsTable = props => {
             <TableBody>
               {props.discs.map(disc => (
                 <Disc
-                  key={disc.id}
+                  key={disc.uuid}
                   disc={disc}
                   toggleEditModal={props.toggleEditModal}
                   deleteDisc={props.deleteDisc}
@@ -79,6 +79,7 @@ const DiscsTable = props => {
                   username={props.username}
                   found={props.found}
                   navigate={navigate}
+                  handleAcceptedFiles={props.handleAcceptedFiles}
                 />
               ))}
             </TableBody>
@@ -92,6 +93,8 @@ const DiscsTable = props => {
                     rowsPerPage={pagination.size}
                     page={pagination.number}
                     onPageChange={handlePageChange}
+                    showFirstButton
+                    showLastButton
                   />
                 </TableCell>
               </TableRow>
@@ -102,6 +105,23 @@ const DiscsTable = props => {
         )}
       </TableContainer>
     </Box>
+  )
+}
+
+const SortSelector = ({ handleNewSort, sortOptions }) => {
+  const optionsList = sortOptions.map(sortOpt => (
+    <MenuItem key={sortOpt.column} value={sortOpt}>
+      {sortOpt.column}
+    </MenuItem>
+  ))
+
+  return (
+    <Selector
+      label="Järjestys"
+      onChange={handleNewSort}
+      optionsList={optionsList}
+      defaultValue={defaultSort}
+    />
   )
 }
 
@@ -116,12 +136,13 @@ const Disc = ({
   toggleEditModal,
   deleteDisc,
   navigate,
+  handleAcceptedFiles
 }) => {
   return (
     <TableRow
       className={editable || disc.publicDisc ? "color-on-hover" : ""}
       onClick={event =>
-        (editable || disc.publicDisc) && clickable(event) && navigate(`/discs/${disc.id}`)
+        (editable || disc.publicDisc) && clickable(event) && navigate(`/discs/${disc.uuid}`)
       }
     >
       <TableCell>
@@ -130,17 +151,16 @@ const Disc = ({
       <TableCell>{disc.mold.manufacturer.name}</TableCell>
       <TableCell>{disc.mold.name}</TableCell>
       <TableCell>{disc.plastic.name}</TableCell>
-      <TableCell>{disc.mold.speed}</TableCell>
-      <TableCell>{disc.mold.glide}</TableCell>
-      <TableCell>{disc.mold.stability}</TableCell>
-      <TableCell>{disc.mold.fade}</TableCell>
+      <TableCell>{disc.mold.speed} / {disc.mold.glide} / {disc.mold.stability} / {disc.mold.fade}</TableCell>
+      <TableCell>{disc.condition}/10</TableCell>
       <TableCell>{disc.weight}</TableCell>
+      <TableCell>{disc.updatedAt}</TableCell>
       {lostDiscs && <TableCell>{disc.updatedAt}</TableCell>}
       {lostDiscs && (
         <TableCell>
           {username === disc.owner.username && (
             <Tooltip title="Löytynyt">
-              <IconButton onClick={() => found(disc.id)}>
+              <IconButton onClick={() => found(disc.uuid)}>
                 <CheckIcon />
               </IconButton>
             </Tooltip>
@@ -149,6 +169,9 @@ const Disc = ({
       )}
       {editable && (
         <TableCell sx={{ display: "flex" }}>
+          <Dropzone onDrop={acceptedFiles => handleAcceptedFiles({ uuid: disc.uuid, acceptedFiles })}>
+            {imageDropzone}
+          </Dropzone>
           <IconButton color="secondary" onClick={() => toggleEditModal(disc)}>
             <EditIcon />
           </IconButton>
@@ -156,7 +179,7 @@ const Disc = ({
             color="error"
             onClick={() =>
               handleDelete({
-                id: disc.id,
+                uuid: disc.uuid,
                 confirm: deleteDisc,
               })
             }
@@ -169,49 +192,25 @@ const Disc = ({
   )
 }
 
-const tableHeaders = [
-  {
-    label: "Valmistaja",
-    sort: defaultSort.sort,
-  },
-  {
-    label: "Mold",
-    sort: "mold.name,asc",
-  },
-  {
-    label: "Muovi",
-    sort: "plastic.name,asc",
-  },
-  {
-    label: "SPD",
-    sort: "mold.speed,desc",
-  },
-  {
-    label: "GLD",
-    sort: "mold.glide,desc",
-  },
-  {
-    label: "STA",
-    sort: "mold.stability,asc",
-  },
-  {
-    label: "FAD",
-    sort: "mold.fade,asc",
-  },
-  {
-    label: "Paino",
-    sort: "weight,desc",
-  },
-]
+const imageDropzone = ({ getRootProps, getInputProps }) => {
+  return (
+    <div className="dropzone" {...getRootProps()}>
+      <input {...getInputProps()} />
+      <IconButton color="primary">
+        <AddAPhotoIcon />
+      </IconButton>
+    </div>
+  )
+}
 
-const handleDelete = params => {
+const handleDelete = ({ uuid, confirm }) => {
   confirmAlert({
     title: "Varoitus",
     message: "Haluatko varmasti poistaa kiekon?",
     buttons: [
       {
         label: "Poista",
-        onClick: () => params.confirm(params.id),
+        onClick: () => confirm(uuid),
         className: "red-button",
       },
       {

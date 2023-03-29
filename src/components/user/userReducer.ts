@@ -1,5 +1,6 @@
-import { findIndex, propEq, prop, update } from "ramda"
 import { toast } from "react-toastify"
+import { IUsersState, TUser, UserActions } from "../../types"
+import { updateUserArray } from "../shared/utils"
 
 import {
   LOGIN_SUCCESS,
@@ -14,32 +15,28 @@ import {
   UPDATE_SUCCESS,
 } from "./userActions"
 
-const initialState = {
+const initialState: IUsersState = {
   user: null,
   token: localStorage.getItem("hamsteri-token"),
   users: [],
   isEditModalOpen: false,
-  userInEdit: {},
+  userInEdit: null,
 }
 
-const updateUserArray = (users, updatedUser) => {
-  const index = findIndex(propEq("id", prop("id", updatedUser)))(users)
-  return update(index, updatedUser, users)
+const updateCurrentUser = (currentUser: TUser | null, updatedUser: TUser) => {
+  if(!currentUser) return null //this should never happen: if you are editing any user, current user is not null
+  return currentUser.id === updatedUser.id ? updatedUser : currentUser
 }
 
-const updateCurrentUser = (currentUser, updatedUser) => {
-  return prop("id", currentUser) === prop("id", updatedUser) ? updatedUser : currentUser
-}
-
-const saveToken = user => {
-  localStorage.setItem("hamsteri-token", user.jwt)
+const saveToken = (user: TUser) => {
+  user.jwt && localStorage.setItem("hamsteri-token", user.jwt)
 }
 
 const resetToken = () => {
   localStorage.removeItem("hamsteri-token")
 }
 
-const userReducer = (state = initialState, action) => {
+const userReducer = (state: IUsersState = initialState, action: UserActions) => {
   switch (action.type) {
     case LOGIN_FAILURE:
     case GOOGLE_LOGIN_FAILURE:
@@ -76,7 +73,7 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         isEditModalOpen: !state.isEditModalOpen,
-        userInEdit: action.user,
+        userInEdit: action.payload.user,
       }
     case UPDATE_SUCCESS:
       toast.success("Käyttäjä päivitetty")
