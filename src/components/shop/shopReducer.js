@@ -53,11 +53,11 @@ const shopReducer = (state = initialState, action) => {
       return {
         ...state,
         asBuyer: removeFromArrayById(
-          state.data.asBuyer,
+          state.asBuyer,
           pathOr(-1, ["meta", "previousAction", "id"], action)
         ),
         asSeller: removeFromArrayById(
-          state.data.asSeller,
+          state.asSeller,
           pathOr(-1, ["meta", "previousAction", "id"], action)
         ),
       }

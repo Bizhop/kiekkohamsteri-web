@@ -25,3 +25,7 @@ build production version
 
 # Styling with prettier
 `npm run format`
+
+# Import backend models
+- Save backend api-docs.yaml as backend.yaml
+- execute `npm run generate-types`

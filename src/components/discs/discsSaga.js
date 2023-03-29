@@ -4,8 +4,8 @@ import { TOGGLE_DISC_EDIT_MODAL } from "./discsActions"
 import { getDropdownsByManufacturer } from "../dropdown/dropdownActions"
 
 function* toggleEditModalSaga(action) {
-  if (action.disc) {
-    yield put(getDropdownsByManufacturer(action.disc.mold.manufacturer.id))
+  if (action.payload.disc) {
+    yield put(getDropdownsByManufacturer(action.payload.disc.mold.manufacturer.id))
   }
 }
 

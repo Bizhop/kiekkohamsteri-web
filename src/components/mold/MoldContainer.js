@@ -29,7 +29,7 @@ const MoldContainer = props => (
       createMold={props.createMold}
       selectedManufacturer={props.selectedManufacturer}
     />
-    <h2>Moldit</h2>
+    <h2>Mallit</h2>
     <SelectManufacturerForm
       manufacturers={pathOr([], ["dropdowns", "manufacturers"], props)}
       getByManufacturer={props.getMoldsByManufacturer}
@@ -42,7 +42,7 @@ const MoldContainer = props => (
           onClick={() => props.toggleCreateModal()}
           disabled={!props.selectedManufacturer.id}
         >
-          Uusi moldi
+          Uusi malli
         </Button>
       </Grid>
     </Grid>

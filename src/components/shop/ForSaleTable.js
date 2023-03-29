@@ -10,7 +10,6 @@ import {
   Button,
 } from "@mui/material"
 
-import ThWithButton from "../shared/ThWithButton"
 import ZoomImage from "../shared/ZoomImage"
 import { markings } from "../shared/constants"
 
@@ -20,18 +19,22 @@ const ForSaleTable = props => (
       <TableHead>
         <TableRow>
           <TableCell />
-          {tableHeaders.map(t => (
-            <ThWithButton {...t} key={t.label} update={props.update} previousSort={props.sort} />
-          ))}
+          <TableCell>Omistaja</TableCell>
+          <TableCell>Hinta</TableCell>
+          <TableCell>Kiekko</TableCell>
+          <TableCell>Lentoarvot</TableCell>
+          <TableCell>Kunto</TableCell>
+          <TableCell>Tussit</TableCell>
+          <TableCell>Paino</TableCell>
           <TableCell />
         </TableRow>
       </TableHead>
       <TableBody>
         {props.discs.map(disc => (
           <Disc
-            key={disc.id}
+            key={disc.uuid}
             disc={disc}
-            action={{ ...props.action, id: disc.id }}
+            action={{ ...props.action, id: disc.uuid }}
             username={props.username}
           />
         ))}
@@ -45,7 +48,6 @@ const Disc = ({ disc, username, action }) => (
     <TableCell>
       <ZoomImage image={disc.image} />
     </TableCell>
-    <TableCell>{disc.id}</TableCell>
     <TableCell>{disc.owner.username}</TableCell>
     <TableCell>{disc.price} €</TableCell>
     <TableCell>
@@ -71,22 +73,16 @@ const Disc = ({ disc, username, action }) => (
 
 const tableHeaders = [
   {
-    label: "Id",
-    sort: "id,asc",
-  },
-  {
     label: "Omistaja",
-    sort: "owner.username,asc",
   },
   {
     label: "Hinta",
-    sort: "price,asc",
   },
   {
     label: "Kiekko",
   },
   {
-    label: "Lentonumerot",
+    label: "Lentoarvot",
   },
   {
     label: "Kunto",
@@ -96,7 +92,6 @@ const tableHeaders = [
   },
   {
     label: "Paino",
-    sort: "weight,asc",
   },
 ]
 

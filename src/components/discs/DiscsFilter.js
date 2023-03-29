@@ -3,7 +3,7 @@ import { Box, MenuItem, TextField, Paper, Stack, Button, IconButton, Radio, Radi
 import { append, assoc, compose, filter, find, includes, map, propEq, remove } from "ramda"
 import DeleteIcon from "@mui/icons-material/Delete"
 
-import FilterSelect from "./FilterSelect"
+import Selector from "../shared/Selector"
 
 const operationsMap = new Map([
   ["GREATER_THAN", ">"],
@@ -98,7 +98,7 @@ const FilterCreator = ({ addFilter, searchOperations }) => {
 
   return (
     <Box>
-      <FilterSelect
+      <Selector
         id="filter-select"
         value={filter.field}
         label="Suodatin"
@@ -134,7 +134,7 @@ const NumberFilter = ({ data, addFilter }) => {
   return (
     <Box component={Paper} elevation={3} padding={1}>
       <Stack direction="row" spacing={1}>
-        <FilterSelect
+        <Selector
           id="operation-select"
           value={operation}
           label="Operaatio"

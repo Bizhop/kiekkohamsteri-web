@@ -5,7 +5,7 @@
 
 
 export interface paths {
-  "/api/v2/discs/{id}": {
+  "/api/v2/discs/{uuid}": {
     get: operations["getDisc"];
     put: operations["updateDisc"];
     delete: operations["deleteDisc"];
@@ -24,7 +24,7 @@ export interface paths {
     get: operations["getDiscs"];
     post: operations["createDisc"];
   };
-  "/api/v2/discs/{id}/buy": {
+  "/api/v2/discs/{uuid}/buy": {
     post: operations["buyDisc"];
   };
   "/api/v2/discs/search": {
@@ -52,10 +52,10 @@ export interface paths {
     get: operations["getDetails"];
     patch: operations["updateDetails"];
   };
-  "/api/v2/discs/{id}/update-image": {
+  "/api/v2/discs/{uuid}/update-image": {
     patch: operations["updateImage"];
   };
-  "/api/v2/discs/{id}/found": {
+  "/api/v2/discs/{uuid}/found": {
     patch: operations["markFound"];
   };
   "/api/v2/user": {
@@ -129,35 +129,36 @@ export interface components {
     };
     ColorOutputDto: {
       /** Format: int64 */
-      id?: number;
-      name?: string;
+      id: number;
+      name: string;
     };
     DiscOutputDto: {
-      /** Format: int64 */
-      id?: number;
-      owner?: components["schemas"]["UserOutputDto"];
+      uuid: string;
+      owner: components["schemas"]["UserOutputDto"];
       mold?: components["schemas"]["MoldOutputDto"];
       plastic?: components["schemas"]["PlasticOutputDto"];
-      color?: components["schemas"]["ColorOutputDto"];
-      image?: string;
+      color: components["schemas"]["ColorOutputDto"];
+      image: string;
       /** Format: int32 */
       weight?: number;
       /** Format: int32 */
-      condition?: number;
+      condition: number;
       glow?: boolean;
       special?: boolean;
-      dyed?: boolean;
-      swirly?: boolean;
+      dyed: boolean;
+      swirly: boolean;
       /** Format: int32 */
-      markings?: number;
+      markings: number;
       forSale?: boolean;
       /** Format: int32 */
-      price?: number;
+      price: number;
       description?: string;
       lostAndFound?: boolean;
-      itb?: boolean;
-      publicDisc?: boolean;
-      lost?: boolean;
+      itb: boolean;
+      publicDisc: boolean;
+      lost: boolean;
+      /** Format: date-time */
+      updatedAt: string;
     };
     GroupDto: {
       /** Format: int64 */
@@ -166,28 +167,28 @@ export interface components {
     };
     ManufacturerOutputDto: {
       /** Format: int64 */
-      id?: number;
-      name?: string;
+      id: number;
+      name: string;
     };
     MoldOutputDto: {
       /** Format: int64 */
-      id?: number;
-      manufacturer?: components["schemas"]["ManufacturerOutputDto"];
-      name?: string;
+      id: number;
+      manufacturer: components["schemas"]["ManufacturerOutputDto"];
+      name: string;
       /** Format: double */
-      speed?: number;
+      speed: number;
       /** Format: double */
-      glide?: number;
+      glide: number;
       /** Format: double */
-      stability?: number;
+      stability: number;
       /** Format: double */
-      fade?: number;
+      fade: number;
     };
     PlasticOutputDto: {
       /** Format: int64 */
-      id?: number;
-      manufacturer?: components["schemas"]["ManufacturerOutputDto"];
-      name?: string;
+      id: number;
+      manufacturer: components["schemas"]["ManufacturerOutputDto"];
+      name: string;
     };
     RoleDto: {
       /** Format: int64 */
@@ -198,13 +199,13 @@ export interface components {
     };
     UserOutputDto: {
       /** Format: int64 */
-      id?: number;
-      username?: string;
-      email?: string;
-      firstName?: string;
-      lastName?: string;
+      id: number;
+      username: string;
+      email: string;
+      firstName: string;
+      lastName: string;
       /** Format: int32 */
-      pdgaNumber?: number;
+      pdgaNumber: number;
       jwt?: string;
       roles?: (components["schemas"]["RoleDto"])[];
       groups?: (components["schemas"]["GroupDto"])[];
@@ -215,29 +216,26 @@ export interface components {
     };
     GroupRequestDto: {
       /** Format: int64 */
-      targetUserId?: number;
+      targetUserId: number;
       /** @enum {string} */
-      type?: "JOIN" | "KICK" | "PROMOTE" | "DEMOTE";
+      type: "JOIN" | "KICK" | "PROMOTE" | "DEMOTE";
       info?: string;
     };
     GroupRequestOutputDto: {
       /** Format: int64 */
-      id?: number;
-      group?: components["schemas"]["GroupDto"];
-      source?: components["schemas"]["UserOutputDto"];
-      target?: components["schemas"]["UserOutputDto"];
+      id: number;
+      group: components["schemas"]["GroupDto"];
+      source: components["schemas"]["UserOutputDto"];
+      target: components["schemas"]["UserOutputDto"];
       /** @enum {string} */
-      type?: "JOIN" | "KICK" | "PROMOTE" | "DEMOTE";
+      type: "JOIN" | "KICK" | "PROMOTE" | "DEMOTE";
       /** @enum {string} */
-      status?: "REQUESTED" | "COMPLETED" | "REJECTED";
+      status: "REQUESTED" | "COMPLETED" | "REJECTED";
       info?: string;
       error?: string;
     };
     CompleteGroupRequestDto: {
       confirm?: boolean;
-    };
-    UploadDto: {
-      data?: string;
     };
     BuyOutputDto: {
       /** Format: int64 */
@@ -263,22 +261,22 @@ export interface components {
       /** Format: int32 */
       totalPages?: number;
       /** Format: int32 */
-      size?: number;
-      content?: (components["schemas"]["DiscOutputDto"])[];
-      /** Format: int32 */
       number?: number;
       sort?: components["schemas"]["SortObject"];
+      /** Format: int32 */
+      size?: number;
+      content?: (components["schemas"]["DiscOutputDto"])[];
       pageable?: components["schemas"]["PageableObject"];
-      first?: boolean;
-      last?: boolean;
       /** Format: int32 */
       numberOfElements?: number;
+      first?: boolean;
+      last?: boolean;
       empty?: boolean;
     };
     PageableObject: {
+      sort?: components["schemas"]["SortObject"];
       /** Format: int64 */
       offset?: number;
-      sort?: components["schemas"]["SortObject"];
       /** Format: int32 */
       pageNumber?: number;
       /** Format: int32 */
@@ -335,6 +333,9 @@ export interface components {
       /** Format: int64 */
       removeFromGroupId?: number;
     };
+    UploadDto: {
+      data?: string;
+    };
     Pageable: {
       /** Format: int32 */
       page?: number;
@@ -348,16 +349,16 @@ export interface components {
       /** Format: int32 */
       totalPages?: number;
       /** Format: int32 */
-      size?: number;
-      content?: (components["schemas"]["Stats"])[];
-      /** Format: int32 */
       number?: number;
       sort?: components["schemas"]["SortObject"];
+      /** Format: int32 */
+      size?: number;
+      content?: (components["schemas"]["Stats"])[];
       pageable?: components["schemas"]["PageableObject"];
-      first?: boolean;
-      last?: boolean;
       /** Format: int32 */
       numberOfElements?: number;
+      first?: boolean;
+      last?: boolean;
       empty?: boolean;
     };
     Stats: {
@@ -408,16 +409,16 @@ export interface components {
       /** Format: int32 */
       totalPages?: number;
       /** Format: int32 */
-      size?: number;
-      content?: (components["schemas"]["PlasticOutputDto"])[];
-      /** Format: int32 */
       number?: number;
       sort?: components["schemas"]["SortObject"];
+      /** Format: int32 */
+      size?: number;
+      content?: (components["schemas"]["PlasticOutputDto"])[];
       pageable?: components["schemas"]["PageableObject"];
-      first?: boolean;
-      last?: boolean;
       /** Format: int32 */
       numberOfElements?: number;
+      first?: boolean;
+      last?: boolean;
       empty?: boolean;
     };
     PageMoldOutputDto: {
@@ -426,16 +427,16 @@ export interface components {
       /** Format: int32 */
       totalPages?: number;
       /** Format: int32 */
-      size?: number;
-      content?: (components["schemas"]["MoldOutputDto"])[];
-      /** Format: int32 */
       number?: number;
       sort?: components["schemas"]["SortObject"];
+      /** Format: int32 */
+      size?: number;
+      content?: (components["schemas"]["MoldOutputDto"])[];
       pageable?: components["schemas"]["PageableObject"];
-      first?: boolean;
-      last?: boolean;
       /** Format: int32 */
       numberOfElements?: number;
+      first?: boolean;
+      last?: boolean;
       empty?: boolean;
     };
     BuySummaryDto: {
@@ -462,7 +463,7 @@ export interface operations {
   getDisc: {
     parameters: {
       path: {
-        id: number;
+        uuid: string;
       };
     };
     responses: {
@@ -477,7 +478,7 @@ export interface operations {
   updateDisc: {
     parameters: {
       path: {
-        id: number;
+        uuid: string;
       };
     };
     requestBody: {
@@ -497,7 +498,7 @@ export interface operations {
   deleteDisc: {
     parameters: {
       path: {
-        id: number;
+        uuid: string;
       };
     };
     responses: {
@@ -593,11 +594,6 @@ export interface operations {
     };
   };
   createDisc: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["UploadDto"];
-      };
-    };
     responses: {
       /** @description OK */
       200: {
@@ -610,7 +606,7 @@ export interface operations {
   buyDisc: {
     parameters: {
       path: {
-        id: number;
+        uuid: string;
       };
     };
     responses: {
@@ -809,7 +805,7 @@ export interface operations {
   updateImage: {
     parameters: {
       path: {
-        id: number;
+        uuid: string;
       };
     };
     requestBody: {
@@ -829,7 +825,7 @@ export interface operations {
   markFound: {
     parameters: {
       path: {
-        id: number;
+        uuid: string;
       };
     };
     responses: {

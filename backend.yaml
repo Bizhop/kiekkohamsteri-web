@@ -6,18 +6,17 @@ servers:
 - url: http://localhost:8080
   description: Generated server url
 paths:
-  /api/v2/discs/{id}:
+  /api/v2/discs/{uuid}:
     get:
       tags:
       - disc-controller
       operationId: getDisc
       parameters:
-      - name: id
+      - name: uuid
         in: path
         required: true
         schema:
-          type: integer
-          format: int64
+          type: string
       responses:
         "200":
           description: OK
@@ -30,12 +29,11 @@ paths:
       - disc-controller
       operationId: updateDisc
       parameters:
-      - name: id
+      - name: uuid
         in: path
         required: true
         schema:
-          type: integer
-          format: int64
+          type: string
       requestBody:
         content:
           application/json:
@@ -54,12 +52,11 @@ paths:
       - disc-controller
       operationId: deleteDisc
       parameters:
-      - name: id
+      - name: uuid
         in: path
         required: true
         schema:
-          type: integer
-          format: int64
+          type: string
       responses:
         "200":
           description: OK
@@ -198,12 +195,6 @@ paths:
       tags:
       - disc-controller
       operationId: createDisc
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UploadDto'
-        required: true
       responses:
         "200":
           description: OK
@@ -211,18 +202,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DiscOutputDto'
-  /api/v2/discs/{id}/buy:
+  /api/v2/discs/{uuid}/buy:
     post:
       tags:
       - disc-controller
       operationId: buyDisc
       parameters:
-      - name: id
+      - name: uuid
         in: path
         required: true
         schema:
-          type: integer
-          format: int64
+          type: string
       responses:
         "200":
           description: OK
@@ -510,18 +500,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserOutputDto'
-  /api/v2/discs/{id}/update-image:
+  /api/v2/discs/{uuid}/update-image:
     patch:
       tags:
       - disc-controller
       operationId: updateImage
       parameters:
-      - name: id
+      - name: uuid
         in: path
         required: true
         schema:
-          type: integer
-          format: int64
+          type: string
       requestBody:
         content:
           application/json:
@@ -535,18 +524,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DiscOutputDto'
-  /api/v2/discs/{id}/found:
+  /api/v2/discs/{uuid}/found:
     patch:
       tags:
       - disc-controller
       operationId: markFound
       parameters:
-      - name: id
+      - name: uuid
         in: path
         required: true
         schema:
-          type: integer
-          format: int64
+          type: string
       responses:
         "200":
           description: OK
@@ -840,6 +828,9 @@ components:
         lost:
           type: boolean
     ColorOutputDto:
+      required:
+      - id
+      - name
       type: object
       properties:
         id:
@@ -848,11 +839,24 @@ components:
         name:
           type: string
     DiscOutputDto:
+      required:
+      - color
+      - condition
+      - dyed
+      - image
+      - itb
+      - lost
+      - markings
+      - owner
+      - price
+      - publicDisc
+      - swirly
+      - updatedAt
+      - uuid
       type: object
       properties:
-        id:
-          type: integer
-          format: int64
+        uuid:
+          type: string
         owner:
           $ref: '#/components/schemas/UserOutputDto'
         mold:
@@ -895,6 +899,9 @@ components:
           type: boolean
         lost:
           type: boolean
+        updatedAt:
+          type: string
+          format: date-time
     GroupDto:
       type: object
       properties:
@@ -904,6 +911,9 @@ components:
         name:
           type: string
     ManufacturerOutputDto:
+      required:
+      - id
+      - name
       type: object
       properties:
         id:
@@ -912,6 +922,14 @@ components:
         name:
           type: string
     MoldOutputDto:
+      required:
+      - fade
+      - glide
+      - id
+      - manufacturer
+      - name
+      - speed
+      - stability
       type: object
       properties:
         id:
@@ -934,6 +952,10 @@ components:
           type: number
           format: double
     PlasticOutputDto:
+      required:
+      - id
+      - manufacturer
+      - name
       type: object
       properties:
         id:
@@ -955,6 +977,13 @@ components:
           type: integer
           format: int64
     UserOutputDto:
+      required:
+      - email
+      - firstName
+      - id
+      - lastName
+      - pdgaNumber
+      - username
       type: object
       properties:
         id:
@@ -991,6 +1020,9 @@ components:
         name:
           type: string
     GroupRequestDto:
+      required:
+      - targetUserId
+      - type
       type: object
       properties:
         targetUserId:
@@ -1006,6 +1038,13 @@ components:
         info:
           type: string
     GroupRequestOutputDto:
+      required:
+      - group
+      - id
+      - source
+      - status
+      - target
+      - type
       type: object
       properties:
         id:
@@ -1039,11 +1078,6 @@ components:
       properties:
         confirm:
           type: boolean
-    UploadDto:
-      type: object
-      properties:
-        data:
-          type: string
     BuyOutputDto:
       type: object
       properties:
@@ -1096,6 +1130,11 @@ components:
         totalPages:
           type: integer
           format: int32
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: '#/components/schemas/SortObject'
         size:
           type: integer
           format: int32
@@ -1103,30 +1142,25 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DiscOutputDto'
-        number:
-          type: integer
-          format: int32
-        sort:
-          $ref: '#/components/schemas/SortObject'
         pageable:
           $ref: '#/components/schemas/PageableObject'
+        numberOfElements:
+          type: integer
+          format: int32
         first:
           type: boolean
         last:
           type: boolean
-        numberOfElements:
-          type: integer
-          format: int32
         empty:
           type: boolean
     PageableObject:
       type: object
       properties:
+        sort:
+          $ref: '#/components/schemas/SortObject'
         offset:
           type: integer
           format: int64
-        sort:
-          $ref: '#/components/schemas/SortObject'
         pageNumber:
           type: integer
           format: int32
@@ -1218,6 +1252,11 @@ components:
         removeFromGroupId:
           type: integer
           format: int64
+    UploadDto:
+      type: object
+      properties:
+        data:
+          type: string
     Pageable:
       type: object
       properties:
@@ -1242,6 +1281,11 @@ components:
         totalPages:
           type: integer
           format: int32
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: '#/components/schemas/SortObject'
         size:
           type: integer
           format: int32
@@ -1249,20 +1293,15 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Stats'
-        number:
-          type: integer
-          format: int32
-        sort:
-          $ref: '#/components/schemas/SortObject'
         pageable:
           $ref: '#/components/schemas/PageableObject'
+        numberOfElements:
+          type: integer
+          format: int32
         first:
           type: boolean
         last:
           type: boolean
-        numberOfElements:
-          type: integer
-          format: int32
         empty:
           type: boolean
     Stats:
@@ -1366,6 +1405,11 @@ components:
         totalPages:
           type: integer
           format: int32
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: '#/components/schemas/SortObject'
         size:
           type: integer
           format: int32
@@ -1373,20 +1417,15 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PlasticOutputDto'
-        number:
-          type: integer
-          format: int32
-        sort:
-          $ref: '#/components/schemas/SortObject'
         pageable:
           $ref: '#/components/schemas/PageableObject'
+        numberOfElements:
+          type: integer
+          format: int32
         first:
           type: boolean
         last:
           type: boolean
-        numberOfElements:
-          type: integer
-          format: int32
         empty:
           type: boolean
     PageMoldOutputDto:
@@ -1398,6 +1437,11 @@ components:
         totalPages:
           type: integer
           format: int32
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: '#/components/schemas/SortObject'
         size:
           type: integer
           format: int32
@@ -1405,20 +1449,15 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/MoldOutputDto'
-        number:
-          type: integer
-          format: int32
-        sort:
-          $ref: '#/components/schemas/SortObject'
         pageable:
           $ref: '#/components/schemas/PageableObject'
+        numberOfElements:
+          type: integer
+          format: int32
         first:
           type: boolean
         last:
           type: boolean
-        numberOfElements:
-          type: integer
-          format: int32
         empty:
           type: boolean
     BuySummaryDto:

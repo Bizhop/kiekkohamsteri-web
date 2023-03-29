@@ -11,6 +11,7 @@
   },
   "devDependencies": {
     "@parcel/transformer-sass": "^2.5.0",
+    "@types/ramda": "^0.28.22",
     "buffer": "^6.0.3",
     "openapi-typescript": "^6.1.0",
     "parcel": "^2.5.0",

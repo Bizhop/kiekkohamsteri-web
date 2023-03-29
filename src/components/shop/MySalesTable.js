@@ -13,30 +13,35 @@ import {
 import CheckIcon from "@mui/icons-material/Check"
 import CloseIcon from "@mui/icons-material/Close"
 
-import ThWithButton from "../shared/ThWithButton"
 import ZoomImage from "../shared/ZoomImage"
 
-const MySalesTable = props => (
-  <TableContainer component={Paper} elevation={3}>
-    <Table size="small">
-      <TableHead>
-        <TableRow>
-          <TableCell />
-          {tableHeaders.map(t => (
-            <ThWithButton {...t} key={t.label} />
+const MySalesTable = props => {
+  if (props.asSeller.length == 0) return <p>Ei myyntejä</p>
+  return (
+    <TableContainer component={Paper} elevation={3}>
+      <Table size="small">
+        <TableHead>
+          <TableRow>
+            <TableCell />
+            <TableCell>Ostaja</TableCell>
+            <TableCell>Hinta</TableCell>
+            <TableCell>Kiekko</TableCell>
+            <TableCell>Lentoarvot</TableCell>
+            <TableCell>Kunto</TableCell>
+            <TableCell>Paino</TableCell>
+            <TableCell />
+            <TableCell />
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {props.asSeller.map(sale => (
+            <Sale key={sale.id} sale={sale} accept={props.accept} cancel={props.cancel} />
           ))}
-          <TableCell />
-          <TableCell />
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {props.asSeller.map(sale => (
-          <Sale key={sale.id} sale={sale} accept={props.accept} cancel={props.cancel} />
-        ))}
-      </TableBody>
-    </Table>
-  </TableContainer>
-)
+        </TableBody>
+      </Table>
+    </TableContainer>
+  )
+}
 
 const Sale = ({ sale, accept, cancel }) => {
   const { disc } = sale
@@ -45,7 +50,6 @@ const Sale = ({ sale, accept, cancel }) => {
       <TableCell>
         <ZoomImage image={disc.image} />
       </TableCell>
-      <TableCell>{disc.id}</TableCell>
       <TableCell>{sale.buyer.username}</TableCell>
       <TableCell>{disc.price} €</TableCell>
       <TableCell>
@@ -73,29 +77,5 @@ const Sale = ({ sale, accept, cancel }) => {
     </TableRow>
   )
 }
-
-const tableHeaders = [
-  {
-    label: "Id",
-  },
-  {
-    label: "Ostaja",
-  },
-  {
-    label: "Hinta",
-  },
-  {
-    label: "Kiekko",
-  },
-  {
-    label: "Lentonumerot",
-  },
-  {
-    label: "Kunto",
-  },
-  {
-    label: "Paino",
-  },
-]
 
 export default MySalesTable

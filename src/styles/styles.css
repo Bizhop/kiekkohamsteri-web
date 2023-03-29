@@ -23,3 +23,11 @@ div#app {
 div.dropzone:hover {
     cursor: pointer;
 }
+
+thead.MuiTableHead-root, tfoot.MuiTableFooter-root {
+  background-color: lavender;
+}
+
+th.MuiTableCell-head {
+  font-weight: bold;
+}
