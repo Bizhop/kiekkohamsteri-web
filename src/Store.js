@@ -7,7 +7,7 @@ import { path } from "ramda"
 
 import rootSaga from "./rootSaga"
 import rootReducer from "./rootReducer"
-import { GET_MY_DETAILS, USERS_REQUEST, logout, getMyDetails } from "./components/user/userActions"
+import { USER_DETAILS_REQUEST, USERS_REQUEST, logout, getMyDetails } from "./components/user/userActions"
 import { DISCS_REQUEST, LOST_REQUEST, UPDATE_DISC_REQUEST } from "./components/discs/discsActions"
 import { MOLDS_REQUEST } from "./components/mold/moldActions"
 import { PLASTICS_REQUEST } from "./components/plastics/plasticsActions"
@@ -79,7 +79,7 @@ const axiosMWConfig = {
           const sourceActionType = path(["config", "reduxSourceAction", "type"], error)
           const status = path(["response", "status"], error)
           switch (sourceActionType) {
-            case GET_MY_DETAILS:
+            case USER_DETAILS_REQUEST:
             case DISCS_REQUEST:
             case USERS_REQUEST:
             case UPDATE_DISC_REQUEST:

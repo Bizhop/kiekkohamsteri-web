@@ -13,6 +13,8 @@ import {
   TableCell,
   Paper,
   TableHead,
+  TableFooter,
+  TablePagination
 } from "@mui/material"
 
 import {
@@ -25,53 +27,79 @@ import { getDropdowns } from "../dropdown/dropdownActions"
 import SelectManufacturerForm from "../shared/SelectManufacturerForm"
 import Modal from "../shared/Modal"
 import CreatePlasticForm from "./CreatePlasticForm"
+import { defaultPagination } from "../shared/constants"
+import { defaultPlasticSort } from "./plasticsReducer"
 
-const PlasticsContainer = props => (
-  <Box sx={{ flexGrow: 1 }}>
-    <CreatePlasticModal
-      isOpen={props.isCreateOpen}
-      toggleModal={props.toggleCreateModal}
-      createPlastic={props.createPlastic}
-      selectedManufacturer={props.selectedManufacturer}
-    />
-    <h2>Muovit</h2>
-    <SelectManufacturerForm
-      manufacturers={pathOr([], ["dropdowns", "manufacturers"], props)}
-      getByManufacturer={props.getPlasticsByManufacturer}
-      manufacturerId={props.selectedManufacturer.id}
-    />
-    <Grid container spacing={1}>
-      <Grid item md={4}>
-        <Button
-          variant="contained"
-          onClick={() => props.toggleCreateModal()}
-          disabled={!props.selectedManufacturer.id}
-        >
-          Uusi muovi
-        </Button>
+const PlasticsContainer = props => {
+  const handleManufacturerSelection = manufacturerId => props.getPlasticsByManufacturer(manufacturerId, props.sort, defaultPagination)
+
+  const handlePageChange = (_, newPage) => props.selectedManufacturer.id == null
+    ? props.getPlastics(props.sort, { ...props.pagination, number: newPage })
+    : props.getPlasticsByManufacturer(props.selectedManufacturer.id, props.sort, { ...props.pagination, number: newPage })
+
+  return (
+    <Box sx={{ flexGrow: 1 }}>
+      <CreatePlasticModal
+        isOpen={props.isCreateOpen}
+        toggleModal={props.toggleCreateModal}
+        createPlastic={props.createPlastic}
+        selectedManufacturer={props.selectedManufacturer}
+      />
+      <h2>Muovit</h2>
+      <SelectManufacturerForm
+        manufacturers={pathOr([], ["dropdowns", "manufacturers"], props)}
+        getByManufacturer={handleManufacturerSelection}
+        manufacturerId={props.selectedManufacturer.id}
+      />
+      <Grid container spacing={1}>
+        <Grid item md={4}>
+          <Button
+            variant="contained"
+            onClick={() => props.toggleCreateModal()}
+            disabled={!props.selectedManufacturer.id}
+          >
+            Uusi muovi
+          </Button>
+        </Grid>
       </Grid>
-    </Grid>
-    <Box sx={{ marginTop: 3 }}>
-      <TableContainer component={Paper} elevation={3} sx={{ maxHeight: 800 }}>
-        <Table stickyHeader>
-          <TableHead>
-            <TableRow>
-              <TableCell>Id</TableCell>
-              <TableCell>Valmistaja</TableCell>
-              <TableCell>Muovi</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {props.plastics.map(p => (
-              <Plastic key={p.id} plastic={p} />
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <Box sx={{ marginTop: 3 }}>
+        <TableContainer component={Paper} elevation={3} sx={{ maxHeight: 800 }}>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell>Id</TableCell>
+                <TableCell>Valmistaja</TableCell>
+                <TableCell>Muovi</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {props.plastics.map(p => (
+                <Plastic key={p.id} plastic={p} />
+              ))}
+            </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TableCell colSpan="100%">
+                  <TablePagination
+                    component="div"
+                    count={props.pagination.totalElements}
+                    rowsPerPageOptions={[props.pagination.size]}
+                    rowsPerPage={props.pagination.size}
+                    page={props.pagination.number}
+                    onPageChange={handlePageChange}
+                    showFirstButton
+                    showLastButton
+                  />
+                </TableCell>
+              </TableRow>
+            </TableFooter>
+          </Table>
+        </TableContainer>
+      </Box>
+      {!props.loggedIn && <Navigate to="/" />}
     </Box>
-    {!props.loggedIn && <Navigate to="/" />}
-  </Box>
-)
+  )
+}
 
 const CreatePlasticModal = ({ isOpen, toggleModal, createPlastic, selectedManufacturer }) => (
   <Modal isOpen={isOpen} onRequestClose={() => toggleModal()} contentLabel="Uusi muovi">
@@ -92,16 +120,19 @@ const Plastic = ({ plastic }) => (
 
 const mapStateToProps = state => ({
   loggedIn: path(["user", "token"], state),
-  plastics: path(["plastic", "plastics", "content"], state),
+  plastics: path(["plastic", "plastics"], state),
   dropdowns: path(["dropdowns", "dropdowns"], state),
   isCreateOpen: path(["plastic", "isCreateOpen"], state),
   selectedManufacturer: path(["plastic", "selectedManufacturer"], state),
+  sort: path(["plastic", "sort"], state),
+  pagination: path(["plastic", "pagination"], state),
 })
 
 const mapDispatchToProps = dispatch => ({
-  getPlastics: dispatch(getPlastics()),
+  getInitialPlastics: dispatch(getPlastics(defaultPlasticSort, defaultPagination)),
+  getPlastics: (sort, pagination) => dispatch(getPlastics(sort, pagination)),
   getDropdowns: dispatch(getDropdowns()),
-  getPlasticsByManufacturer: manufacturerId => dispatch(getPlasticsByManufacturer(manufacturerId)),
+  getPlasticsByManufacturer: (manufacturerId, sort, pagination) => dispatch(getPlasticsByManufacturer(manufacturerId, sort, pagination)),
   toggleCreateModal: () => dispatch(toggleCreateModal()),
   createPlastic: plastic => dispatch(createPlastic(plastic)),
 })

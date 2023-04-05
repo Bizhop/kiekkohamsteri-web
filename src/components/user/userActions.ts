@@ -19,7 +19,8 @@ export const USER_DETAILS_FAILURE = "users/USER_DETAILS_FAIL"
 import { getPayloadTs, loginPayloadTs, patchPayloadTs } from "../Api"
 import { pick } from "ramda"
 import { CredentialResponse } from "@react-oauth/google"
-import { IResponsePayload, TUser } from "../../types"
+import { IPagination, IResponsePagedPayload, IResponsePayload, ISort, TUser } from "../../types"
+import { pagingAndSortingQueryParams } from "../shared/utils"
 
 export const login = (response: CredentialResponse) => action(LOGIN_REQUEST, loginPayloadTs(response.credential))
 export const loginSuccess = (payload: IResponsePayload<TUser>) => action(LOGIN_SUCCESS, payload)
@@ -29,14 +30,18 @@ export const getMyDetails = () => action(USER_DETAILS_REQUEST, getPayloadTs("api
 export const getMyDetailsSuccess = (payload: IResponsePayload<TUser>) => action(USER_DETAILS_SUCCESS, payload)
 export const getMyDetailsFailure = () => action(USER_DETAILS_FAILURE)
 
-export const getUsers = () => action(USERS_REQUEST, getPayloadTs("api/v2/user"))
-export const getUsersSuccess = (payload: IResponsePayload<TUser[]>) => action(USERS_SUCCESS, payload)
+export const getUsers = (sort: ISort, pagination: IPagination) => action(
+  USERS_REQUEST,
+  getPayloadTs(`api/v2/user?${pagingAndSortingQueryParams(sort, pagination)}`),
+  { sort, pagination }
+)
+export const getUsersSuccess = (payload: IResponsePagedPayload<TUser>) => action(USERS_SUCCESS, payload)
 export const getUsersFailure = () => action(USERS_FAILURE)
 
-export const updateUser = (user: TUser) => action(UPDATE_REQUEST, patchPayloadTs, `api/v2/user/${user.id}`, pick(["username", "firstName", "lastName", "pdgaNumber"], user))
-export const requestUpdateMe = (user: TUser) => action(UPDATE_REQUEST, patchPayloadTs, `api/v2/user/${user.id}`, pick(["username", "firstName", "lastName", "pdgaNumber", "removeFromGroupId"], user))
-export const promoteUser = (userId: number) => action(UPDATE_REQUEST, patchPayloadTs, `api/v2/user/${userId}`, { addToRole: "ADMIN" })
-export const demoteUser = (userId: number) => action(UPDATE_REQUEST, patchPayloadTs, `api/v2/user/${userId}`, { removeFromRole: "ADMIN" })
+export const updateUser = (user: TUser) => action(UPDATE_REQUEST, patchPayloadTs(`api/v2/user/${user.id}`, pick(["username", "firstName", "lastName", "pdgaNumber"], user)))
+export const requestUpdateMe = (user: TUser) => action(UPDATE_REQUEST, patchPayloadTs(`api/v2/user/${user.id}`, pick(["username", "firstName", "lastName", "pdgaNumber", "removeFromGroupId"], user)))
+export const promoteUser = (userId: number) => action(UPDATE_REQUEST, patchPayloadTs(`api/v2/user/${userId}`, { addToRole: "ADMIN" }))
+export const demoteUser = (userId: number) => action(UPDATE_REQUEST, patchPayloadTs(`api/v2/user/${userId}`, { removeFromRole: "ADMIN" }))
 export const updateUserSuccess = (payload: IResponsePayload<TUser>) => action(UPDATE_SUCCESS, payload)
 export const updateUserFailure = () => action(UPDATE_FAILURE)
 

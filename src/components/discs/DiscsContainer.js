@@ -3,6 +3,7 @@ import { path } from "ramda"
 import { connect } from "react-redux"
 import { Navigate } from "react-router-dom"
 import { Box, Stack, Button } from "@mui/material"
+import AddIcon from "@mui/icons-material/Add"
 
 import {
   getDiscs,
@@ -68,7 +69,7 @@ const DiscsContainer = props => {
       />
       <Stack direction="row" alignItems="center" spacing={3}>
         <h1>Kiekot</h1>
-        <Button variant="contained" onClick={() => props.createDisc()}>
+        <Button variant="contained" onClick={() => props.createDisc()} startIcon={<AddIcon />}>
           Uusi kiekko
         </Button>
       </Stack>

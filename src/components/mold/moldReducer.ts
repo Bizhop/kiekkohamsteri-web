@@ -1,62 +1,63 @@
-import { prepend } from "ramda"
+import { pick, prepend } from "ramda"
+import { IMoldsState, ISelectedManufacturer, ISort, MoldActions, TMold } from "../../types"
+import { defaultPagination } from "../shared/constants"
 
 import {
   CREATE_MOLD_SUCCESS,
-  MOLDS_FAILURE,
   MOLDS_REQUEST,
   MOLDS_SUCCESS,
   TOGGLE_CREATE_MODAL,
 } from "./moldActions"
 
-const initialState = {
-  molds: {
-    content: [],
-  },
+export const defaultMoldSort: ISort = {
+  sort: "manufacturer.name,asc&sort=name,asc",
+  column: "Valmistaja"
+}
+
+const initialState: IMoldsState = {
+  molds: [],
   isCreateOpen: false,
   selectedManufacturer: {
     id: null,
     name: null,
   },
+  sort: defaultMoldSort,
+  pagination: defaultPagination
 }
 
-const handleSelectedManufacturer = (id, molds) => {
+const handleSelectedManufacturer = (id: number | null, molds: TMold[]): ISelectedManufacturer => {
   if (id === null) return { id: null, name: null }
   if (molds.length == 0) return { id, name: null }
   return { id, name: molds[0].manufacturer.name }
 }
 
-const moldReducer = (state = initialState, action) => {
+const moldReducer = (state: IMoldsState = initialState, action: MoldActions) => {
   switch (action.type) {
     case MOLDS_REQUEST:
       return {
         ...state,
         selectedManufacturer: {
-          id: action.manufacturerId,
+          id: action.meta.manufacturerId,
           name: null,
         },
         isCreateOpen: false,
-      }
-    case MOLDS_FAILURE:
-      return {
-        ...state,
-        error: action.error,
+        sort: action.meta.sort,
+        pagination: action.meta.pagination
       }
     case MOLDS_SUCCESS:
       return {
         ...state,
-        molds: action.payload.data,
+        molds: action.payload.data.content,
         selectedManufacturer: handleSelectedManufacturer(
           state.selectedManufacturer.id,
           action.payload.data.content
         ),
+        pagination: pick(["totalElements", "size", "number"], action.payload.data),
       }
     case CREATE_MOLD_SUCCESS:
       return {
         ...state,
-        molds: {
-          ...state.molds,
-          content: prepend(action.payload.data, state.molds.content),
-        },
+        molds: prepend(action.payload.data, state.molds),
         isCreateOpen: false,
       }
     case TOGGLE_CREATE_MODAL:

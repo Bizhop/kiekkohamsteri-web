@@ -550,15 +550,38 @@ paths:
         schema:
           type: integer
           format: int64
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 20
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/UserOutputDto'
+                $ref: '#/components/schemas/PageUserOutputDto'
   /api/v2/user/me:
     get:
       tags:
@@ -903,6 +926,8 @@ components:
           type: string
           format: date-time
     GroupDto:
+      required:
+      - id
       type: object
       properties:
         id:
@@ -966,6 +991,8 @@ components:
         name:
           type: string
     RoleDto:
+      required:
+      - id
       type: object
       properties:
         id:
@@ -1079,6 +1106,12 @@ components:
         confirm:
           type: boolean
     BuyOutputDto:
+      required:
+      - buyer
+      - disc
+      - id
+      - seller
+      - status
       type: object
       properties:
         id:
@@ -1124,12 +1157,12 @@ components:
     PageDiscOutputDto:
       type: object
       properties:
-        totalElements:
-          type: integer
-          format: int64
         totalPages:
           type: integer
           format: int32
+        totalElements:
+          type: integer
+          format: int64
         number:
           type: integer
           format: int32
@@ -1257,6 +1290,38 @@ components:
       properties:
         data:
           type: string
+    PageUserOutputDto:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: '#/components/schemas/SortObject'
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserOutputDto'
+        pageable:
+          $ref: '#/components/schemas/PageableObject'
+        numberOfElements:
+          type: integer
+          format: int32
+        first:
+          type: boolean
+        last:
+          type: boolean
+        empty:
+          type: boolean
     Pageable:
       type: object
       properties:
@@ -1275,12 +1340,12 @@ components:
     PageStats:
       type: object
       properties:
-        totalElements:
-          type: integer
-          format: int64
         totalPages:
           type: integer
           format: int32
+        totalElements:
+          type: integer
+          format: int64
         number:
           type: integer
           format: int32
@@ -1341,6 +1406,9 @@ components:
           type: integer
           format: int32
     DropdownOutputDto:
+      required:
+      - name
+      - value
       type: object
       properties:
         value:
@@ -1349,6 +1417,13 @@ components:
         name:
           type: string
     DropdownsDto:
+      required:
+      - colors
+      - conditions
+      - manufacturers
+      - markings
+      - molds
+      - plastics
       type: object
       properties:
         manufacturers:
@@ -1399,12 +1474,12 @@ components:
     PagePlasticOutputDto:
       type: object
       properties:
-        totalElements:
-          type: integer
-          format: int64
         totalPages:
           type: integer
           format: int32
+        totalElements:
+          type: integer
+          format: int64
         number:
           type: integer
           format: int32
@@ -1431,12 +1506,12 @@ components:
     PageMoldOutputDto:
       type: object
       properties:
-        totalElements:
-          type: integer
-          format: int64
         totalPages:
           type: integer
           format: int32
+        totalElements:
+          type: integer
+          format: int64
         number:
           type: integer
           format: int32
@@ -1461,6 +1536,9 @@ components:
         empty:
           type: boolean
     BuySummaryDto:
+      required:
+      - asBuyer
+      - asSeller
       type: object
       properties:
         asBuyer:
