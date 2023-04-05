@@ -1,62 +1,61 @@
-import { prepend } from "ramda"
+import { pick, prepend } from "ramda"
+import { IPlasticsState, ISelectedManufacturer, ISort, PlasticActions, TPlastic } from "../../types"
+import { defaultPagination } from "../shared/constants"
 
 import {
   PLASTICS_REQUEST,
   PLASTICS_SUCCESS,
-  PLASTICS_FAILURE,
   CREATE_PLASTIC_SUCCESS,
   TOGGLE_CREATE_MODAL,
 } from "./plasticsActions"
 
-const initialState = {
-  plastics: {
-    content: [],
-  },
+export const defaultPlasticSort: ISort = {
+  sort: "manufacturer.name,asc&sort=name,asc",
+  column: "Valmistaja"
+}
+
+const initialState: IPlasticsState = {
+  plastics: [],
   isCreateOpen: false,
   selectedManufacturer: {
     id: null,
     name: null,
   },
+  sort: defaultPlasticSort,
+  pagination: defaultPagination
 }
 
-const handleSelectedManufacturer = (id, plastics) => {
+const handleSelectedManufacturer = (id: number | null, plastics: TPlastic[]): ISelectedManufacturer => {
   if (id === null) return { id: null, name: null }
   if (plastics.length == 0) return { id, name: null }
   return { id, name: plastics[0].manufacturer.name }
 }
 
-const plasticsReducer = (state = initialState, action) => {
+const plasticsReducer = (state: IPlasticsState = initialState, action: PlasticActions) => {
   switch (action.type) {
     case PLASTICS_REQUEST:
       return {
         ...state,
         selectedManufacturer: {
-          id: action.manufacturerId,
+          id: action.meta.manufacturerId,
           name: null,
         },
         isCreateOpen: false,
       }
-    case PLASTICS_FAILURE:
-      return {
-        ...state,
-        error: action.error,
-      }
     case PLASTICS_SUCCESS:
       return {
         ...state,
-        plastics: action.payload.data,
+        plastics: action.payload.data.content,
         selectedManufacturer: handleSelectedManufacturer(
           state.selectedManufacturer.id,
           action.payload.data.content
         ),
+        pagination: pick(["totalElements", "size", "number"], action.payload.data),
       }
     case CREATE_PLASTIC_SUCCESS: {
       return {
         ...state,
-        plastics: {
-          ...state.plastics,
-          content: prepend(action.payload.data, state.plastics.content),
-        },
+        plastics: prepend(action.payload.data, state.plastics),
         isCreateOpen: false,
       }
     }

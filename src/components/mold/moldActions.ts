@@ -1,5 +1,4 @@
 import { action } from "typesafe-actions"
-import { IPagination, IResponsePagedPayload, IResponsePayload, ISort, TMold, TMoldCreate } from "../../types"
 
 export const MOLDS_REQUEST = "molds/GET"
 export const MOLDS_SUCCESS = "molds/GET_SUCCESS"
@@ -9,6 +8,7 @@ export const CREATE_MOLD_SUCCESS = "molds/CREATE_SUCCESS"
 export const CREATE_MOLD_FAILURE = "molds/CREATE_FAIL"
 export const TOGGLE_CREATE_MODAL = "molds/TOGGLE_CREATE_MODAL"
 
+import { IPagination, IResponsePagedPayload, IResponsePayload, ISort, TMold, TMoldCreate } from "../../types"
 import { getPayloadTs, postPayloadTs } from "../Api"
 import { pagingAndSortingQueryParams } from "../shared/utils"
 

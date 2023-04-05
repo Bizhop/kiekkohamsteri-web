@@ -1,5 +1,5 @@
 import { toast } from "react-toastify"
-import { IUsersState, TUser, UserActions } from "../../types"
+import { ISort, IUsersState, TUser, UserActions } from "../../types"
 import { updateUserArray } from "../shared/utils"
 
 import {
@@ -14,6 +14,13 @@ import {
   GOOGLE_LOGIN_FAILURE,
   UPDATE_SUCCESS,
 } from "./userActions"
+import { defaultPagination } from "../shared/constants"
+import { pick } from "ramda"
+
+export const defaultUserSort: ISort = {
+  sort: "id",
+  column: "Id"
+}
 
 const initialState: IUsersState = {
   user: null,
@@ -21,6 +28,8 @@ const initialState: IUsersState = {
   users: [],
   isEditModalOpen: false,
   userInEdit: null,
+  sort: defaultUserSort,
+  pagination: defaultPagination
 }
 
 const updateCurrentUser = (currentUser: TUser | null, updatedUser: TUser) => {
@@ -66,8 +75,9 @@ const userReducer = (state: IUsersState = initialState, action: UserActions) => 
     case USERS_SUCCESS:
       return {
         ...state,
-        users: action.payload.data,
+        users: action.payload.data.content,
         isEditModalOpen: false,
+        pagination: pick(["totalElements", "size", "number"], action.payload.data)
       }
     case TOGGLE_EDIT_MODAL:
       return {

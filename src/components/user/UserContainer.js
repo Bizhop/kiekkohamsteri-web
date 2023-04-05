@@ -13,6 +13,8 @@ import {
   Button,
   Box,
   Tooltip,
+  TableFooter,
+  TablePagination
 } from "@mui/material"
 import EngineeringIcon from "@mui/icons-material/Engineering"
 import EditIcon from "@mui/icons-material/Edit"
@@ -21,53 +23,74 @@ import PersonRemoveIcon from "@mui/icons-material/PersonRemove"
 
 import { getUsers, toggleEditModal, updateUser, promoteUser, demoteUser } from "./userActions"
 import UserEditModal from "./UserEditModal"
+import { defaultUserSort } from "./userReducer"
+import { defaultPagination } from "../shared/constants"
 
 const isAdmin = user => {
   if (!user || !user.roles) return false
   return any(propEq("name", "ADMIN"))(user.roles)
 }
 
-const UserContainer = props => (
-  <Box sx={{ flexGrow: 1 }}>
-    <UserEditModal
-      isOpen={props.isEditOpen}
-      toggleModal={props.toggleEditModal}
-      user={props.userInEdit}
-      editUser={props.editUser}
-      label="Muokkaa käyttäjää"
-    />
-    <h2>Käyttäjät</h2>
-    <TableContainer component={Paper} elevation={3}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Id</TableCell>
-            <TableCell>Tunnus</TableCell>
-            <TableCell>email</TableCell>
-            <TableCell>Etunimi</TableCell>
-            <TableCell>Sukunimi</TableCell>
-            <TableCell>PDGA numero</TableCell>
-            <TableCell />
-            <TableCell />
-            <TableCell />
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {props.users.map(p => (
-            <User
-              key={p.id}
-              user={p}
-              toggleEditModal={props.toggleEditModal}
-              promote={props.promote}
-              demote={props.demote}
-            />
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-    {!props.loggedIn && <Navigate to="/" />}
-  </Box>
-)
+const UserContainer = props => {
+  const { sort, pagination } = props
+
+  const handlePageChange = (_, newPage) => props.getUsers(sort, { ...props.pagination, number: newPage })
+
+  return (
+    <Box sx={{ flexGrow: 1 }}>
+      <UserEditModal
+        isOpen={props.isEditOpen}
+        toggleModal={props.toggleEditModal}
+        user={props.userInEdit}
+        editUser={props.editUser}
+        label="Muokkaa käyttäjää"
+      />
+      <h2>Käyttäjät</h2>
+      <TableContainer component={Paper} elevation={3}>
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell>Id</TableCell>
+              <TableCell>Tunnus</TableCell>
+              <TableCell>email</TableCell>
+              <TableCell />
+              <TableCell />
+              <TableCell />
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {props.users.map(p => (
+              <User
+                key={p.id}
+                user={p}
+                toggleEditModal={props.toggleEditModal}
+                promote={props.promote}
+                demote={props.demote}
+              />
+            ))}
+          </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TableCell colSpan="100%">
+                <TablePagination
+                  component="div"
+                  count={pagination.totalElements}
+                  rowsPerPageOptions={[pagination.size]}
+                  rowsPerPage={pagination.size}
+                  page={pagination.number}
+                  onPageChange={handlePageChange}
+                  showFirstButton
+                  showLastButton
+                />
+              </TableCell>
+            </TableRow>
+          </TableFooter>
+        </Table>
+      </TableContainer>
+      {!props.loggedIn && <Navigate to="/" />}
+    </Box>
+  )
+}
 
 const User = props => {
   const user = props.user
@@ -76,9 +99,6 @@ const User = props => {
       <TableCell>{user.id}</TableCell>
       <TableCell>{user.username}</TableCell>
       <TableCell>{user.email}</TableCell>
-      <TableCell>{user.firstName}</TableCell>
-      <TableCell>{user.lastName}</TableCell>
-      <TableCell>{user.pdgaNumber}</TableCell>
       <TableCell>
         {isAdmin(user) && (
           <Tooltip title="Ylläpitäjä">
@@ -125,10 +145,13 @@ const mapStateToProps = state => ({
   users: pathOr([], ["user", "users"], state),
   isEditOpen: path(["user", "isEditModalOpen"], state),
   userInEdit: path(["user", "userInEdit"], state),
+  sort: path(["user", "sort"], state),
+  pagination: path(["user", "pagination"], state),
 })
 
 const mapDispatchToProps = dispatch => ({
-  getUsers: dispatch(getUsers()),
+  getInitialUsers: dispatch(getUsers(defaultUserSort, defaultPagination)),
+  getUsers: (sort, pagination) => dispatch(getUsers(sort, pagination)),
   toggleEditModal: user => dispatch(toggleEditModal(user)),
   editUser: user => dispatch(updateUser(user)),
   promote: userId => dispatch(promoteUser(userId)),

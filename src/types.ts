@@ -6,6 +6,7 @@ import * as groupActions from "./components/group/groupActions"
 import * as userActions from "./components/user/userActions"
 import * as discsActions from "./components/discs/discsActions"
 import * as moldActions from "./components/mold/moldActions"
+import * as plasticActions from "./components/plastics/plasticsActions"
 
 //CUSTOM INTERFACES
 
@@ -35,6 +36,14 @@ export interface IMoldsState {
   pagination: IPagination
 }
 
+export interface IPlasticsState {
+  plastics: TPlastic[],
+  isCreateOpen: boolean,
+  selectedManufacturer: ISelectedManufacturer,
+  sort: ISort
+  pagination: IPagination
+}
+
 export interface IDropdownsState {
   dropdowns: TDropdowns
 }
@@ -52,7 +61,9 @@ export interface IUsersState {
   token: string | null,
   users: TUser[],
   isEditModalOpen: boolean,
-  userInEdit: TUser | null
+  userInEdit: TUser | null,
+  pagination: IPagination,
+  sort: ISort
 }
 
 export interface IDiscsState {
@@ -115,6 +126,7 @@ export type GroupActions = ActionType<typeof groupActions>
 export type UserActions = ActionType<typeof userActions>
 export type DiscsActions = ActionType<typeof discsActions>
 export type MoldActions = ActionType<typeof moldActions>
+export type PlasticActions = ActionType<typeof plasticActions>
 
 //TYPES FROM OPENAPI
 
@@ -128,6 +140,7 @@ export type TDisc = components["schemas"]["DiscOutputDto"] & HasUuid
 export type TMold = components["schemas"]["MoldOutputDto"]
 export type TMoldCreate = components["schemas"]["MoldCreateDto"]
 export type TPlastic = components["schemas"]["PlasticOutputDto"]
+export type TPlasticCreate = components["schemas"]["PlasticCreateDto"]
 export type TDiscInEdit = TDisc & {  
   manufacturerId?: number,
   moldId?: number,

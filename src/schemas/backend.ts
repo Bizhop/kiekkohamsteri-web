@@ -162,7 +162,7 @@ export interface components {
     };
     GroupDto: {
       /** Format: int64 */
-      id?: number;
+      id: number;
       name?: string;
     };
     ManufacturerOutputDto: {
@@ -192,7 +192,7 @@ export interface components {
     };
     RoleDto: {
       /** Format: int64 */
-      id?: number;
+      id: number;
       name?: string;
       /** Format: int64 */
       groupId?: number;
@@ -239,12 +239,12 @@ export interface components {
     };
     BuyOutputDto: {
       /** Format: int64 */
-      id?: number;
-      disc?: components["schemas"]["DiscOutputDto"];
-      seller?: components["schemas"]["UserOutputDto"];
-      buyer?: components["schemas"]["UserOutputDto"];
+      id: number;
+      disc: components["schemas"]["DiscOutputDto"];
+      seller: components["schemas"]["UserOutputDto"];
+      buyer: components["schemas"]["UserOutputDto"];
       /** @enum {string} */
-      status?: "REQUESTED" | "CONFIRMED" | "REJECTED";
+      status: "REQUESTED" | "CONFIRMED" | "REJECTED";
     };
     DiscSearchDto: {
       criteria?: (components["schemas"]["SearchCriteria"])[];
@@ -256,10 +256,10 @@ export interface components {
       operation?: "EQUAL" | "NOT_EQUAL" | "GREATER_THAN" | "GREATER_THAN_EQUAL" | "LESS_THAN" | "LESS_THAN_EQUAL" | "IN" | "NOT_IN";
     };
     PageDiscOutputDto: {
-      /** Format: int64 */
-      totalElements?: number;
       /** Format: int32 */
       totalPages?: number;
+      /** Format: int64 */
+      totalElements?: number;
       /** Format: int32 */
       number?: number;
       sort?: components["schemas"]["SortObject"];
@@ -336,6 +336,24 @@ export interface components {
     UploadDto: {
       data?: string;
     };
+    PageUserOutputDto: {
+      /** Format: int32 */
+      totalPages?: number;
+      /** Format: int64 */
+      totalElements?: number;
+      /** Format: int32 */
+      number?: number;
+      sort?: components["schemas"]["SortObject"];
+      /** Format: int32 */
+      size?: number;
+      content?: (components["schemas"]["UserOutputDto"])[];
+      pageable?: components["schemas"]["PageableObject"];
+      /** Format: int32 */
+      numberOfElements?: number;
+      first?: boolean;
+      last?: boolean;
+      empty?: boolean;
+    };
     Pageable: {
       /** Format: int32 */
       page?: number;
@@ -344,10 +362,10 @@ export interface components {
       sort?: (string)[];
     };
     PageStats: {
-      /** Format: int64 */
-      totalElements?: number;
       /** Format: int32 */
       totalPages?: number;
+      /** Format: int64 */
+      totalElements?: number;
       /** Format: int32 */
       number?: number;
       sort?: components["schemas"]["SortObject"];
@@ -387,16 +405,16 @@ export interface components {
     };
     DropdownOutputDto: {
       /** Format: int64 */
-      value?: number;
-      name?: string;
+      value: number;
+      name: string;
     };
     DropdownsDto: {
-      manufacturers?: (components["schemas"]["DropdownOutputDto"])[];
-      molds?: (components["schemas"]["DropdownOutputDto"])[];
-      plastics?: (components["schemas"]["DropdownOutputDto"])[];
-      colors?: (components["schemas"]["DropdownOutputDto"])[];
-      conditions?: (components["schemas"]["DropdownOutputDto"])[];
-      markings?: (components["schemas"]["DropdownOutputDto"])[];
+      manufacturers: (components["schemas"]["DropdownOutputDto"])[];
+      molds: (components["schemas"]["DropdownOutputDto"])[];
+      plastics: (components["schemas"]["DropdownOutputDto"])[];
+      colors: (components["schemas"]["DropdownOutputDto"])[];
+      conditions: (components["schemas"]["DropdownOutputDto"])[];
+      markings: (components["schemas"]["DropdownOutputDto"])[];
     };
     SupportedOperation: {
       field?: string;
@@ -404,10 +422,10 @@ export interface components {
       operations?: ("EQUAL" | "NOT_EQUAL" | "GREATER_THAN" | "GREATER_THAN_EQUAL" | "LESS_THAN" | "LESS_THAN_EQUAL" | "IN" | "NOT_IN")[];
     };
     PagePlasticOutputDto: {
-      /** Format: int64 */
-      totalElements?: number;
       /** Format: int32 */
       totalPages?: number;
+      /** Format: int64 */
+      totalElements?: number;
       /** Format: int32 */
       number?: number;
       sort?: components["schemas"]["SortObject"];
@@ -422,10 +440,10 @@ export interface components {
       empty?: boolean;
     };
     PageMoldOutputDto: {
-      /** Format: int64 */
-      totalElements?: number;
       /** Format: int32 */
       totalPages?: number;
+      /** Format: int64 */
+      totalElements?: number;
       /** Format: int32 */
       number?: number;
       sort?: components["schemas"]["SortObject"];
@@ -440,8 +458,8 @@ export interface components {
       empty?: boolean;
     };
     BuySummaryDto: {
-      asBuyer?: (components["schemas"]["BuyOutputDto"])[];
-      asSeller?: (components["schemas"]["BuyOutputDto"])[];
+      asBuyer: (components["schemas"]["BuyOutputDto"])[];
+      asSeller: (components["schemas"]["BuyOutputDto"])[];
     };
     RatingDto: {
       rounds?: (components["schemas"]["RoundDto"])[];
@@ -835,15 +853,21 @@ export interface operations {
   };
   getUsers: {
     parameters?: {
+        /** @description Zero-based page index (0..N) */
+        /** @description The size of the page to be returned */
+        /** @description Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported. */
       query?: {
         groupId?: number;
+        page?: number;
+        size?: number;
+        sort?: (string)[];
       };
     };
     responses: {
       /** @description OK */
       200: {
         content: {
-          "application/json": (components["schemas"]["UserOutputDto"])[];
+          "application/json": components["schemas"]["PageUserOutputDto"];
         };
       };
     };

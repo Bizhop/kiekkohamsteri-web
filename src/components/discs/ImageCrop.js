@@ -20,7 +20,13 @@ const ImageCrop = ({ image, updateImage, imageUploading }) => {
   }, [imageDimensions])
 
   const completeCrop = ({ crop, image }) => {
-    processCrop(crop, image.image).then(setCroppedImage)
+    console.log("original")
+    console.log(image.image)
+    processCrop(crop, image.image).then(cropped => {
+      console.log("cropped")
+      console.log(cropped)
+      setCroppedImage(cropped)
+    })
   }
 
   return (
