@@ -19,12 +19,19 @@ import PersonRemoveIcon from "@mui/icons-material/PersonRemove"
 import EngineeringIcon from "@mui/icons-material/Engineering"
 
 import { isGroupAdmin } from "../shared/utils"
+import { TGroup, TUser } from "../../types"
 
-const GroupUsersTable = props => {
-  if (props.group == null) return null
+const GroupUsersTable = ({ users, group, promote, demote, kick }: {
+  users: TUser[],
+  group: TGroup | null,
+  promote: any,
+  demote: any,
+  kick: any
+}) => {
+  if (group == null) return null
   return (
     <div>
-      {props.users && (
+      {users && (
         <div>
           <TableContainer component={Paper} elevation={3}>
             <Table size="small">
@@ -32,18 +39,17 @@ const GroupUsersTable = props => {
                 <TableRow>
                   <TableCell colSpan={3}>
                     <strong>
-                      Käyttäjät ({props.group.name}, {length(props.users)})
+                      Käyttäjät ({group.name}, {length(users)})
                     </strong>
                   </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {props.users.map(user => {
-                  const userGroup = { user: user, groupId: props.group.id }
+                {users.map((user: TUser) => {
                   return (
                     <TableRow key={user.id}>
                       <TableCell>
-                        {isGroupAdmin(userGroup) && (
+                        {isGroupAdmin(user, group.id) && (
                           <Tooltip title="Ylläpitäjä">
                             <EngineeringIcon />
                           </Tooltip>
@@ -53,12 +59,12 @@ const GroupUsersTable = props => {
                         </NavLink>
                       </TableCell>
                       <TableCell>
-                        {isGroupAdmin(userGroup) ? (
+                        {isGroupAdmin(user, group.id) ? (
                           <Button
                             variant="contained"
                             color="error"
                             startIcon={<PersonRemoveIcon />}
-                            onClick={() => props.demote({ userId: user.id, groupId: props.group.id })}
+                            onClick={() => demote({ userId: user.id, groupId: group.id })}
                           >
                             Poista ylläpitäjä
                           </Button>
@@ -67,7 +73,7 @@ const GroupUsersTable = props => {
                             variant="contained"
                             startIcon={<PersonAddIcon />}
                             onClick={() =>
-                              props.promote({ userId: user.id, groupId: props.group.id })
+                              promote({ userId: user.id, groupId: group.id })
                             }
                           >
                             Ylläpitäjäksi
@@ -77,7 +83,7 @@ const GroupUsersTable = props => {
                       <TableCell>
                         <Tooltip title="Monoa">
                           <IconButton
-                            onClick={() => props.kick({ userId: user.id, groupId: props.group.id })}
+                            onClick={() => kick({ userId: user.id, groupId: group.id })}
                           >
                             <SportsMartialArtsIcon />
                           </IconButton>

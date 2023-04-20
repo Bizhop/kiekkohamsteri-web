@@ -8,7 +8,7 @@ import { getForSale, buyDisc, getOwnBuys, rejectBuy, confirmBuy } from "./shopAc
 import ForSaleTable from "./ForSaleTable"
 import MyBuysTable from "./MyBuysTable"
 import MySalesTable from "./MySalesTable"
-import { defaultPagination } from "../shared/constants"
+import { defaultPagination, defaultSort } from "../shared/constants"
 
 const ShopContainer = props => (
   <Box sx={{ flexGrow: 1 }}>
@@ -43,22 +43,14 @@ const mapStateToProps = state => ({
   loggedIn: path(["user", "token"], state),
   username: path(["user", "user", "username"], state),
   forSale: path(["shop", "forSale"], state),
-  asBuyer: path(["shop", "asBuyer"], state),
-  asSeller: path(["shop", "asSeller"], state),
+  asBuyer: path(["shop", "summary", "asBuyer"], state),
+  asSeller: path(["shop", "summary", "asSeller"], state),
   pagination: path(["shop", "pagination"], state),
   sort: path(["shop", "sort"], state),
 })
 
 const mapDispatchToProps = dispatch => ({
-  getForSale: dispatch(
-    getForSale({
-      sort: {
-        sort: "id,asc",
-        column: "Id",
-      },
-      pagination: defaultPagination,
-    })
-  ),
+  getForSale: dispatch(getForSale(defaultSort, defaultPagination)),
   getOwnBuys: dispatch(getOwnBuys()),
   updateForSale: params => dispatch(getForSale(params)),
   buyDisc: uuid => dispatch(buyDisc(uuid)),

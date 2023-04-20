@@ -111,16 +111,15 @@ const GroupContainer = props => (
             </TableHead>
             <TableBody>
               {props.groups.map(g => {
-                const userGroup = { user: props.user, groupId: g.id }
                 return (
                   <TableRow
                     key={g.id}
                     onClick={() => props.listUsers(g)}
-                    className={(isAdmin(userGroup) || isGroupMember(userGroup)) && "color-on-hover"}
+                    className={(isAdmin(props.user) || isGroupMember(props.user, g.id)) && "color-on-hover"}
                   >
                     <TableCell>{g.id}</TableCell>
                     <TableCell>
-                      {isGroupAdmin(userGroup) && (
+                      {isGroupAdmin(props.user, g.id) && (
                         <Tooltip title="Ylläpitäjä">
                           <EngineeringIcon />
                         </Tooltip>
@@ -128,7 +127,7 @@ const GroupContainer = props => (
                       {g.name}
                     </TableCell>
                     <TableCell>
-                      {!isGroupMember(userGroup) && (
+                      {!isGroupMember(props.user, g.id) && (
                         <Button
                           variant="contained"
                           color="secondary"
@@ -139,7 +138,7 @@ const GroupContainer = props => (
                       )}
                     </TableCell>
                     <TableCell>
-                      {isAdminOrGroupAdmin(userGroup) && (
+                      {isAdminOrGroupAdmin(props.user, g.id) && (
                         <Tooltip title="Poista ryhmä">
                           <IconButton
                             onClick={() =>

@@ -1,7 +1,7 @@
 import React from "react"
-import { path, any, propEq } from "ramda"
-import { connect } from "react-redux"
-import { GoogleLogin } from "@react-oauth/google"
+import { path, any, propEq, pick } from "ramda"
+import { ConnectedProps, connect } from "react-redux"
+import { CredentialResponse, GoogleLogin } from "@react-oauth/google"
 import { confirmAlert } from "react-confirm-alert"
 import "react-confirm-alert/src/react-confirm-alert.css"
 import { Spinner } from "react-activity"
@@ -22,24 +22,58 @@ import EditIcon from "@mui/icons-material/Edit"
 import GroupRemoveIcon from "@mui/icons-material/GroupRemove"
 import EngineeringIcon from "@mui/icons-material/Engineering"
 
-import { login, googleLoginError, toggleEditModal, requestUpdateMe } from "../user/userActions"
+import { login, googleLoginError, toggleEditModal, updateUser } from "../user/userActions"
 import { getGroupUsers, resetGroupUsers } from "../group/groupActions"
 import { promote, demote, kick } from "../group/groupActions"
 import UserEditModal from "../user/UserEditModal"
 import GroupUsersTable from "../group/GroupUsersTable"
+import { IGroupsState, IUsersState, TGroup, TUser, TUserUpdate } from "../../types"
 
-const isGroupAdmin = ({ user, groupId }) => {
+interface GroupUser {
+  userId: number,
+  groupId: number
+}
+
+const isGroupAdmin = ({ user, groupId }: { user: TUser | null, groupId: number }) => {
   if (!user || !groupId || !user.roles) return false
   return any(propEq("name", "GROUP_ADMIN") && propEq("groupId", groupId))(user.roles)
 }
 
-const DashContainer = props => (
+const mapState = ({ user, group }: { user: IUsersState, group: IGroupsState }) => ({
+  loggedIn: user.token,
+  user: user.user,
+  isEditOpen: user.isEditModalOpen,
+  userInEdit: user.userInEdit,
+  users: group.users,
+  fetchingUsers: group.fetchingUsers,
+  selectedGroup: group.selectedGroup,
+})
+
+const mapDispatch = {
+  resetGroupUsers: resetGroupUsers(),
+  login: (response: CredentialResponse) => login(response),
+  loginError: () => googleLoginError(),
+  toggleEditModal: (user: TUser | null) => toggleEditModal(user),
+  editUser: (id: number, user: TUserUpdate) => updateUser(id, user),
+  listUsers: (group: TGroup) => getGroupUsers(group),
+  promote: (groupUser: GroupUser) => promote(groupUser.userId, groupUser.groupId),
+  demote: (groupUser: GroupUser) => demote(groupUser.userId, groupUser.groupId),
+  kick: (groupUser: GroupUser) => kick(groupUser.userId, groupUser.groupId),
+}
+
+const connector = connect(mapState, mapDispatch)
+type PropsFromRedux = ConnectedProps<typeof connector>
+
+const DashContainer = (props: PropsFromRedux) => {
+  const handleEditUser = (user: TUser) => props.editUser(user.id, pick(["username", "firstName", "lastName", "pdgaNumber"], user))
+
+  return (
   <div>
     <UserEditModal
       isOpen={props.isEditOpen}
       toggleModal={props.toggleEditModal}
       user={props.userInEdit}
-      editUser={props.editUser}
+      editUser={handleEditUser}
       label="Muokkaa tietojasi"
     />
     {props.loggedIn ? (
@@ -113,12 +147,7 @@ const DashContainer = props => (
                               variant="contained"
                               color="secondary"
                               startIcon={<GroupRemoveIcon />}
-                              onClick={() =>
-                                handleLeavingGroup({
-                                  confirm: props.editUser,
-                                  data: { id: props.user.id, removeFromGroupId: g.id },
-                                })
-                              }
+                              onClick={() => handleLeavingGroup(props.editUser, props.user ? props.user.id : -1, g.id)}
                             >
                               Poistu ryhmästä
                             </Button>
@@ -149,16 +178,16 @@ const DashContainer = props => (
       <GoogleLogin onSuccess={props.login} onError={props.loginError} useOneTap />
     )}
   </div>
-)
+)}
 
-const handleLeavingGroup = params => {
+const handleLeavingGroup = (editUser: typeof updateUser, userId: number, removeFromGroupId: number) => {
   confirmAlert({
     title: "Varoitus",
     message: "Haluatko varmasti poistua ryhmästä?",
     buttons: [
       {
         label: "Poistu",
-        onClick: () => params.confirm(params.data),
+        onClick: () => editUser(userId, { removeFromGroupId }),
         className: "red-button",
       },
       {
@@ -168,26 +197,4 @@ const handleLeavingGroup = params => {
   })
 }
 
-const mapStateToProps = state => ({
-  loggedIn: path(["user", "token"], state),
-  user: path(["user", "user"], state),
-  isEditOpen: path(["user", "isEditModalOpen"], state),
-  userInEdit: path(["user", "userInEdit"], state),
-  users: path(["group", "users"], state),
-  fetchingUsers: path(["group", "fetchingUsers"], state),
-  selectedGroup: path(["group", "selectedGroup"], state),
-})
-
-const mapDispatchToProps = dispatch => ({
-  resetGroupUsers: dispatch(resetGroupUsers()),
-  login: response => dispatch(login(response)),
-  loginError: response => dispatch(googleLoginError(response)),
-  toggleEditModal: user => dispatch(toggleEditModal(user)),
-  editUser: user => dispatch(requestUpdateMe(user)),
-  listUsers: group => dispatch(getGroupUsers(group)),
-  promote: params => dispatch(promote(params)),
-  demote: params => dispatch(demote(params)),
-  kick: params => dispatch(kick(params)),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(DashContainer)
+export default connector(DashContainer)

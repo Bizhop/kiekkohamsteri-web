@@ -4,9 +4,13 @@ import { Box, Button } from "@mui/material"
 import SaveAltIcon from "@mui/icons-material/SaveAlt"
 
 import { RenderTextInput } from "../shared/FormInput"
+import { TUser } from "../../types"
 
-const UserEditForm = props => (
-  <Form onSubmit={props.onSubmit} initialValues={props.initialValues}>
+const UserEditForm = ({onSubmit, initialValues}: {
+  onSubmit: any,
+  initialValues: TUser | null
+}) => (
+  <Form onSubmit={onSubmit} initialValues={initialValues}>
     {({ handleSubmit, pristine, submitting }) => (
       <form onSubmit={handleSubmit} style={{ padding: "10px" }}>
         <Field name="username" label="Tunnus" component={RenderTextInput} />

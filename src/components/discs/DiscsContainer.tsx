@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { path } from "ramda"
-import { connect } from "react-redux"
+import { ConnectedProps, connect } from "react-redux"
 import { Navigate } from "react-router-dom"
 import { Box, Stack, Button } from "@mui/material"
 import AddIcon from "@mui/icons-material/Add"
@@ -23,27 +23,71 @@ import { defaultSort, defaultPagination } from "../shared/constants"
 import DiscsFilter from "./DiscsFilter"
 import { base64Reader, resizeImage } from "../shared/utils"
 import ImageCrop from "./ImageCrop"
+import { IDiscsState, IDropdownsState, IPagination, ISort, IUsersState, TDisc, TDropdowns, TSearchCriteria } from "../../types"
+import { TDiscInEdit } from "../../types"
 
-const DiscsContainer = props => {
-  const [newImage, setNewImage] = useState({ uuid: null, image: null })
+const mapState = ({ user, discs, dropdowns }: {
+  user: IUsersState,
+  discs: IDiscsState,
+  dropdowns: IDropdownsState
+}) => ({
+  loggedIn: user.token,
+  discs: discs.discs,
+  isEditOpen: discs.isEditOpen,
+  discInEdit: discs.discInEdit,
+  dropdowns: dropdowns.dropdowns,
+  imageUploading: discs.imageUploading,
+  searchOperations: discs.searchOperations,
+  pagination: discs.pagination,
+  sort: discs.sort
+})
+
+const mapDispatch = {
+  getDiscs: getDiscs(defaultSort, defaultPagination),
+  getDropdowns: getDropdowns(),
+  getDiscSearchOperations: getDiscSearchOperations(),
+  getDropdownsByManufacturer: (manufacturerId: number) => getDropdownsByManufacturer(manufacturerId),
+  updateDisc: (disc: TDisc) => updateDisc(disc),
+  createDisc: () => createDisc(),
+  toggleEditModal: (disc: TDisc | null) => toggleEditModal(disc),
+  deleteDisc: (uuid: string) => deleteDisc(uuid),
+  search: (sort: ISort, pagination: IPagination, criteria: TSearchCriteria[]) => search(sort, pagination, criteria),
+  updateImage: (uuid: string, base64: string) => updateImageApi(uuid, base64)
+}
+
+const connector = connect(mapState, mapDispatch)
+type PropsFromRedux = ConnectedProps<typeof connector>
+
+export interface DiscImage {
+  uuid: string | null,
+  image?: string
+}
+
+const DiscsContainer = (props: PropsFromRedux) => {
+  const [newImage, setNewImage] = useState<DiscImage>({ uuid: null })
   const [isImageCropOpen, setImageCropOpen] = useState(false)
   const [filters, setFilters] = useState([])
 
   const toggleImageCropModal = () => setImageCropOpen(!isImageCropOpen)
 
-  const handleAcceptedFiles = ({ acceptedFiles, uuid }) => {
+  const handleAcceptedFiles = ({ acceptedFiles, uuid }: {
+    acceptedFiles: File[],
+    uuid: string
+  }) => {
     if (acceptedFiles.length == 1) {
       const file = acceptedFiles[0]
       base64Reader(file).then(base64 => {
-        setNewImage({ uuid, image: base64 })
-        setImageCropOpen(true)
+        if (typeof base64 === "string") {
+          setNewImage({ uuid, image: base64 })
+          setImageCropOpen(true)
+        }
       })
     } else {
       console.log("Zero or more than one file sent")
     }
   }
 
-  const resizeAndUpdateImage = (uuid, base64) => {
+  const resizeAndUpdateImage = (uuid: string, base64: string) => {
     resizeImage(base64).then(resizedImage => {
       props.updateImage(uuid, resizedImage)
       setImageCropOpen(false)
@@ -113,8 +157,15 @@ const DiscEditModal = ({
   discInEdit,
   dropdowns,
   getDropdownsByManufacturer,
+}: {
+  isOpen: boolean,
+  toggleModal: typeof toggleEditModal,
+  updateDisc: any,
+  discInEdit: TDiscInEdit | null,
+  dropdowns: TDropdowns,
+  getDropdownsByManufacturer: any
 }) => (
-  <Modal isOpen={isOpen} onRequestClose={() => toggleModal()} contentLabel="Kiekon muokkaus">
+  <Modal isOpen={isOpen} onRequestClose={() => toggleModal(null)} contentLabel="Kiekon muokkaus">
     <DiscEditForm
       onSubmit={updateDisc}
       initialValues={discInEdit}
@@ -124,36 +175,16 @@ const DiscEditModal = ({
   </Modal>
 )
 
-const ImageCropModal = ({ isOpen, toggleModal, newImage, imageUploading, updateImage }) => (
+const ImageCropModal = ({ isOpen, toggleModal, newImage, imageUploading, updateImage }: {
+  isOpen: boolean,
+  toggleModal: any,
+  newImage: DiscImage,
+  imageUploading: boolean,
+  updateImage: any
+}) => (
   <Modal isOpen={isOpen} onRequestClose={() => toggleModal()} contentLabel="Kuvan rajaus">
     <ImageCrop image={newImage} imageUploading={imageUploading} updateImage={updateImage} />
   </Modal>
 )
 
-const mapStateToProps = state => ({
-  loggedIn: path(["user", "token"], state),
-  discs: path(["discs", "discs"], state),
-  isEditOpen: path(["discs", "isEditOpen"], state),
-  discInEdit: path(["discs", "discInEdit"], state),
-  dropdowns: path(["dropdowns", "dropdowns"], state),
-  imageUploading: path(["discs", "imageUploading"], state),
-  searchOperations: path(["discs", "searchOperations"], state),
-  pagination: path(["discs", "pagination"], state),
-  sort: path(["discs", "sort"], state)
-})
-
-const mapDispatchToProps = dispatch => ({
-  getDiscs: dispatch(getDiscs(defaultSort, defaultPagination)),
-  getDropdowns: dispatch(getDropdowns()),
-  getDropdownsByManufacturer: manufacturerId =>
-    dispatch(getDropdownsByManufacturer(manufacturerId)),
-  getDiscSearchOperations: dispatch(getDiscSearchOperations()),
-  updateDisc: disc => dispatch(updateDisc(disc)),
-  createDisc: () => dispatch(createDisc()),
-  toggleEditModal: disc => dispatch(toggleEditModal(disc)),
-  deleteDisc: uuid => dispatch(deleteDisc(uuid)),
-  search: (sort, pagination, criteria) => dispatch(search(sort, pagination, criteria)),
-  updateImage: (uuid, base64) => dispatch(updateImageApi(uuid, base64))
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(DiscsContainer)
+export default connector(DiscsContainer)

@@ -1,14 +1,21 @@
 import React, { useState } from "react"
-import { connect } from "react-redux"
+import { ConnectedProps, connect } from "react-redux"
 import { Navigate } from "react-router-dom"
-import { path } from "ramda"
 import { Box, Tab, Tabs } from "@mui/material"
 
 import UserContainer from "../user/UserContainer"
 import MoldContainer from "../mold/MoldContainer"
 import PlasticsContainer from "../plastics/PlasticsContainer"
+import { IUsersState } from "../../types"
 
-const AdminContainer = props => {
+const mapState = ({user}: { user: IUsersState }) => ({
+  loggedIn: user.token,
+})
+
+const connector = connect(mapState)
+type PropsFromRedux = ConnectedProps<typeof connector>
+
+const AdminContainer = ({loggedIn}: PropsFromRedux) => {
   const [tab, updateTab] = useState(1)
 
   return (
@@ -22,13 +29,9 @@ const AdminContainer = props => {
       {tab === 1 && <UserContainer />}
       {tab === 2 && <PlasticsContainer />}
       {tab === 3 && <MoldContainer />}
-      {!props.loggedIn && <Navigate to="/" />}
+      {!loggedIn && <Navigate to="/" />}
     </Box>
   )
 }
 
-const mapStateToProps = state => ({
-  loggedIn: path(["user", "token"], state),
-})
-
-export default connect(mapStateToProps)(AdminContainer)
+export default connector(AdminContainer)

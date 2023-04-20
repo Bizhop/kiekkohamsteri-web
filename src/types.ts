@@ -7,6 +7,8 @@ import * as userActions from "./components/user/userActions"
 import * as discsActions from "./components/discs/discsActions"
 import * as moldActions from "./components/mold/moldActions"
 import * as plasticActions from "./components/plastics/plasticsActions"
+import * as othersActions from "./components/others/othersActions"
+import * as shopActions from "./components/shop/shopActions"
 
 //CUSTOM INTERFACES
 
@@ -27,6 +29,18 @@ export interface IPagination {
 }
 
 // STATE INTERFACES
+
+export interface IShopState {
+  forSale: TDisc[],
+  sort: ISort,
+  pagination: IPagination,
+  summary: TBuySummary
+}
+
+export interface IStatsSate {
+  stats: TStats[] | null,
+  sort: ISort
+}
 
 export interface IMoldsState {
   molds: TMold[],
@@ -127,10 +141,13 @@ export type UserActions = ActionType<typeof userActions>
 export type DiscsActions = ActionType<typeof discsActions>
 export type MoldActions = ActionType<typeof moldActions>
 export type PlasticActions = ActionType<typeof plasticActions>
+export type OthersActions = ActionType<typeof othersActions>
+export type ShopActions = ActionType<typeof shopActions>
 
 //TYPES FROM OPENAPI
 
 export type TUser = components["schemas"]["UserOutputDto"] & HasId
+export type TUserUpdate = components["schemas"]["UserUpdateDto"]
 export type TDropdowns = components["schemas"]["DropdownsDto"]
 export type TGroup = components["schemas"]["GroupDto"] & HasId
 export type TGroupRequest = components["schemas"]["GroupRequestOutputDto"] & HasId
@@ -149,3 +166,6 @@ export type TDiscInEdit = TDisc & {
 }
 export type TSupportedOperation = components["schemas"]["SupportedOperation"]
 export type TSearchCriteria = components["schemas"]["SearchCriteria"]
+export type TStats = components["schemas"]["Stats"]
+export type TBuySummary = components["schemas"]["BuySummaryDto"]
+export type TBuy = components["schemas"]["BuyOutputDto"]

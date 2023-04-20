@@ -8,14 +8,14 @@ export const getSortColumn = (action: unknown) =>
   path(["meta", "previousAction", "params", "newSortColumn"], action)
 
 export const removeFromArrayById = <T extends HasId>(array: T[] | null, id: number): T[] | null => {
-  if(array == null || id < 0 || array.length == 0) return array
+  if (array == null || id < 0 || array.length == 0) return array
 
   const index = findIndex((item: HasId) => item.id === id)(array)
   return index < 0 ? array : remove(index, 1, array)
 }
 
 export const removeFromArrayByUuid = <T extends HasUuid>(array: T[] | null, uuid: string): T[] | null => {
-  if(array == null || array.length == 0) return array
+  if (array == null || array.length == 0) return array
 
   const index = findIndex((item: HasUuid) => item.uuid === uuid)(array)
   return index < 0 ? array : remove(index, 1, array)
@@ -52,23 +52,28 @@ export const isGroupMember = (user: TUser, groupId: number) => {
 }
 
 export const base64Reader = (file: File) =>
-  new Promise((resolve, reject) => {
+  new Promise<string | ArrayBuffer | null>((resolve, reject) => {
     const reader = new FileReader()
     reader.onload = () => resolve(reader.result)
     reader.onerror = reject
     reader.readAsDataURL(file)
   })
 
-export const loadImage = (base64: string) =>
-  new Promise((resolve, reject) => {
-    const img = new Image()
-    img.onload = () => resolve(img)
-    img.onerror = reject
-    img.src = base64
+export const loadImage = (base64?: string) =>
+  new Promise<HTMLImageElement>((resolve, reject) => {
+    if (!base64) {
+      reject
+    }
+    else {
+      const img = new Image()
+      img.onload = () => resolve(img)
+      img.onerror = reject
+      img.src = base64
+    }
   })
 
 export const resizeImage = (base64: string) =>
-  new Promise((resolve, reject) => {
+  new Promise<string>((resolve, reject) => {
     const img = new Image()
     img.onload = event => {
       try {

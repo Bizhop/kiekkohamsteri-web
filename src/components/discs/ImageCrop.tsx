@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from "react"
 import { Box, Stack, Button, Paper } from "@mui/material"
-import ReactCrop from "react-image-crop"
+import ReactCrop, { Crop } from "react-image-crop"
 import "react-image-crop/dist/ReactCrop.css"
 import CloudUploadIcon from "@mui/icons-material/CloudUpload"
 
 import { loadImage } from "../shared/utils"
+import { DiscImage } from "./DiscsContainer"
 
-const ImageCrop = ({ image, updateImage, imageUploading }) => {
-  const [croppedImage, setCroppedImage] = useState(null)
-  const [imageDimensions, setImageDimensions] = useState(null)
-  const [crop, setCrop] = useState({})
+const ImageCrop = ({ image, updateImage, imageUploading }: {
+  image: DiscImage,
+  updateImage: any,
+  imageUploading: boolean
+}) => {
+  const [croppedImage, setCroppedImage] = useState<string | null>(null)
+  const [imageDimensions, setImageDimensions] = useState<string | null>(null)
+  const [crop, setCrop] = useState<Crop>({ x: 0, y: 0, width: 0, height: 0, unit: "px" })
 
   useEffect(() => {
     if (!imageDimensions) {
@@ -71,38 +76,53 @@ const extractCropDimensions = crop => {
   return " x "
 }
 
-const processCrop = (crop, base64) =>
-  new Promise((resolve, reject) => {
-    var img = new Image()
-
-    img.onload = event => {
-      try {
-        const loadedImage = event.target
-
-        const canvas = document.createElement("canvas")
-        canvas.width = crop.width
-        canvas.height = crop.height
-        const ctx = canvas.getContext("2d")
-
-        ctx.drawImage(
-          loadedImage,
-          crop.x,
-          crop.y,
-          crop.width,
-          crop.height,
-          0,
-          0,
-          crop.width,
-          crop.height
-        )
-
-        resolve(canvas.toDataURL("image/jpeg"))
-      } catch (error) {
-        reject(error)
-      }
+const processCrop = (crop: Crop, base64?: string) =>
+  new Promise<string>((resolve, reject) => {
+    if (!base64) {
+      reject
     }
+    else {
+      var img = new Image()
 
-    img.src = base64
+      img.onload = event => {
+        try {
+          const loadedImage = event.target
+
+          console.log(loadedImage)
+
+          if (loadedImage instanceof HTMLImageElement) {
+
+            const canvas = document.createElement("canvas")
+            canvas.width = crop.width
+            canvas.height = crop.height
+            const ctx = canvas.getContext("2d")
+
+            if (ctx) {
+              ctx.drawImage(
+                loadedImage,
+                crop.x,
+                crop.y,
+                crop.width,
+                crop.height,
+                0,
+                0,
+                crop.width,
+                crop.height
+              )
+
+              resolve(canvas.toDataURL("image/jpeg"))
+            }
+            else {
+              reject("Unable to initialize 2d context")
+            }
+          }
+        } catch (error) {
+          reject(error)
+        }
+      }
+
+      img.src = base64
+    }
   })
 
 export default ImageCrop

@@ -121,4 +121,4 @@ export const search = (sort: ISort, pagination: IPagination, criteria: TSearchCr
 export const searchSuccess = (payload: IResponsePagedPayload<TDisc>) => action(SEARCH_DISCS_SUCCESS, payload)
 export const searchFailure = () => action(SEARCH_DISCS_FAILURE)
 
-export const toggleEditModal = (disc: TDisc) => action(TOGGLE_DISC_EDIT_MODAL, { disc })
+export const toggleEditModal = (disc: TDisc | null) => action(TOGGLE_DISC_EDIT_MODAL, { disc })

@@ -11,6 +11,7 @@ import DiscsTable from "../discs/DiscsTable"
 import { getStats } from "./othersActions"
 import StatsTable from "./StatsTable"
 import { defaultPagination } from "../shared/constants"
+import { defaultStatsPagination, defaultStatsSort } from "./othersReducer"
 
 const OthersContainer = props => (
   <Box sx={{ flexGrow: 1 }}>
@@ -43,7 +44,7 @@ const OthersContainer = props => (
 const mapStateToProps = state => ({
   loggedIn: path(["user", "token"], state),
   username: path(["user", "user", "username"], state),
-  statsSort: path(["others", "statsSort"], state),
+  statsSort: path(["others", "sort"], state),
   stats: path(["others", "stats"], state),
   lost: path(["discs", "lost"], state),
   lostSort: path(["discs", "lostSort"], state),
@@ -51,19 +52,12 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  getStats: dispatch(
-    getStats({
-      sort: {
-        sort: "year,desc&sort=month,desc",
-        column: "Kuukausi",
-      },
-    })
-  ),
+  getStats: dispatch(getStats(defaultStatsSort)),
   getLost: dispatch(
-    getLost({ sort: "updatedAt,desc", column: "Pvm" }, { ...defaultPagination, size: 1000 })
+    getLost({ sort: "updatedAt,desc", column: "Pvm" }, defaultStatsPagination)
   ),
   updateLost: params => dispatch(getLost(params)),
-  updateStats: params => dispatch(getStats(params)),
+  updateStats: params => dispatch(getStats(params.sort, defaultStatsPagination)),
   found: id => dispatch(found(id)),
 })
 

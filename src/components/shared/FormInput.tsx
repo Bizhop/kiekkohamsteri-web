@@ -10,7 +10,10 @@ import {
   FormHelperText,
 } from "@mui/material"
 
-export const RenderTextInput = ({ input, label }) => (
+export const RenderTextInput = ({ input, label }: {
+  input: any,
+  label: string
+}) => (
   <TextField margin="normal" autoFocus fullWidth label={label} {...input} type="text" />
 )
 
