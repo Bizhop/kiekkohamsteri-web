@@ -4,13 +4,13 @@ import UserEditForm from "./UserEditForm"
 import { TUser } from "../../types"
 import { toggleEditModal } from "./userActions"
 
-const UserEditModal = ({isOpen, toggleModal, label, editUser, user}: {
+const UserEditModal = ({ isOpen, toggleModal, label, editUser, user }: {
   isOpen: boolean,
   toggleModal: typeof toggleEditModal,
   label: string,
   editUser: any,
   user: TUser | null
-}) => (
+}) => user ? (
   <Modal
     isOpen={isOpen}
     onRequestClose={() => toggleModal(null)}
@@ -18,6 +18,6 @@ const UserEditModal = ({isOpen, toggleModal, label, editUser, user}: {
   >
     <UserEditForm onSubmit={editUser} initialValues={user} />
   </Modal>
-)
+) : null
 
 export default UserEditModal
