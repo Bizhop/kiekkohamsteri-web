@@ -149,6 +149,7 @@ export type ShopActions = ActionType<typeof shopActions>
 export type TUser = components["schemas"]["UserOutputDto"] & HasId
 export type TUserUpdate = components["schemas"]["UserUpdateDto"]
 export type TDropdowns = components["schemas"]["DropdownsDto"]
+export type TDropdown = components["schemas"]["DropdownOutputDto"]
 export type TGroup = components["schemas"]["GroupDto"] & HasId
 export type TGroupRequest = components["schemas"]["GroupRequestOutputDto"] & HasId
 export type TGroupCreate = components["schemas"]["GroupCreateDto"] & HasId

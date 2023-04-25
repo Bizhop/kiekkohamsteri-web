@@ -16,14 +16,13 @@ import {
 } from "./discsActions"
 import { getDropdowns, getDropdownsByManufacturer } from "../dropdown/dropdownActions"
 import Modal from "../shared/Modal"
-import DiscEditForm from "./DiscEditForm"
+import DiscEditModal from "./DiscEditModal"
 import DiscsTable from "./DiscsTable"
 import { defaultSort, defaultPagination } from "../shared/constants"
 import DiscsFilter from "./DiscsFilter"
 import { base64Reader, resizeImage } from "../shared/utils"
 import ImageCrop from "./ImageCrop"
-import { IDiscsState, IDropdownsState, IPagination, ISort, IUsersState, TDisc, TDropdowns, TSearchCriteria } from "../../types"
-import { TDiscInEdit } from "../../types"
+import { IDiscsState, IDropdownsState, IPagination, ISort, IUsersState, TDisc, TDiscInEdit, TSearchCriteria } from "../../types"
 
 const mapState = ({ user, discs, dropdowns }: {
   user: IUsersState,
@@ -46,7 +45,7 @@ const mapDispatch = {
   getDropdowns: getDropdowns(),
   getDiscSearchOperations: getDiscSearchOperations(),
   getDropdownsByManufacturer: (manufacturerId: number) => getDropdownsByManufacturer(manufacturerId),
-  updateDisc: (disc: TDisc) => updateDisc(disc),
+  updateDisc: (disc: TDiscInEdit) => updateDisc(disc),
   createDisc: () => createDisc(),
   toggleEditModal: (disc: TDisc | null) => toggleEditModal(disc),
   deleteDisc: (uuid: string) => deleteDisc(uuid),
@@ -148,31 +147,6 @@ const sortOptions = [
     sort: "weight,desc"
   }
 ]
-
-const DiscEditModal = ({
-  isOpen,
-  toggleModal,
-  updateDisc,
-  discInEdit,
-  dropdowns,
-  getDropdownsByManufacturer,
-}: {
-  isOpen: boolean,
-  toggleModal: typeof toggleEditModal,
-  updateDisc: any,
-  discInEdit: TDiscInEdit | null,
-  dropdowns: TDropdowns,
-  getDropdownsByManufacturer: any
-}) => (
-  <Modal isOpen={isOpen} onRequestClose={() => toggleModal(null)} contentLabel="Kiekon muokkaus">
-    <DiscEditForm
-      onSubmit={updateDisc}
-      initialValues={discInEdit}
-      dropdowns={dropdowns}
-      getDropdownsByManufacturer={getDropdownsByManufacturer}
-    />
-  </Modal>
-)
 
 const ImageCropModal = ({ isOpen, toggleModal, newImage, imageUploading, updateImage }: {
   isOpen: boolean,

@@ -1,10 +1,10 @@
 import React from "react"
 import { Box, Button, TextField } from "@mui/material"
+import { useForm, Controller, FieldErrors } from "react-hook-form"
+import { has, pathOr } from "ramda"
 import SaveAltIcon from "@mui/icons-material/SaveAlt"
 
 import { TUser } from "../../types"
-import { useForm, Controller, FieldErrors } from "react-hook-form"
-import { has, pathOr } from "ramda"
 
 const UserEditForm = ({ onSubmit, initialValues }: {
   onSubmit: any,

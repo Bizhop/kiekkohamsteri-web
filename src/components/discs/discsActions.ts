@@ -39,7 +39,7 @@ export const OTHER_USER_DISCS_FAILURE = "discs/GET_OTHER_FAIL"
 import { getPayloadTs, putPayloadTs, postPayloadTs, patchPayloadTs, deletePayloadTs } from "../Api"
 import { pick } from "ramda"
 import { pagingAndSortingQueryParams } from "../shared/utils"
-import { IPagination, IResponsePagedPayload, IResponsePayload, ISort, TDisc, TSearchCriteria, TSupportedOperation } from "../../types"
+import { IPagination, IResponsePagedPayload, IResponsePayload, ISort, TDisc, TDiscInEdit, TSearchCriteria, TSupportedOperation } from "../../types"
 
 const updateFields = [
   "moldId",
@@ -81,7 +81,7 @@ export const getDisc = (uuid: string) => action(DISC_REQUEST, getPayloadTs(`api/
 export const getDiscSuccess = (payload: IResponsePayload<TDisc>) => action(DISC_SUCCESS, payload)
 export const getDiscFailure = () => action(DISC_FAILURE)
 
-export const updateDisc = (disc: TDisc) => action(UPDATE_DISC_REQUEST, putPayloadTs(`api/v2/discs/${disc.uuid}`, pick(updateFields, disc)), { disc })
+export const updateDisc = (disc: TDiscInEdit) => action(UPDATE_DISC_REQUEST, putPayloadTs(`api/v2/discs/${disc.uuid}`, pick(updateFields, disc)), { disc })
 export const updateDiscSuccess = (payload: IResponsePayload<TDisc>) => action(UPDATE_DISC_SUCCESS, payload)
 export const updateDiscFailure = () => action(UPDATE_DISC_FAILURE)
 

@@ -54,7 +54,7 @@ const updateDiscsArray = (inputArray: TDisc[], disc: TDisc): TDisc[] => {
   return update(index, disc, inputArray)
 }
 
-const prepareDiscInEdit = (input: TDisc): TDiscInEdit | null => {
+const prepareDiscInEdit = (input: TDisc | null): TDiscInEdit | null => {
   return input ? {
       ...input,
       manufacturerId: input.mold?.manufacturer.id,
