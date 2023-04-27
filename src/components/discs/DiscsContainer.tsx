@@ -22,7 +22,7 @@ import { defaultSort, defaultPagination } from "../shared/constants"
 import DiscsFilter from "./DiscsFilter"
 import { base64Reader, resizeImage } from "../shared/utils"
 import ImageCrop from "./ImageCrop"
-import { IDiscsState, IDropdownsState, IPagination, ISort, IUsersState, TDisc, TDiscInEdit, TSearchCriteria } from "../../types"
+import { IDiscsState, IDropdownsState, IPagination, ISort, IUsersState, TDisc, TDiscInEdit, TFilter, TSearchCriteria } from "../../types"
 
 const mapState = ({ user, discs, dropdowns }: {
   user: IUsersState,
@@ -64,7 +64,7 @@ export interface DiscImage {
 const DiscsContainer = (props: PropsFromRedux) => {
   const [newImage, setNewImage] = useState<DiscImage>({ uuid: null })
   const [isImageCropOpen, setImageCropOpen] = useState(false)
-  const [filters, setFilters] = useState([])
+  const [filters, setFilters] = useState<TFilter[]>([])
 
   const toggleImageCropModal = () => setImageCropOpen(!isImageCropOpen)
 

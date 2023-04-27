@@ -1,9 +1,10 @@
 import React, { useState } from "react"
 import { Box, MenuItem, TextField, Paper, Stack, Button, IconButton, Radio, RadioGroup, FormControlLabel, FormControl } from "@mui/material"
-import { append, assoc, compose, filter, find, includes, map, propEq, remove } from "ramda"
+import { append, find, propEq, remove } from "ramda"
 import DeleteIcon from "@mui/icons-material/Delete"
 
 import Selector from "../shared/Selector"
+import { TFilter, IPagination, ISort, TSearchCriteria, TSupportedOperation } from "../../types"
 
 const operationsMap = new Map([
   ["GREATER_THAN", ">"],
@@ -11,7 +12,9 @@ const operationsMap = new Map([
   ["LESS_THAN", "<"],
   ["LESS_THAN_EQUAL", "<="],
   ["EQUAL", "="],
-  ["NOT_EQUAL", "≠"]
+  ["NOT_EQUAL", "≠"],
+  ["IN", "In"],
+  ["NOT_IN", "Not in"]
 ])
 
 const supportedFieldNamesMap = new Map([
@@ -27,39 +30,29 @@ const supportedFieldNamesMap = new Map([
   ["publicDisc", "Julkinen"]
 ])
 
-const supportedOperationsList = [
-  "GREATER_THAN",
-  "GREATER_THAN_EQUAL",
-  "LESS_THAN",
-  "LESS_THAN_EQUAL",
-  "EQUAL",
-  "NOT_EQUAL"
-]
-
-const DiscsFilter = ({ searchOperations, search, sort, pagination, filters, setFilters }) => {
-  const addFilter = filter => {
+const DiscsFilter = ({ searchOperations, search, sort, pagination, filters, setFilters }: {
+  searchOperations: TSupportedOperation[],
+  search: (sort: ISort, pagination: IPagination, criteria: TSearchCriteria[]) => any,
+  sort: ISort,
+  pagination: IPagination,
+  filters: TFilter[],
+  setFilters: (filters: TFilter[]) => any
+}) => {
+  const addFilter = (filter: TFilter) => {
     const newFilters = append(filter, filters)
-    search({ filters: newFilters, sort, pagination })
+    search(sort, pagination, newFilters)
     setFilters(newFilters)
   }
 
-  const removeFilter = index => {
+  const removeFilter = (index: number) => {
     const newFilters = remove(index, 1, filters)
-    search({ filters: newFilters, sort, pagination })
+    search(sort, pagination, newFilters)
     setFilters(newFilters)
   }
-
-  const supportedFields = so => includes(so.field, [...supportedFieldNamesMap.keys()])
-  const supportedOperations = so => assoc("operations", filter(op => supportedOperationsList.includes(op), so.operations), so)
-
-  const frontendSupportedOperations = compose(
-    filter(supportedFields),
-    map(supportedOperations)
-  )(searchOperations)
 
   return (
     <div>
-      <FilterCreator addFilter={addFilter} searchOperations={frontendSupportedOperations} />
+      <FilterCreator addFilter={addFilter} searchOperations={searchOperations} />
       {filters.length > 0 && <h4>Valitut suodattimet</h4>}
       <Stack direction="row" spacing={1}>
         {filters.map((f, i) => (
@@ -79,8 +72,12 @@ const DiscsFilter = ({ searchOperations, search, sort, pagination, filters, setF
   )
 }
 
-const FilterCreator = ({ addFilter, searchOperations }) => {
-  const [filter, setFilter] = useState({ field: "" })
+const FilterCreator = ({ addFilter, searchOperations }: {
+  addFilter: (filter: TFilter) => any,
+  searchOperations: TSupportedOperation[]
+}) => {
+  const emptyFilter = { field: "", type: "", operations: [], description: "" }
+  const [filter, setFilter] = useState<TSupportedOperation>(emptyFilter)
 
   const optionsList = searchOperations.map(af => (
     <MenuItem key={af.field} value={af.field}>
@@ -91,9 +88,9 @@ const FilterCreator = ({ addFilter, searchOperations }) => {
   const handleFilterSelection = event => {
     const { value } = event.target
     const selectedFilter =
-      value === "" ? { field: "" } : find(propEq("field", value))(searchOperations)
+      value === "" ? emptyFilter : find<TSupportedOperation>(propEq("field", value))(searchOperations)
 
-    setFilter(selectedFilter)
+    setFilter(selectedFilter || emptyFilter)
   }
 
   return (
@@ -110,7 +107,10 @@ const FilterCreator = ({ addFilter, searchOperations }) => {
   )
 }
 
-const Filter = ({ data, addFilter }) => {
+const Filter = ({ data, addFilter }: {
+  data: TSupportedOperation,
+  addFilter: (filter: TFilter) => any
+}) => {
   switch (data.type) {
     case "number":
       return <NumberFilter data={data} addFilter={addFilter} />
@@ -121,7 +121,10 @@ const Filter = ({ data, addFilter }) => {
   }
 }
 
-const NumberFilter = ({ data, addFilter }) => {
+const NumberFilter = ({ data, addFilter }: {
+  data: TSupportedOperation,
+  addFilter: (filter: TFilter) => any
+}) => {
   const [operation, setOperation] = useState("")
   const [value, setValue] = useState(0)
 
@@ -148,13 +151,13 @@ const NumberFilter = ({ data, addFilter }) => {
           label="Arvo"
           type="number"
           value={value}
-          onChange={event => setValue(event.target.value)}
+          onChange={event => setValue(parseInt(event.target.value))}
         />
         <Button
           variant="contained"
           disabled={!operation}
           onClick={() =>
-            addFilter({ key: data.field, description: data.description, operation, value })
+            addFilter({ key: data.field, operation, value })
           }
         >
           Lisää
@@ -164,11 +167,14 @@ const NumberFilter = ({ data, addFilter }) => {
   )
 }
 
-const BooleanFilter = ({ data, addFilter }) => {
+const BooleanFilter = ({ data, addFilter }: {
+  data: TSupportedOperation,
+  addFilter: (filter: TFilter) => any
+}) => {
   const operation = "EQUAL"
   const [value, setValue] = useState("true")
 
-  const handleChange = event => setValue(event.target.value)
+  const handleChange = (_event: React.ChangeEvent<HTMLInputElement>, value: string) => setValue(value)
 
   return (
     <Box component={Paper} elevation={3} padding={1}>
@@ -194,7 +200,7 @@ const BooleanFilter = ({ data, addFilter }) => {
         <Button
           variant="contained"
           onClick={() =>
-            addFilter({ key: data.field, description: data.description, operation, value: value === "true" })
+            addFilter({ key: data.field, operation, value })
           }
         >
           Lisää

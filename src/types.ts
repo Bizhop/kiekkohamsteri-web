@@ -166,7 +166,8 @@ export type TDiscInEdit = TDisc & {
   colorId?: number,
 }
 export type TSupportedOperation = components["schemas"]["SupportedOperation"]
-export type TSearchCriteria = components["schemas"]["SearchCriteria"]
+export type TSearchCriteria = components["schemas"]["SearchCriteria"] & { value: any }
 export type TStats = components["schemas"]["Stats"]
 export type TBuySummary = components["schemas"]["BuySummaryDto"]
 export type TBuy = components["schemas"]["BuyOutputDto"]
+export type TFilter = TSearchCriteria & { description: string }

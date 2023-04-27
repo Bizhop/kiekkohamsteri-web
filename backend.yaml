@@ -816,8 +816,6 @@ components:
         colorId:
           type: integer
           format: int64
-        image:
-          type: string
         weight:
           type: integer
           format: int32
@@ -1137,6 +1135,10 @@ components:
           items:
             $ref: '#/components/schemas/SearchCriteria'
     SearchCriteria:
+      required:
+      - key
+      - operation
+      - value
       type: object
       properties:
         key:
@@ -1451,6 +1453,10 @@ components:
           items:
             $ref: '#/components/schemas/DropdownOutputDto'
     SupportedOperation:
+      required:
+      - field
+      - operations
+      - type
       type: object
       properties:
         field:

@@ -149,3 +149,109 @@ export const dropdowns = {
     }
   ]
 }
+
+
+export const supportedOperations = [
+  {
+    "field": "condition",
+    "type": "number",
+    "operations": [
+      "GREATER_THAN",
+      "GREATER_THAN_EQUAL",
+      "LESS_THAN",
+      "LESS_THAN_EQUAL",
+      "EQUAL",
+      "NOT_EQUAL",
+      "IN",
+      "NOT_IN"
+    ]
+  },
+  {
+    "field": "price",
+    "type": "number",
+    "operations": [
+      "GREATER_THAN",
+      "GREATER_THAN_EQUAL",
+      "LESS_THAN",
+      "LESS_THAN_EQUAL",
+      "EQUAL",
+      "NOT_EQUAL",
+      "IN",
+      "NOT_IN"
+    ]
+  },
+  {
+    "field": "weight",
+    "type": "number",
+    "operations": [
+      "GREATER_THAN",
+      "GREATER_THAN_EQUAL",
+      "LESS_THAN",
+      "LESS_THAN_EQUAL",
+      "EQUAL",
+      "NOT_EQUAL",
+      "IN",
+      "NOT_IN"
+    ]
+  },
+  {
+    "field": "publicDisc",
+    "type": "boolean",
+    "operations": [
+      "EQUAL"
+    ]
+  },
+  {
+    "field": "forSale",
+    "type": "boolean",
+    "operations": [
+      "EQUAL"
+    ]
+  },
+  {
+    "field": "swirly",
+    "type": "boolean",
+    "operations": [
+      "EQUAL"
+    ]
+  },
+  {
+    "field": "itb",
+    "type": "boolean",
+    "operations": [
+      "EQUAL"
+    ]
+  },
+  {
+    "field": "lostAndFound",
+    "type": "boolean",
+    "operations": [
+      "EQUAL"
+    ]
+  },
+  {
+    "field": "dyed",
+    "type": "boolean",
+    "operations": [
+      "EQUAL"
+    ]
+  },
+  {
+    "field": "special",
+    "type": "boolean",
+    "operations": [
+      "EQUAL"
+    ]
+  }
+]
+
+export const defaultSort = {
+  sort: "mold.manufacturer.name,asc&sort=mold.speed,asc&sort=mold.name,asc&sort=plastic.name,asc",
+  column: "Valmistaja",
+}
+
+export const defaultPagination = {
+  number: 0,
+  size: 10,
+  totalElements: 0,
+}
