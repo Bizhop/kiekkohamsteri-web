@@ -3,7 +3,7 @@ import React, { useState } from "react"
 import DiscsFilter from "../components/discs/DiscsFilter"
 import { defaultPagination, defaultSort, supportedOperations } from "./data/testData"
 
-const search = (sort, pagination, criteria) => alert("Searching, criteria = " + JSON.stringify(criteria))
+const search = (_sort, _pagination, criteria) => alert("Searching, criteria = " + JSON.stringify(criteria))
 
 export default {
   title: "Discs Filter",

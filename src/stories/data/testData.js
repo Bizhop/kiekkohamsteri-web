@@ -1,4 +1,5 @@
 export const testDisc = {
+  "uuid": "7de5f419-9034-4a00-ba00-b89268691f13",
   "owner": {
     "username": "User",
     "email": "test@example.com"
@@ -27,7 +28,7 @@ export const testDisc = {
     "id": 0,
     "name": "Valkoinen"
   },
-  "image": "",
+  "image": "No-Image",
   "weight": 175,
   "condition": 10,
   "glow": false,

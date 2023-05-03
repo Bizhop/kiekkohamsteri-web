@@ -1,7 +1,7 @@
-import React from "react"
+import React, { useState } from "react"
 import { confirmAlert } from "react-confirm-alert"
 import "react-confirm-alert/src/react-confirm-alert.css"
-import { useNavigate } from "react-router-dom"
+import { NavigateFunction, useNavigate } from "react-router-dom"
 import { Spinner } from "react-activity"
 import Dropzone from "react-dropzone"
 import "react-activity/dist/library.css"
@@ -20,6 +20,7 @@ import {
   TablePagination,
   MenuItem,
   Divider,
+  SelectChangeEvent,
 } from "@mui/material"
 import EditIcon from "@mui/icons-material/Edit"
 import DeleteIcon from "@mui/icons-material/Delete"
@@ -29,28 +30,54 @@ import AddAPhotoIcon from "@mui/icons-material/AddAPhoto"
 import ZoomImage from "../shared/ZoomImage"
 import Selector from "../shared/Selector"
 import { defaultSort } from "../shared/constants"
+import { IPagination, ISort, TDisc, TFilter, TSearchCriteria } from "../../types"
 
-const DiscsTable = props => {
-  const { filters, sort, pagination } = props
+const parseSort = (input: string): ISort => {
+  try {
+    return JSON.parse(input)
+  } catch (error) {
+    return defaultSort
+  }
+}
 
-  const handlePageChange = (_, newPage) =>
-    props.search(sort, { ...pagination, number: newPage }, filters)
+const DiscsTable = ({ filters, sort, pagination, search, sortOptions, discs, lostDiscs, editable, toggleEditModal, username, found, handleAcceptedFiles, deleteDisc }: {
+  filters: TFilter[],
+  sort: ISort,
+  pagination: IPagination,
+  search: (sort: ISort, pagination: IPagination, criteria: TSearchCriteria[]) => any,
+  sortOptions: ISort[],
+  discs: TDisc[],
+  lostDiscs?: boolean,
+  editable: boolean,
+  toggleEditModal: (disc: TDisc | null) => any,
+  username?: string,
+  found?: (uuid: string) => any,
+  handleAcceptedFiles: (acceptedFiles: File[], uuid: string) => void,
+  deleteDisc: (uuid: string) => any
+}): JSX.Element => {
+  const handlePageChange = (_event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null, newPage: number) =>
+    search(sort, { ...pagination, number: newPage }, filters)
 
-  const handleNewSort = (event) =>
-    props.search(event.target.value, pagination, filters)
+  const [selectedSort, setSelectedSort] = useState(defaultSort)
+  const handleNewSort = (event: SelectChangeEvent<string>, _child: React.ReactNode) => {
+    const newSort: ISort = parseSort(event.target.value)
+    setSelectedSort(newSort)
+    search(newSort, pagination, filters)
+  }
 
   const navigate = useNavigate()
   return (
     <Box sx={{ marginTop: 3 }}>
-      {props.sortOptions &&
+      {sortOptions &&
         <SortSelector
           handleNewSort={handleNewSort}
-          sortOptions={props.sortOptions}
+          sortOptions={sortOptions}
+          selectedSort={selectedSort}
         />
       }
       <Divider />
       <TableContainer component={Paper} elevation={3} sx={{ maxHeight: 650 }}>
-        {props.discs ? (
+        {discs ? (
           <Table size="small">
             <TableHead>
               <TableRow>
@@ -62,30 +89,30 @@ const DiscsTable = props => {
                 <TableCell>Kunto</TableCell>
                 <TableCell>Paino</TableCell>
                 <TableCell>Päivitetty</TableCell>
-                {props.lostDiscs && <TableCell />}
-                {props.lostDiscs && <TableCell />}
-                {props.editable && <TableCell />}
+                {lostDiscs && <TableCell />}
+                {lostDiscs && <TableCell />}
+                {editable && <TableCell />}
               </TableRow>
             </TableHead>
             <TableBody>
-              {props.discs.map(disc => (
+              {discs.map((disc: TDisc, index: number) => (
                 <Disc
-                  key={disc.uuid}
+                  key={`${index}-${disc.uuid}`}
                   disc={disc}
-                  toggleEditModal={props.toggleEditModal}
-                  deleteDisc={props.deleteDisc}
-                  editable={props.editable}
-                  lostDiscs={props.lostDiscs}
-                  username={props.username}
-                  found={props.found}
+                  toggleEditModal={toggleEditModal}
+                  deleteDisc={deleteDisc}
+                  editable={editable}
+                  lostDiscs={lostDiscs}
+                  username={username}
+                  found={found}
                   navigate={navigate}
-                  handleAcceptedFiles={props.handleAcceptedFiles}
+                  handleAcceptedFiles={handleAcceptedFiles}
                 />
               ))}
             </TableBody>
             <TableFooter>
               <TableRow>
-                <TableCell colSpan="100%">
+                <TableCell colSpan={10}>
                   <TablePagination
                     component="div"
                     count={pagination.totalElements}
@@ -108,35 +135,40 @@ const DiscsTable = props => {
   )
 }
 
-const SortSelector = ({ handleNewSort, sortOptions }) => {
-  const optionsList = sortOptions.map(sortOpt => (
-    <MenuItem key={sortOpt.column} value={sortOpt}>
+const SortSelector = ({ handleNewSort, sortOptions, selectedSort }: {
+  handleNewSort: (event: SelectChangeEvent<string>, child: React.ReactNode) => void,
+  sortOptions: ISort[],
+  selectedSort: ISort
+}) => {
+  const optionsList = sortOptions.map((sortOpt: ISort) => (
+    <MenuItem key={sortOpt.column} value={JSON.stringify(sortOpt)}>
       {sortOpt.column}
     </MenuItem>
   ))
 
   return (
     <Selector
+      id="sort-selector"
+      value={JSON.stringify(selectedSort)}
       label="Järjestys"
       onChange={handleNewSort}
       optionsList={optionsList}
-      defaultValue={defaultSort}
     />
   )
 }
 
 const clickable = ({ target }) => target.cellIndex && target.cellIndex > 0 && target.cellIndex < 9
 
-const Disc = ({
-  disc,
-  editable,
-  lostDiscs,
-  username,
-  found,
-  toggleEditModal,
-  deleteDisc,
-  navigate,
-  handleAcceptedFiles
+const Disc = ({ disc, editable, lostDiscs, username, found, toggleEditModal, deleteDisc, navigate, handleAcceptedFiles}: {
+  disc: TDisc,
+  editable: boolean,
+  lostDiscs?: boolean,
+  username?: string,
+  found?: (uuid: string) => any,
+  toggleEditModal: (disc: TDisc | null) => any,
+  deleteDisc: (uuid: string) => any,
+  navigate: NavigateFunction,
+  handleAcceptedFiles: (acceptedFiles: File[], uuid: string) => void
 }) => {
   return (
     <TableRow
@@ -148,10 +180,10 @@ const Disc = ({
       <TableCell>
         <ZoomImage image={disc.image} />
       </TableCell>
-      <TableCell>{disc.mold.manufacturer.name}</TableCell>
-      <TableCell>{disc.mold.name}</TableCell>
-      <TableCell>{disc.plastic.name}</TableCell>
-      <TableCell>{disc.mold.speed} / {disc.mold.glide} / {disc.mold.stability} / {disc.mold.fade}</TableCell>
+      <TableCell>{disc.mold?.manufacturer.name}</TableCell>
+      <TableCell>{disc.mold?.name}</TableCell>
+      <TableCell>{disc.plastic?.name}</TableCell>
+      <TableCell>{disc.mold?.speed} / {disc.mold?.glide} / {disc.mold?.stability} / {disc.mold?.fade}</TableCell>
       <TableCell>{disc.condition}/10</TableCell>
       <TableCell>{disc.weight}</TableCell>
       <TableCell>{disc.updatedAt}</TableCell>
@@ -160,7 +192,7 @@ const Disc = ({
         <TableCell>
           {username === disc.owner.username && (
             <Tooltip title="Löytynyt">
-              <IconButton onClick={() => found(disc.uuid)}>
+              <IconButton onClick={() => found && found(disc.uuid)}>
                 <CheckIcon />
               </IconButton>
             </Tooltip>
@@ -169,7 +201,7 @@ const Disc = ({
       )}
       {editable && (
         <TableCell sx={{ display: "flex" }}>
-          <Dropzone onDrop={acceptedFiles => handleAcceptedFiles({ uuid: disc.uuid, acceptedFiles })}>
+          <Dropzone onDrop={acceptedFiles => handleAcceptedFiles(acceptedFiles, disc.uuid)}>
             {imageDropzone}
           </Dropzone>
           <IconButton color="secondary" onClick={() => toggleEditModal(disc)}>
@@ -177,12 +209,7 @@ const Disc = ({
           </IconButton>
           <IconButton
             color="error"
-            onClick={() =>
-              handleDelete({
-                uuid: disc.uuid,
-                confirm: deleteDisc,
-              })
-            }
+            onClick={() => handleDelete(disc.uuid, deleteDisc)}
           >
             <DeleteIcon />
           </IconButton>
@@ -192,7 +219,7 @@ const Disc = ({
   )
 }
 
-const imageDropzone = ({ getRootProps, getInputProps }) => {
+const imageDropzone = ({ getRootProps, getInputProps }): JSX.Element => {
   return (
     <div className="dropzone" {...getRootProps()}>
       <input {...getInputProps()} />
@@ -203,7 +230,7 @@ const imageDropzone = ({ getRootProps, getInputProps }) => {
   )
 }
 
-const handleDelete = ({ uuid, confirm }) => {
+const handleDelete = (uuid: string, confirm: (uuid: string) => any): void => {
   confirmAlert({
     title: "Varoitus",
     message: "Haluatko varmasti poistaa kiekon?",

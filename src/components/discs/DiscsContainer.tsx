@@ -68,10 +68,7 @@ const DiscsContainer = (props: PropsFromRedux) => {
 
   const toggleImageCropModal = () => setImageCropOpen(!isImageCropOpen)
 
-  const handleAcceptedFiles = ({ acceptedFiles, uuid }: {
-    acceptedFiles: File[],
-    uuid: string
-  }) => {
+  const handleAcceptedFiles = (acceptedFiles: File[], uuid: string): void => {
     if (acceptedFiles.length == 1) {
       const file = acceptedFiles[0]
       base64Reader(file).then(base64 => {
@@ -140,7 +137,7 @@ const DiscsContainer = (props: PropsFromRedux) => {
   )
 }
 
-const sortOptions = [
+const sortOptions: ISort[] = [
   defaultSort,
   {
     column: "Paino",
@@ -154,7 +151,7 @@ const ImageCropModal = ({ isOpen, toggleModal, newImage, imageUploading, updateI
   newImage: DiscImage,
   imageUploading: boolean,
   updateImage: any
-}) => (
+}): JSX.Element => (
   <Modal isOpen={isOpen} onRequestClose={() => toggleModal()} contentLabel="Kuvan rajaus">
     <ImageCrop image={newImage} imageUploading={imageUploading} updateImage={updateImage} />
   </Modal>

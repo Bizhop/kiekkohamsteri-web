@@ -1,5 +1,8 @@
 /** @type { import('@storybook/react').Preview } */
-const preview = {
+
+import { MemoryRouter } from "react-router-dom"
+
+export const parameters = {
   parameters: {
     actions: { argTypesRegex: "^on[A-Z].*" },
     controls: {
@@ -9,6 +12,8 @@ const preview = {
       },
     },
   },
-};
+}
 
-export default preview;
+export const decorators = [
+  story => <MemoryRouter initialEntries={['/']}>{story()}</MemoryRouter>
+]
