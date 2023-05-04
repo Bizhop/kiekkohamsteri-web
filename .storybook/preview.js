@@ -1,6 +1,7 @@
 /** @type { import('@storybook/react').Preview } */
 
 import { MemoryRouter } from "react-router-dom"
+import "../src/styles/styles.css"
 
 export const parameters = {
   parameters: {

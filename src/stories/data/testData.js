@@ -35,7 +35,7 @@ export const testDisc = {
   "special": true,
   "dyed": true,
   "swirly": false,
-  "markings": 0,
+  "markings": 1,
   "forSale": false,
   "price": 0,
   "description": "Kuvaus",
