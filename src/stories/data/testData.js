@@ -42,7 +42,8 @@ export const testDisc = {
   "lostAndFound": false,
   "itb": false,
   "publicDisc": true,
-  "lost": false
+  "lost": false,
+  "updatedAt": "2023-04-01"
 }
 
 export const testUser = {
