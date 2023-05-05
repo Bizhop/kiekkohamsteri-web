@@ -56,7 +56,8 @@ export const testUser = {
   groups: [{
     id: 1,
     name: "Test Group"
-  }]
+  }],
+  roles: []
 }
 
 export const groupAdmin = {
@@ -81,6 +82,14 @@ export const testGroup = {
   id: 1,
   name: "Test Group"
 }
+
+export const groupRequests = [{
+  id: 1,
+  group: testGroup,
+  source: testUser,
+  target: groupAdmin,
+  type: "DEMOTE"
+}]
 
 export const dropdowns = {
   "manufacturers": [

@@ -28,26 +28,26 @@ export const updateUserArray = (users: TUser[], updatedUser: TUser | undefined):
   return update(index, updatedUser, users)
 }
 
-export const isAdminOrGroupAdmin = (user: TUser, groupId: number) => {
+export const isAdminOrGroupAdmin = (user: TUser | null, groupId: number) => {
   return isAdmin(user) || isGroupAdmin(user, groupId)
 }
 
-export const isAdmin = (user: TUser) => {
-  if (!user.roles) return false
+export const isAdmin = (user: TUser | null) => {
+  if (!user || !user.roles) return false
   return any(roleIsAdmin)(user.roles)
 }
 
 const roleIsAdmin = (role: TUserRole): boolean => role.name === "ADMIN"
 
-export const isGroupAdmin = (user: TUser, groupId: number) => {
-  if (!user.roles) return false
+export const isGroupAdmin = (user: TUser | null, groupId: number) => {
+  if (!user || !user.roles) return false
   return any((role: TUserRole) => roleIsGroupAdmin(role, groupId))(user.roles)
 }
 
 const roleIsGroupAdmin = (role: TUserRole, groupId: number): boolean => role.name === "GROUP_ADMIN" && role.groupId === groupId
 
-export const isGroupMember = (user: TUser, groupId: number) => {
-  if (!user.groups) return false
+export const isGroupMember = (user: TUser | null, groupId: number) => {
+  if (!user || !user.groups) return false
   return any((role: TUserRole) => role.id === groupId)(user.groups)
 }
 
