@@ -20,12 +20,14 @@ const DiscEditModal = ({
   getDropdownsByManufacturer: any
 }) => (
   <Modal isOpen={isOpen} onRequestClose={() => toggleModal(null)} contentLabel="Kiekon muokkaus">
-    <DiscEditForm
-      onSubmit={updateDisc}
-      initialValues={discInEdit}
-      dropdowns={dropdowns}
-      getDropdownsByManufacturer={getDropdownsByManufacturer}
-    />
+    {discInEdit &&
+      <DiscEditForm
+        onSubmit={updateDisc}
+        initialValues={discInEdit}
+        dropdowns={dropdowns}
+        getDropdownsByManufacturer={getDropdownsByManufacturer}
+      />
+    }
   </Modal>
 )
 

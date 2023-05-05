@@ -1,5 +1,5 @@
 import React from "react"
-import { useForm, Controller, FieldErrors, useWatch } from "react-hook-form"
+import { useForm, Controller, FieldErrors, useWatch, ControllerRenderProps, FieldValues } from "react-hook-form"
 import { Box, Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormHelperText, InputLabel, MenuItem, Select, TextField } from "@mui/material"
 import { has, pathOr } from "ramda"
 import SaveAltIcon from "@mui/icons-material/SaveAlt"
@@ -8,10 +8,10 @@ import { TDiscInEdit, TDropdown, TDropdowns } from "../../types"
 
 const DiscEditForm = ({ onSubmit, initialValues, dropdowns, getDropdownsByManufacturer }: {
   onSubmit: any,
-  initialValues: TDiscInEdit | null,
+  initialValues: TDiscInEdit,
   dropdowns: TDropdowns,
   getDropdownsByManufacturer: any
-}) => {
+}): JSX.Element => {
   const { control, handleSubmit, formState: { errors, isDirty, isSubmitting, isValid } } = useForm({ defaultValues: initialValues, mode: "onChange" })
 
   const manufacturerId = useWatch({ control, name: "manufacturerId" })
@@ -142,7 +142,7 @@ const InputSelectField = ({ field, label, errors, options }: {
   label: string,
   errors: FieldErrors<TDiscInEdit>,
   options: TDropdown[]
-}) => {
+}): JSX.Element => {
   const hasError = has(field.name)(errors)
 
   const optionList = options.map(opt => (
@@ -168,7 +168,7 @@ const InputField = ({ field, label, errors, type }: {
   label: string,
   errors: FieldErrors<TDiscInEdit>,
   type: string
-}) => {
+}): JSX.Element => {
   const hasError = has(field.name)(errors)
 
   return (
@@ -188,7 +188,7 @@ const InputField = ({ field, label, errors, type }: {
 const InputCheckbox = ({ field, label }: {
   field: any,
   label: string
-}) => {
+}): JSX.Element => {
   return (
     <FormControlLabel
       control={<Checkbox {...field} checked={field.value} type="checkbox" />}

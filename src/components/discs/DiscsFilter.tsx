@@ -37,7 +37,7 @@ const DiscsFilter = ({ searchOperations, search, sort, pagination, filters, setF
   pagination: IPagination,
   filters: TFilter[],
   setFilters: (filters: TFilter[]) => any
-}) => {
+}): JSX.Element => {
   const addFilter = (filter: TFilter) => {
     const newFilters = append(filter, filters)
     search(sort, pagination, newFilters)
@@ -51,7 +51,7 @@ const DiscsFilter = ({ searchOperations, search, sort, pagination, filters, setF
   }
 
   return (
-    <div>
+    <Box>
       <FilterCreator addFilter={addFilter} searchOperations={searchOperations} />
       {filters.length > 0 && <h4>Valitut suodattimet</h4>}
       <Stack direction="row" spacing={1}>
@@ -68,14 +68,14 @@ const DiscsFilter = ({ searchOperations, search, sort, pagination, filters, setF
           </Box>
         ))}
       </Stack>
-    </div>
+    </Box>
   )
 }
 
 const FilterCreator = ({ addFilter, searchOperations }: {
   addFilter: (filter: TFilter) => any,
   searchOperations: TSupportedOperation[]
-}) => {
+}): JSX.Element => {
   const emptyFilter = { field: "", type: "", operations: [], description: "" }
   const [filter, setFilter] = useState<TSupportedOperation>(emptyFilter)
 
@@ -110,7 +110,7 @@ const FilterCreator = ({ addFilter, searchOperations }: {
 const Filter = ({ data, addFilter }: {
   data: TSupportedOperation,
   addFilter: (filter: TFilter) => any
-}) => {
+}): JSX.Element | null => {
   switch (data.type) {
     case "number":
       return <NumberFilter data={data} addFilter={addFilter} />
@@ -124,7 +124,7 @@ const Filter = ({ data, addFilter }: {
 const NumberFilter = ({ data, addFilter }: {
   data: TSupportedOperation,
   addFilter: (filter: TFilter) => any
-}) => {
+}): JSX.Element => {
   const [operation, setOperation] = useState("")
   const [value, setValue] = useState(0)
 
@@ -170,7 +170,7 @@ const NumberFilter = ({ data, addFilter }: {
 const BooleanFilter = ({ data, addFilter }: {
   data: TSupportedOperation,
   addFilter: (filter: TFilter) => any
-}) => {
+}): JSX.Element => {
   const operation = "EQUAL"
   const [value, setValue] = useState("true")
 

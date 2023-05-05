@@ -15,7 +15,7 @@ const mapState = ({user}: { user: IUsersState }) => ({
 const connector = connect(mapState)
 type PropsFromRedux = ConnectedProps<typeof connector>
 
-const AdminContainer = ({loggedIn}: PropsFromRedux) => {
+const AdminContainer = ({loggedIn}: PropsFromRedux): JSX.Element => {
   const [tab, updateTab] = useState(1)
 
   return (

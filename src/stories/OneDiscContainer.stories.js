@@ -6,7 +6,7 @@ import { testDisc } from "./data/testData"
 const getDisc = () => alert("This should not trigger")
 
 export default {
-  title: "One Disc Container",
+  title: "Containers/One Disc",
   component: OneDiscContainer
 }
 

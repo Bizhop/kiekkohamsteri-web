@@ -3,8 +3,8 @@ import { confirmAlert } from "react-confirm-alert"
 import "react-confirm-alert/src/react-confirm-alert.css"
 import { NavigateFunction, useNavigate } from "react-router-dom"
 import { Spinner } from "react-activity"
-import Dropzone from "react-dropzone"
 import "react-activity/dist/library.css"
+import Dropzone from "react-dropzone"
 import {
   TableContainer,
   Paper,

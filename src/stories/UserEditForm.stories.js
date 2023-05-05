@@ -6,7 +6,7 @@ import { testUser } from "./data/testData"
 const onSubmit = data => alert("Submitting... " + JSON.stringify(data))
 
 export default {
-  title: "User Edit Form",
+  title: "Forms/User Edit Form",
   component: UserEditForm
 }
 

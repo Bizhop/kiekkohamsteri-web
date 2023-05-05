@@ -16,7 +16,7 @@ const toggleEditModal = (disc) => alert("Toggling edit modal for uuid: " + disc.
 const deleteDisc = (uuid) => alert("Deleting uuid: " + uuid)
 
 export default {
-  title: "Discs Table",
+  title: "Components/Discs Table",
   component: DiscsTable
 }
 

@@ -1,13 +1,13 @@
 import React from "react"
-import { path, any, propEq, pick } from "ramda"
+import { any, propEq, pick } from "ramda"
 import { ConnectedProps, connect } from "react-redux"
-import { CredentialResponse, GoogleLogin } from "@react-oauth/google"
+import { CredentialResponse, GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google"
 import { confirmAlert } from "react-confirm-alert"
 import "react-confirm-alert/src/react-confirm-alert.css"
 import { Spinner } from "react-activity"
+import "react-activity/dist/library.css"
 import {
   Box,
-  Grid,
   Button,
   TableContainer,
   Table,
@@ -17,6 +17,8 @@ import {
   TableCell,
   Paper,
   Tooltip,
+  Stack,
+  Grid,
 } from "@mui/material"
 import EditIcon from "@mui/icons-material/Edit"
 import GroupRemoveIcon from "@mui/icons-material/GroupRemove"
@@ -64,123 +66,122 @@ const mapDispatch = {
 const connector = connect(mapState, mapDispatch)
 type PropsFromRedux = ConnectedProps<typeof connector>
 
-const DashContainer = (props: PropsFromRedux) => {
-  const handleEditUser = (user: TUser) => props.editUser(user.id, pick(["username", "firstName", "lastName", "pdgaNumber"], user))
+export const DashContainer = (props: PropsFromRedux): JSX.Element => {
+  const { editUser, isEditOpen, userInEdit, loggedIn, user, listUsers, fetchingUsers, users, selectedGroup, promote, demote, kick, login, loginError, toggleEditModal } = props
+  const handleEditUser = (user: TUser) => editUser(user.id, pick(["username", "firstName", "lastName", "pdgaNumber"], user))
 
   return (
-  <div>
-    <UserEditModal
-      isOpen={props.isEditOpen}
-      toggleModal={props.toggleEditModal}
-      user={props.userInEdit}
-      editUser={handleEditUser}
-      label="Muokkaa tietojasi"
-    />
-    {props.loggedIn ? (
-      props.user && (
-        <Box sx={{ flexGrow: 1 }}>
-          <h1>Tervetuloa {props.user.username}!</h1>
-          <Grid container spacing={1}>
-            <Grid item md={2}>
-              <strong>Nimi</strong>
-            </Grid>
-            <Grid item md={5}>
-              {props.user.firstName} {props.user.lastName}
-            </Grid>
-          </Grid>
-          <Grid container spacing={1}>
-            <Grid item md={2}>
-              <strong>Email</strong>
-            </Grid>
-            <Grid item md={5}>
-              {props.user.email}
-            </Grid>
-          </Grid>
-          <Grid container spacing={1}>
-            <Grid item md={2}>
-              <strong>PDGA numero</strong>
-            </Grid>
-            <Grid item md={5}>
-              {props.user.pdgaNumber}
-            </Grid>
-          </Grid>
-          <Grid container mt={1}>
-            <Grid item md={2}>
+    <div>
+      <UserEditModal
+        isOpen={isEditOpen}
+        toggleModal={toggleEditModal}
+        user={userInEdit}
+        editUser={handleEditUser}
+        label="Muokkaa tietojasi"
+      />
+      {loggedIn ? (
+        user && (
+          <Stack direction="column" spacing={2}>
+            <Box width="50%">
+              <h1>Tervetuloa {user.username}!</h1>
+              <Table size="small" component={Paper} elevation={3}>
+                <TableBody>
+                  <TableRow>
+                    <TableCell><strong>Nimi</strong></TableCell>
+                    <TableCell>{user.firstName} {user.lastName}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><strong>Email</strong></TableCell>
+                    <TableCell>{user.email}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><strong>PDGA numero</strong></TableCell>
+                    <TableCell>{user.pdgaNumber}</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
               <Button
+                sx={{ marginTop: 1 }}
                 variant="contained"
                 startIcon={<EditIcon />}
-                onClick={() => props.toggleEditModal(props.user)}
+                onClick={() => toggleEditModal(user)}
               >
                 Muokkaa
               </Button>
+            </Box>
+            <Grid container spacing={1}>
+              <Grid item md={6}>
+                <TableContainer component={Paper} elevation={3}>
+                  <Table size="small">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell colSpan={3}>
+                          <strong>Ryhmät</strong>
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {user.groups &&
+                        user.groups.map(g => (
+                          <TableRow
+                            key={g.id}
+                            onClick={event => clickable(event) && listUsers(g)}
+                            className="color-on-hover"
+                          >
+                            <TableCell>{g.name}</TableCell>
+                            <TableCell>
+                              {isGroupAdmin({ user: user, groupId: g.id }) && (
+                                <Tooltip title="Ylläpitäjä">
+                                  <EngineeringIcon />
+                                </Tooltip>
+                              )}
+                            </TableCell>
+                            <TableCell>
+                              <Button
+                                variant="contained"
+                                color="secondary"
+                                startIcon={<GroupRemoveIcon />}
+                                onClick={() => handleLeavingGroup(editUser, user ? user.id : -1, g.id)}
+                              >
+                                Poistu ryhmästä
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Grid>
+              <Grid item md={6}>
+                {fetchingUsers ? (
+                  <Box>
+                    <Spinner />
+                  </Box>
+                ) : (
+                  <GroupUsersTable
+                    users={users}
+                    group={selectedGroup}
+                    promote={promote}
+                    demote={demote}
+                    kick={kick}
+                  />
+                )}
+              </Grid>
             </Grid>
-          </Grid>
-          <Grid container spacing={2} mt={3}>
-            <Grid item md={6}>
-              <TableContainer component={Paper} elevation={3}>
-                <Table size="small">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell colSpan={3}>
-                        <strong>Ryhmät</strong>
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {props.user.groups &&
-                      props.user.groups.map(g => (
-                        <TableRow
-                          key={g.id}
-                          onClick={() => props.listUsers(g)}
-                          className="color-on-hover"
-                        >
-                          <TableCell>{g.name}</TableCell>
-                          <TableCell>
-                            {isGroupAdmin({ user: props.user, groupId: g.id }) && (
-                              <Tooltip title="Ylläpitäjä">
-                                <EngineeringIcon />
-                              </Tooltip>
-                            )}
-                          </TableCell>
-                          <TableCell>
-                            <Button
-                              variant="contained"
-                              color="secondary"
-                              startIcon={<GroupRemoveIcon />}
-                              onClick={() => handleLeavingGroup(props.editUser, props.user ? props.user.id : -1, g.id)}
-                            >
-                              Poistu ryhmästä
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Grid>
-            <Grid item md={6}>
-              {props.fetchingUsers ? (
-                <Spinner />
-              ) : (
-                <GroupUsersTable
-                  users={props.users}
-                  group={props.selectedGroup}
-                  promote={props.promote}
-                  demote={props.demote}
-                  kick={props.kick}
-                />
-              )}
-            </Grid>
-          </Grid>
-        </Box>
-      )
-    ) : (
-      <GoogleLogin onSuccess={props.login} onError={props.loginError} useOneTap />
-    )}
-  </div>
-)}
+          </Stack>
+        )
+      ) : (
+        <GoogleOAuthProvider clientId="107543052765-lfgp4lke6h51a0l4kp258anilpeegf8v.apps.googleusercontent.com">
+          <GoogleLogin onSuccess={login} onError={loginError} useOneTap />
+        </GoogleOAuthProvider>
+      )}
+    </div>
+  )
+}
 
-const handleLeavingGroup = (editUser: typeof updateUser, userId: number, removeFromGroupId: number) => {
+const clickable = ({ target }) => target.cellIndex !== undefined
+
+const handleLeavingGroup = (editUser: typeof updateUser, userId: number, removeFromGroupId: number): void => {
   confirmAlert({
     title: "Varoitus",
     message: "Haluatko varmasti poistua ryhmästä?",

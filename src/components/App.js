@@ -1,6 +1,5 @@
 import React from "react"
 import { Route, Routes } from "react-router-dom"
-import { GoogleOAuthProvider } from "@react-oauth/google"
 import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import { Container, Box, Stack, Paper, Divider } from "@mui/material"
@@ -39,19 +38,17 @@ const MyRoutes = () => (
 )
 
 const App = () => (
-  <GoogleOAuthProvider clientId="107543052765-lfgp4lke6h51a0l4kp258anilpeegf8v.apps.googleusercontent.com">
-    <Container component={Paper}>
-      <Box sx={{ height: "100vh" }}>
-        <Stack direction="column">
-          <Header />
-          <Divider />
-          <MyRoutes />
-        </Stack>
-        <Footer />
-      </Box>
-      <ToastContainer autoClose={1500} position="top-center" />
-    </Container>
-  </GoogleOAuthProvider>
+  <Container component={Paper}>
+    <Box sx={{ height: "100vh" }}>
+      <Stack direction="column">
+        <Header />
+        <Divider />
+        <MyRoutes />
+      </Stack>
+      <Footer />
+    </Box>
+    <ToastContainer autoClose={1500} position="top-center" />
+  </Container>
 )
 
 export default App

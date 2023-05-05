@@ -6,7 +6,7 @@ import { defaultPagination, defaultSort, supportedOperations } from "./data/test
 const search = (_sort, _pagination, criteria) => alert("Searching, criteria = " + JSON.stringify(criteria))
 
 export default {
-  title: "Discs Filter",
+  title: "Components/Discs Filter",
   component: DiscsFilter
 }
 

@@ -47,10 +47,39 @@ export const testDisc = {
 }
 
 export const testUser = {
-  username: "Test man",
+  id: 1,
+  email: "testman@example.com",
+  username: "TestMan",
   firstName: "Test",
   lastName: "Man",
-  pdgaNumber: 12345
+  pdgaNumber: 12345,
+  groups: [{
+    id: 1,
+    name: "Test Group"
+  }]
+}
+
+export const groupAdmin = {
+  id: 2,
+  email: "adminuser@example.com",
+  username: "AdminUser",
+  firstName: "Admin",
+  lastName: "User",
+  pdgaNumber: 54321,
+  groups: [{
+    id: 1,
+    name: "Test Group"
+  }],
+  roles: [{
+    id: 2,
+    name: "GROUP_ADMIN",
+    groupId: 1
+  }]
+}
+
+export const testGroup = {
+  id: 1,
+  name: "Test Group"
 }
 
 export const dropdowns = {
