@@ -1,14 +1,14 @@
 import React from "react"
 import Modal from "../shared/Modal"
 import UserEditForm from "./UserEditForm"
-import { TUser } from "../../types"
-import { toggleEditModal } from "./userActions"
+import { TUser, TUserUpdate } from "../../types"
+import { pick } from "ramda"
 
 const UserEditModal = ({ isOpen, toggleModal, label, editUser, user }: {
   isOpen: boolean,
-  toggleModal: typeof toggleEditModal,
+  toggleModal: (user: TUser | null) => any,
   label: string,
-  editUser: any,
+  editUser: (id: number, user: TUserUpdate) => any,
   user: TUser | null
 }) => user ? (
   <Modal
@@ -16,7 +16,7 @@ const UserEditModal = ({ isOpen, toggleModal, label, editUser, user }: {
     onRequestClose={() => toggleModal(null)}
     contentLabel={label}
   >
-    <UserEditForm onSubmit={editUser} initialValues={user} />
+    <UserEditForm onSubmit={(values: TUser) => editUser(user.id, pick(["username", "firstName", "lastName", "pdgaNumber"], values))} initialValues={user} />
   </Modal>
 ) : null
 

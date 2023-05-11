@@ -1,3 +1,128 @@
+export const testUsers = [
+  {
+    id: 1,
+    username: 'Bisse dev',
+    email: 'ville.piispa@gmail.com',
+    firstName: 'Ville',
+    lastName: 'Piispa',
+    pdgaNumber: 90315,
+    roles: [
+      {
+        id: 1,
+        name: 'ADMIN',
+        groupId: null
+      }
+    ],
+    groups: []
+  },
+  {
+    id: 2,
+    username: 'Uusi2',
+    email: 'ville.piispa@discgolfvikings.fi',
+    firstName: 'New',
+    lastName: 'User',
+    pdgaNumber: 0,
+    roles: [],
+    groups: []
+  },
+  {
+    id: 3,
+    username: 'pekkanyk',
+    email: 'qru1982@gmail.com',
+    firstName: 'Pekka',
+    lastName: 'Nykänen',
+    pdgaNumber: 90313,
+    roles: [],
+    groups: []
+  },
+  {
+    id: 4,
+    username: 'Uusi4',
+    email: 'joona.saaresto@gmail.com',
+    firstName: 'Joon',
+    lastName: 'Saaresto',
+    pdgaNumber: 0,
+    roles: [],
+    groups: []
+  },
+  {
+    id: 5,
+    username: 'Isi',
+    email: 'piispve@gmail.com',
+    firstName: 'Vesa',
+    lastName: 'Piispa',
+    pdgaNumber: 0,
+    roles: [],
+    groups: [
+      {
+        id: 1,
+        name: 'Disc Golf Vikings'
+      }
+    ]
+  },
+  {
+    id: 6,
+    username: 'Uusi6',
+    email: 'santerisalo94@gmail.com',
+    firstName: 'Santeri',
+    lastName: 'Salo',
+    pdgaNumber: 90321,
+    roles: [
+      {
+        id: 4,
+        name: 'GROUP_ADMIN',
+        groupId: 4
+      }
+    ],
+    groups: [
+      {
+        id: 4,
+        name: 'Alarauta kolisee'
+      }
+    ]
+  },
+  {
+    id: 7,
+    username: 'olkkonen',
+    email: 'olkkonenarttu@gmail.com',
+    firstName: 'arttu',
+    lastName: 'olkkonen',
+    pdgaNumber: 108208,
+    roles: [],
+    groups: []
+  },
+  {
+    id: 8,
+    username: 'Uusi8',
+    email: 'petteri.jalo@gmail.com',
+    firstName: 'New',
+    lastName: 'User',
+    pdgaNumber: 0,
+    roles: [],
+    groups: []
+  },
+  {
+    id: 9,
+    username: 'Uusi9',
+    email: 'max.sjostrand@gmail.com',
+    firstName: 'New',
+    lastName: 'User',
+    pdgaNumber: 0,
+    roles: [],
+    groups: []
+  },
+  {
+    id: 10,
+    username: 'Uusi10',
+    email: 'ville.varis@gmail.com',
+    firstName: 'New',
+    lastName: 'User',
+    pdgaNumber: 0,
+    roles: [],
+    groups: []
+  }
+]
+
 export const testPlastics = [
   {
     id: 19,

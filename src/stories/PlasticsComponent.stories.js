@@ -19,7 +19,7 @@ const plasticDispatch = {
   getPlastics: (sort, pagination) => alert("Get plastics, sort: " + JSON.stringify(sort) + ", pagination: " + JSON.stringify(pagination)),
   getPlasticsByManufacturer: (manufacturerId, sort, pagination) => alert("Get plastics by manufacturer, manufacturerId: " + manufacturerId + ", sort: " + JSON.stringify(sort) + ", pagination: " + JSON.stringify(pagination)),
   togglePlasticCreateModal: () => alert("Toggle create modal"),
-  createPlastic: (Plastic) => alert("Create Plastic: " + JSON.stringify(Plastic)),
+  createPlastic: (plastic) => alert("Create plastic: " + JSON.stringify(plastic)),
 }
 
 export default {
