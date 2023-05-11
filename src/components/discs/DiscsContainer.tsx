@@ -61,7 +61,7 @@ export interface DiscImage {
   image?: string
 }
 
-const DiscsContainer = (props: PropsFromRedux): JSX.Element => {
+export const DiscsContainer = (props: PropsFromRedux): JSX.Element => {
   const [newImage, setNewImage] = useState<DiscImage>({ uuid: null })
   const [isImageCropOpen, setImageCropOpen] = useState(false)
   const [filters, setFilters] = useState<TFilter[]>([])

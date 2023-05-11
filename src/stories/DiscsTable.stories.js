@@ -1,7 +1,8 @@
 import React from "react"
 
 import DiscsTable from "../components/discs/DiscsTable"
-import { defaultSort, defaultPagination, testDisc } from "./data/testData"
+import { testDisc } from "./data/testData"
+import { defaultSort, defaultPagination } from "../components/shared/constants"
 
 const search = (sort, pagination, _criteria) => alert("Searching, sort = " + JSON.stringify(sort) + ", pagination = " + JSON.stringify(pagination))
 const sortOptions = [

@@ -157,7 +157,7 @@ const SortSelector = ({ handleNewSort, sortOptions, selectedSort }: {
   )
 }
 
-const clickable = ({ target }) => target.cellIndex && target.cellIndex > 0 && target.cellIndex < 9
+const clickable = ({ target }) => target.cellIndex !== undefined
 
 const Disc = ({ disc, editable, lostDiscs, username, found, toggleEditModal, deleteDisc, navigate, handleAcceptedFiles}: {
   disc: TDisc,
