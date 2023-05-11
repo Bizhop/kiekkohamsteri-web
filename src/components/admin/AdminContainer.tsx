@@ -4,17 +4,22 @@ import { Navigate } from "react-router-dom"
 import { Box, Tab, Tabs } from "@mui/material"
 
 import UserContainer from "../user/UserContainer"
-import MoldComponent from "../mold/MoldComponent"
-import PlasticsContainer from "../plastics/PlasticsContainer"
-import { IDropdownsState, IMoldsState, IPagination, ISort, IUsersState, TMoldCreate } from "../../types"
-import { createMold, getMolds, getMoldsByManufacturer, toggleCreateModal } from "../mold/moldActions"
+import MoldsComponent from "../mold/MoldsComponent"
+import PlasticsComponent from "../plastics/PlasticsComponent"
+import { IDropdownsState, IMoldsState, IPagination, IPlasticsState, ISort, IUsersState, TMoldCreate, TPlasticCreate } from "../../types"
+import { createMold, getMolds, getMoldsByManufacturer, toggleCreateModal as toggleMoldCreateModal } from "../mold/moldActions"
 import { defaultMoldSort } from "../mold/moldReducer"
 import { defaultPagination } from "../shared/constants"
 import { getDropdowns } from "../dropdown/dropdownActions"
+import { createPlastic, getPlastics, getPlasticsByManufacturer, toggleCreateModal as togglePlasticCreateModal } from "../plastics/plasticsActions"
+import { defaultPlasticSort } from "../plastics/plasticsReducer"
+import { pick } from "ramda"
 
-const mapState = ({user, mold, dropdowns}: { 
+
+const mapState = ({user, mold, plastic, dropdowns}: { 
   user: IUsersState,
   mold: IMoldsState,
+  plastic: IPlasticsState,
   dropdowns: IDropdownsState
 }) => ({
   loggedIn: user.token,
@@ -23,38 +28,63 @@ const mapState = ({user, mold, dropdowns}: {
   isMoldCreateOpen: mold.isCreateOpen,
   moldSelectedManufacturer: mold.selectedManufacturer,
   moldSort: mold.sort,
-  moldPagination: mold.pagination
+  moldPagination: mold.pagination,
+  plastics: plastic.plastics,
+  isPlasticCreateOpen: plastic.isCreateOpen,
+  plasticSelectedManufacturer: plastic.selectedManufacturer,
+  plasticSort: plastic.sort,
+  plasticPagination: plastic.pagination
 })
 
 const mapDispatch = {
   getInitialMolds: getMolds(defaultMoldSort, defaultPagination),
+  getInitialPlastics: getPlastics(defaultPlasticSort, defaultPagination),
   getMolds: (sort: ISort, pagination: IPagination) => getMolds(sort, pagination),
   getDropdowns: getDropdowns(),
   getMoldsByManufacturer: (manufacturerId: number, sort: ISort, pagination: IPagination) => getMoldsByManufacturer(manufacturerId, sort, pagination),
-  toggleMoldCreateModal: () => toggleCreateModal(),
+  toggleMoldCreateModal: () => toggleMoldCreateModal(),
   createMold: (mold: TMoldCreate) => createMold(mold),
+  getPlastics: (sort: ISort, pagination: IPagination) => getPlastics(sort, pagination),
+  getPlasticsByManufacturer: (manufacturerId: number, sort: ISort, pagination: IPagination) => getPlasticsByManufacturer(manufacturerId, sort, pagination),
+  togglePlasticCreateModal: () => togglePlasticCreateModal(),
+  createPlastic: (plastic: TPlasticCreate) => createPlastic(plastic),
 }
 
 const connector = connect(mapState, mapDispatch)
 type PropsFromRedux = ConnectedProps<typeof connector>
 
 export const AdminContainer = (props: PropsFromRedux): JSX.Element => {
-  const { loggedIn } = props
-  const moldProps = {
-    loggedIn,
-    molds: props.molds,
-    dropdowns: props.dropdowns,
-    isMoldCreateOpen: props.isMoldCreateOpen,
-    moldSelectedManufacturer: props.moldSelectedManufacturer,
-    moldSort: props.moldSort,
-    moldPagination: props.moldPagination
-  }
-  const moldDispatch = {
-    getMolds: props.getMolds,
-    getMoldsByManufacturer: props.getMoldsByManufacturer,
-    toggleMoldCreateModal: props.toggleMoldCreateModal,
-    createMold: props.createMold
-  }
+  const moldProps = pick([
+    "loggedIn",
+    "molds",
+    "dropdowns",
+    "isMoldCreateOpen",
+    "moldSelectedManufacturer",
+    "moldSort",
+    "moldPagination"], 
+    props)
+  const moldDispatch = pick([
+    "getMolds",
+    "getMoldsByManufacturer",
+    "toggleMoldCreateModal",
+    "createMold"],
+    props)
+
+  const plasticProps = pick([
+    "loggedIn",
+    "plastics",
+    "dropdowns",
+    "isPlasticCreateOpen",
+    "plasticSelectedManufacturer",
+    "plasticSort",
+    "plasticPagination"], 
+    props)
+  const plasticDispatch = pick([
+    "getPlastics",
+    "getPlasticsByManufacturer",
+    "togglePlasticCreateModal",
+    "createPlastic"], props)
+
   const [tab, updateTab] = useState(1)
 
   return (
@@ -66,9 +96,9 @@ export const AdminContainer = (props: PropsFromRedux): JSX.Element => {
         <Tab label="Mallit" value={3} />
       </Tabs>
       {tab === 1 && <UserContainer />}
-      {tab === 2 && <PlasticsContainer />}
-      {tab === 3 && <MoldComponent props={moldProps} dispatch={moldDispatch} />}
-      {!loggedIn && <Navigate to="/" />}
+      {tab === 2 && <PlasticsComponent props={plasticProps} dispatch={plasticDispatch} />}
+      {tab === 3 && <MoldsComponent props={moldProps} dispatch={moldDispatch} />}
+      {!props.loggedIn && <Navigate to="/" />}
     </Box>
   )
 }

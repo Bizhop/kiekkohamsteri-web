@@ -1,3 +1,86 @@
+export const testPlastics = [
+  {
+    id: 19,
+    manufacturer: {
+      id: 1,
+      name: 'ABC Discs'
+    },
+    name: 'Bronze'
+  },
+  {
+    id: 59,
+    manufacturer: {
+      id: 1,
+      name: 'ABC Discs'
+    },
+    name: 'Gold'
+  },
+  {
+    id: 89,
+    manufacturer: {
+      id: 1,
+      name: 'ABC Discs'
+    },
+    name: 'Platinum'
+  },
+  {
+    id: 125,
+    manufacturer: {
+      id: 2,
+      name: 'Aerobie'
+    },
+    name: 'Standard'
+  },
+  {
+    id: 13,
+    manufacturer: {
+      id: 3,
+      name: 'ANY'
+    },
+    name: 'ANY'
+  },
+  {
+    id: 148,
+    manufacturer: {
+      id: 4,
+      name: 'Axiom Discs'
+    },
+    name: 'Electron'
+  },
+  {
+    id: 150,
+    manufacturer: {
+      id: 4,
+      name: 'Axiom Discs'
+    },
+    name: 'Electron soft'
+  },
+  {
+    id: 131,
+    manufacturer: {
+      id: 4,
+      name: 'Axiom Discs'
+    },
+    name: 'Neutron'
+  },
+  {
+    id: 149,
+    manufacturer: {
+      id: 4,
+      name: 'Axiom Discs'
+    },
+    name: 'Neutron soft'
+  },
+  {
+    id: 132,
+    manufacturer: {
+      id: 4,
+      name: 'Axiom Discs'
+    },
+    name: 'Proton'
+  }
+]
+
 export const testMolds = [
   {
     id: 994,

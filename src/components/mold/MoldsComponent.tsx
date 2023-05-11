@@ -21,8 +21,8 @@ import CreateMoldForm from "./CreateMoldForm"
 import { defaultPagination } from "../shared/constants"
 import { IPagination, ISelectedManufacturer, ISort, TDropdowns, TMold, TMoldCreate } from "../../types"
 
-const MoldComponent = ({ 
-  props: { loggedIn, molds, dropdowns, isMoldCreateOpen, moldSelectedManufacturer, moldSort, moldPagination }, 
+const MoldsComponent = ({ 
+  props: { loggedIn, molds, dropdowns, isMoldCreateOpen, moldSelectedManufacturer, moldSort, moldPagination },
   dispatch: { getMolds, getMoldsByManufacturer, toggleMoldCreateModal, createMold }
 }: {
   props: {
@@ -43,7 +43,7 @@ const MoldComponent = ({
 }) => {
   const handleManufacturerSelection = (manufacturerId: number) => getMoldsByManufacturer(manufacturerId, moldSort, defaultPagination)
 
-  const handlePageChange = (_event: unknown, newPage: number) => moldSelectedManufacturer.id == null
+  const handlePageChange = (_event: unknown, newPage: number) => moldSelectedManufacturer.id === undefined
     ? getMolds(moldSort, { ...moldPagination, number: newPage })
     : getMoldsByManufacturer(moldSelectedManufacturer.id, moldSort, { ...moldPagination, number: newPage })
 
@@ -141,4 +141,4 @@ const Mold = ({ mold }: { mold: TMold }) => (
   </TableRow>
 )
 
-export default MoldComponent
+export default MoldsComponent

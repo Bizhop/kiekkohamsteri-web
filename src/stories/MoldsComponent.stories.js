@@ -1,6 +1,6 @@
 import React from "react"
 
-import MoldComponent from "../components/mold/MoldComponent"
+import MoldsComponent from "../components/mold/MoldsComponent"
 import { dropdowns, testMolds } from "./data/testData"
 import { defaultMoldSort } from "../components/mold/moldReducer"
 import { defaultPagination } from "../components/shared/constants"
@@ -23,9 +23,9 @@ const moldDispatch = {
 }
 
 export default {
-  title: "Components/Mold",
-  component: MoldComponent
+  title: "Components/Molds",
+  component: MoldsComponent
 }
 
-export const molds10of20 = () => <MoldComponent props={moldProps} dispatch={moldDispatch} />
-export const createModalOpen = () => <MoldComponent props={{...moldProps, isMoldCreateOpen: true}} dispatch={moldDispatch} />
+export const molds10of20 = () => <MoldsComponent props={moldProps} dispatch={moldDispatch} />
+export const createModalOpen = () => <MoldsComponent props={{...moldProps, isMoldCreateOpen: true}} dispatch={moldDispatch} />
