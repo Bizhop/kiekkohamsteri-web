@@ -1,5 +1,5 @@
 import React from "react"
-import { path, pathOr, length } from "ramda"
+import { length } from "ramda"
 import { ConnectedProps, connect } from "react-redux"
 import { Navigate } from "react-router-dom"
 import { Spinner } from "react-activity"

@@ -1,6 +1,12 @@
 import { path, findIndex, remove, any, update } from "ramda"
 import { HasId, HasUuid, IPagination, ISort, TUser, TUserRole } from "../../types"
 
+export const minmax = (minValue: number, maxValue: number) => ({
+  min: { value: minValue, message: `Arvo tulee olla vähintään ${minValue}` }, 
+  max: { value: maxValue, message: `Arvo tulee olla enintään ${maxValue}` },
+  valueAsNumber: true
+})
+
 export const pagingAndSortingQueryParams = (sort: ISort, pagination: IPagination) =>
   `size=${pagination.size}&page=${pagination.number}&sort=${sort.sort}`
 

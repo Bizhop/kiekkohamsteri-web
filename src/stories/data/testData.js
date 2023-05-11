@@ -1,3 +1,126 @@
+export const testMolds = [
+  {
+    id: 994,
+    manufacturer: {
+      id: 1,
+      name: 'ABC Discs'
+    },
+    name: 'Bee Line',
+    speed: 13,
+    glide: 6,
+    stability: -2,
+    fade: 2
+  },
+  {
+    id: 995,
+    manufacturer: {
+      id: 1,
+      name: 'ABC Discs'
+    },
+    name: 'Flying Squirrel',
+    speed: 4,
+    glide: 5,
+    stability: -4,
+    fade: 1
+  },
+  {
+    id: 996,
+    manufacturer: {
+      id: 1,
+      name: 'ABC Discs'
+    },
+    name: 'Gamma Ray',
+    speed: 9,
+    glide: 4,
+    stability: -2,
+    fade: 2
+  },
+  {
+    id: 997,
+    manufacturer: {
+      id: 1,
+      name: 'ABC Discs'
+    },
+    name: 'Mission',
+    speed: 4,
+    glide: 4,
+    stability: -1,
+    fade: 2
+  },
+  {
+    id: 998,
+    manufacturer: {
+      id: 1,
+      name: 'ABC Discs'
+    },
+    name: 'Money',
+    speed: 2,
+    glide: 3,
+    stability: 0,
+    fade: 2
+  },
+  {
+    id: 999,
+    manufacturer: {
+      id: 1,
+      name: 'ABC Discs'
+    },
+    name: 'Secret Weapon',
+    speed: 9,
+    glide: 4,
+    stability: -3,
+    fade: 2
+  },
+  {
+    id: 1000,
+    manufacturer: {
+      id: 2,
+      name: 'Aerobie'
+    },
+    name: 'Arrow',
+    speed: 3,
+    glide: 2,
+    stability: 0,
+    fade: 2
+  },
+  {
+    id: 1001,
+    manufacturer: {
+      id: 2,
+      name: 'Aerobie'
+    },
+    name: 'Epic',
+    speed: 10,
+    glide: 3,
+    stability: -2,
+    fade: 4
+  },
+  {
+    id: 1002,
+    manufacturer: {
+      id: 2,
+      name: 'Aerobie'
+    },
+    name: 'Sharpshooter #1',
+    speed: 7,
+    glide: 3,
+    stability: 0,
+    fade: 3
+  },
+  {
+    id: 1003,
+    manufacturer: {
+      id: 2,
+      name: 'Aerobie'
+    },
+    name: 'Sharpshooter #2',
+    speed: 4,
+    glide: 3,
+    stability: 0,
+    fade: 3
+  }
+]
+
 export const testDisc = {
   "uuid": "7de5f419-9034-4a00-ba00-b89268691f13",
   "owner": {
@@ -284,14 +407,3 @@ export const supportedOperations = [
     ]
   }
 ]
-
-export const defaultSort = {
-  sort: "mold.manufacturer.name,asc&sort=mold.speed,asc&sort=mold.name,asc&sort=plastic.name,asc",
-  column: "Valmistaja",
-}
-
-export const defaultPagination = {
-  number: 0,
-  size: 10,
-  totalElements: 0,
-}

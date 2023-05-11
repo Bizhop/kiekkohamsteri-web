@@ -5,6 +5,7 @@ import { has, pathOr } from "ramda"
 import SaveAltIcon from "@mui/icons-material/SaveAlt"
 
 import { TUser } from "../../types"
+import { minmax } from "../shared/utils"
 
 const UserEditForm = ({ onSubmit, initialValues }: {
   onSubmit: any,
@@ -33,7 +34,7 @@ const UserEditForm = ({ onSubmit, initialValues }: {
       <Controller
         name="pdgaNumber"
         control={control}
-        rules={{ min: { value: 1, message: "Arvo tulee olla vähintään 1" }, max: { value: 999999, message: "Arvo tulee olla enintään 999999" }, valueAsNumber: true} }
+        rules={ minmax(1, 999999) }
         render={({ field }) => <InputField field={field} label="PDGA numero" errors={errors} type="number" />}
       />
       <Box display="flex" justifyContent="center">

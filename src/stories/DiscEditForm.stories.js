@@ -14,7 +14,7 @@ const discInEdit = {
 }
 
 export default {
-  title: "Forms/Disc Edit Form",
+  title: "Forms/Disc Edit",
   component: DiscEditForm
 }
 

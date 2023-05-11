@@ -18,8 +18,8 @@ export interface ISort {
 }
 
 export interface ISelectedManufacturer {
-  id: number | null,
-  name: string | null
+  id?: number,
+  name?: string
 }
 
 export interface IPagination {
@@ -152,7 +152,7 @@ export type TDropdowns = components["schemas"]["DropdownsDto"]
 export type TDropdown = components["schemas"]["DropdownOutputDto"]
 export type TGroup = components["schemas"]["GroupDto"] & HasId
 export type TGroupRequest = components["schemas"]["GroupRequestOutputDto"] & HasId
-export type TGroupCreate = components["schemas"]["GroupCreateDto"] & HasId
+export type TGroupCreate = components["schemas"]["GroupCreateDto"]
 export type TUserRole = components["schemas"]["RoleDto"] & HasId
 export type TDisc = components["schemas"]["DiscOutputDto"] & HasUuid
 export type TMold = components["schemas"]["MoldOutputDto"]
