@@ -10,19 +10,24 @@ import {
 } from "@mui/material"
 
 import ThWithButton from "../shared/ThWithButton"
+import { IPagination, ISort, TStats } from "../../types"
 
-const StatsTable = props => (
+const StatsTable = ({ stats, update, sort }: {
+  stats: TStats[],
+  update: (sort: ISort, pagination: IPagination) => any,
+  sort: ISort
+}): JSX.Element => (
   <TableContainer component={Paper} elevation={3}>
     <Table size="small">
       <TableHead>
         <TableRow>
           {tableHeaders.map(t => (
-            <ThWithButton {...t} key={t.label} update={props.update} previousSort={props.sort} />
+            <ThWithButton {...t} key={t.label} update={update} previousSort={sort} />
           ))}
         </TableRow>
       </TableHead>
       <TableBody>
-        {props.stats.map(s => (
+        {stats.map((s: TStats) => (
           <Stats key={s.id} stats={s} />
         ))}
       </TableBody>
@@ -30,24 +35,23 @@ const StatsTable = props => (
   </TableContainer>
 )
 
-const Stats = props => {
-  const stats = props.stats
-  return (
-    <TableRow>
-      <TableCell>
-        <strong>
-          {stats.year}-{stats.month}
-        </strong>
-      </TableCell>
-      <TableCell>{stats.newUsers}</TableCell>
-      <TableCell>{stats.newDiscs}</TableCell>
-      <TableCell>{stats.newManufacturers}</TableCell>
-      <TableCell>{stats.newMolds}</TableCell>
-      <TableCell>{stats.newPlastics}</TableCell>
-      <TableCell>{stats.salesCompleted}</TableCell>
-    </TableRow>
-  )
-}
+const Stats = ({ stats }: {
+  stats: TStats
+}): JSX.Element => (
+  <TableRow>
+    <TableCell>
+      <strong>
+        {stats.year}-{stats.month}
+      </strong>
+    </TableCell>
+    <TableCell>{stats.newUsers}</TableCell>
+    <TableCell>{stats.newDiscs}</TableCell>
+    <TableCell>{stats.newManufacturers}</TableCell>
+    <TableCell>{stats.newMolds}</TableCell>
+    <TableCell>{stats.newPlastics}</TableCell>
+    <TableCell>{stats.salesCompleted}</TableCell>
+  </TableRow>
+)
 
 const tableHeaders = [
   {

@@ -1,10 +1,10 @@
 import React from "react"
-import { useForm, Controller, FieldErrors } from "react-hook-form"
-import { Button, TextField } from "@mui/material"
+import { useForm, Controller } from "react-hook-form"
+import { Button } from "@mui/material"
 import GroupAddIcon from '@mui/icons-material/GroupAdd'
-import { has, pathOr } from "ramda"
 
 import { TGroupCreate } from "../../types"
+import { InputField } from "../shared/FormInput"
 
 const NewGroupForm = ({ onSubmit }: {
   onSubmit: (group: TGroupCreate) => any
@@ -28,28 +28,6 @@ const NewGroupForm = ({ onSubmit }: {
         Luo ryhmä
       </Button>
     </form>
-  )
-}
-
-const InputField = ({ field, label, errors, type }: {
-  field: any,
-  label: string,
-  errors: FieldErrors,
-  type: string
-}) => {
-  const hasError = has(field.name)(errors)
-
-  return (
-    <TextField
-      {...field}
-      error={hasError}
-      margin="normal"
-      autoFocus
-      fullWidth
-      label={label}
-      type={type}
-      helperText={pathOr("", [field.name, "message"], errors)}
-    />
   )
 }
 

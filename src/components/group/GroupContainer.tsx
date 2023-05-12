@@ -40,7 +40,7 @@ import {
 import { isAdminOrGroupAdmin, isAdmin, isGroupAdmin, isGroupMember } from "../shared/utils"
 import NewGroupForm from "./NewGroupForm"
 import GroupUsersTable from "./GroupUsersTable"
-import { IGroupsState, IUsersState, TGroup } from "../../types"
+import { IGroupsState, IUsersState, TGroup, TGroupCreate } from "../../types"
 
 const mapState = ({ user, group }: { user: IUsersState, group: IGroupsState }) => ({
   loggedIn: user.token,
@@ -56,7 +56,7 @@ const mapDispatch = {
   getGroups: getGroups(),
   getRequests: getGroupRequests(),
   listUsers: (group: TGroup) => getGroupUsers(group),
-  newGroup: (group: TGroup) => createGroup(group),
+  newGroup: (group: TGroupCreate) => createGroup(group),
   joinGroup: (userId: number, groupId: number) => joinGroup(userId, groupId),
   completeRequest: (groupId: number, requestId: number, confirm: boolean) => completeRequest(groupId, requestId, confirm),
   promote: (userId: number, groupId: number) => promote(userId, groupId),
@@ -69,7 +69,7 @@ const connector = connect(mapState, mapDispatch)
 type PropsFromRedux = ConnectedProps<typeof connector>
 
 export const GroupContainer = (props: PropsFromRedux): JSX.Element => {
-  const { requests, completeRequest, newGroup, groups, listUsers, user, fetchingUsers, users, selectedGroup, loggedIn, deleteGroup } = props
+  const { loggedIn, groups, fetchingUsers, users, selectedGroup, user, requests, listUsers, newGroup, joinGroup, completeRequest, promote, demote, kick, deleteGroup } = props
   return (
     <Box sx={{ flexGrow: 1 }}>
       <h1>Pyynnöt</h1>

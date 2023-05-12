@@ -1,10 +1,10 @@
-import React from "react"
-import { useForm, Controller, FieldErrors, useWatch, ControllerRenderProps, FieldValues } from "react-hook-form"
-import { Box, Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormHelperText, InputLabel, MenuItem, Select, TextField } from "@mui/material"
-import { has, pathOr } from "ramda"
+import React, { useEffect } from "react"
+import { useForm, Controller, useWatch } from "react-hook-form"
+import { Box, Button, FormGroup } from "@mui/material"
 import SaveAltIcon from "@mui/icons-material/SaveAlt"
 
-import { TDiscInEdit, TDropdown, TDropdowns } from "../../types"
+import { TDiscInEdit, TDropdowns } from "../../types"
+import { InputCheckbox, InputField, InputSelectField } from "../shared/FormInput"
 
 const DiscEditForm = ({ onSubmit, initialValues, dropdowns, getDropdownsByManufacturer }: {
   onSubmit: any,
@@ -12,12 +12,14 @@ const DiscEditForm = ({ onSubmit, initialValues, dropdowns, getDropdownsByManufa
   dropdowns: TDropdowns,
   getDropdownsByManufacturer: any
 }): JSX.Element => {
-  const { control, handleSubmit, formState: { errors, isDirty, isSubmitting, isValid } } = useForm({ defaultValues: initialValues, mode: "onChange" })
+  const { control, handleSubmit, formState: { errors, isDirty, isSubmitting, isValid } } = useForm({ defaultValues: initialValues, mode: "all" })
 
   const manufacturerId = useWatch({ control, name: "manufacturerId" })
-  if (typeof manufacturerId == "number") {
-    getDropdownsByManufacturer(manufacturerId)
-  }
+  useEffect(() => {
+    if (typeof manufacturerId == 'number') {
+      getDropdownsByManufacturer(manufacturerId)
+    }
+  }, [manufacturerId])
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} style={{ padding: "10px" }}>
@@ -134,66 +136,6 @@ const DiscEditForm = ({ onSubmit, initialValues, dropdowns, getDropdownsByManufa
         </Button>
       </Box>
     </form>
-  )
-}
-
-const InputSelectField = ({ field, label, errors, options }: {
-  field: any,
-  label: string,
-  errors: FieldErrors<TDiscInEdit>,
-  options: TDropdown[]
-}): JSX.Element => {
-  const hasError = has(field.name)(errors)
-
-  const optionList = options.map(opt => (
-    <MenuItem key={opt.value} value={opt.value}>
-      {opt.name}
-    </MenuItem>
-  ))
-
-  return (
-    <FormControl fullWidth margin="normal">
-      <InputLabel>{label}</InputLabel>
-      <Select {...field} defaultValue=""  >
-        <MenuItem value="">Valitse...</MenuItem>
-        {optionList}
-      </Select>
-      {hasError && <FormHelperText error>{pathOr("", [field.name, "message"], errors)}</FormHelperText>}
-    </FormControl>
-  )
-}
-
-const InputField = ({ field, label, errors, type }: {
-  field: any,
-  label: string,
-  errors: FieldErrors<TDiscInEdit>,
-  type: string
-}): JSX.Element => {
-  const hasError = has(field.name)(errors)
-
-  return (
-    <TextField
-      {...field}
-      error={hasError}
-      margin="normal"
-      autoFocus
-      fullWidth
-      label={label}
-      type={type}
-      helperText={pathOr("", [field.name, "message"], errors)}
-    />
-  )
-}
-
-const InputCheckbox = ({ field, label }: {
-  field: any,
-  label: string
-}): JSX.Element => {
-  return (
-    <FormControlLabel
-      control={<Checkbox {...field} checked={field.value} type="checkbox" />}
-      label={label}
-    ></FormControlLabel>
   )
 }
 

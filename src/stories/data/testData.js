@@ -1,3 +1,14 @@
+export const stats = [{
+  year: 2023,
+  month: 5,
+  newDiscs: 1,
+  newUsers: 2,
+  newManufacturers: 3,
+  newPlastics: 4,
+  newMolds: 5,
+  salesCompleted: 6
+}]
+
 export const testUsers = [
   {
     id: 1,

@@ -1,17 +1,17 @@
 import React from "react"
-import { Box, Button, TextField } from "@mui/material"
-import { useForm, Controller, FieldErrors } from "react-hook-form"
-import { has, pathOr } from "ramda"
+import { Box, Button } from "@mui/material"
+import { useForm, Controller } from "react-hook-form"
 import SaveAltIcon from "@mui/icons-material/SaveAlt"
 
 import { TUser } from "../../types"
 import { minmax } from "../shared/utils"
+import { InputField } from "../shared/FormInput"
 
 const UserEditForm = ({ onSubmit, initialValues }: {
   onSubmit: any,
   initialValues: TUser
 }) => {
-  const { control, handleSubmit, formState: { errors, isDirty, isSubmitting, isValid } } = useForm({ defaultValues: initialValues, mode: "onChange" })
+  const { control, handleSubmit, formState: { errors, isDirty, isSubmitting, isValid } } = useForm({ defaultValues: initialValues, mode: "all" })
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} style={{ padding: "10px" }}>
@@ -48,28 +48,6 @@ const UserEditForm = ({ onSubmit, initialValues }: {
         </Button>
       </Box>
     </form>
-  )
-}
-
-const InputField = ({ field, label, errors, type }: {
-  field: any,
-  label: string,
-  errors: FieldErrors<TUser>,
-  type: string
-}) => {
-  const hasError = has(field.name)(errors)
-
-  return (
-    <TextField
-      {...field}
-      error={hasError}
-      margin="normal"
-      autoFocus
-      fullWidth
-      label={label}
-      type={type}
-      helperText={pathOr("", [field.name, "message"], errors)}
-    />
   )
 }
 

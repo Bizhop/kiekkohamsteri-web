@@ -1,8 +1,7 @@
 import React from "react"
 import { ConnectedProps, connect } from "react-redux"
 import { Navigate, useLocation } from "react-router-dom"
-import { Box, Chip, Grid, Paper, Stack, Table, TableBody, TableCell, TableRow } from "@mui/material"
-import CircleIcon from "@mui/icons-material/Circle"
+import { Box, Chip, Paper, Stack, Table, TableBody, TableCell, TableRow } from "@mui/material"
 
 import { getDisc } from "./discsActions"
 import { imageUrl } from "../shared/images"
@@ -26,7 +25,6 @@ const connector = connect(mapState, mapDispatch)
 type PropsFromRedux = ConnectedProps<typeof connector>
 
 export const OneDiscContainer = (props: PropsFromRedux): JSX.Element => {
-  console.log(props)
   const { loggedIn, disc, oneDiscText, getDisc } = props
 
   return (

@@ -1,12 +1,11 @@
 import React from "react"
-import { useForm, Controller, FieldErrors } from "react-hook-form"
-import { Button, Box, TextField } from "@mui/material"
-import { has, pathOr } from "ramda"
+import { useForm, Controller } from "react-hook-form"
+import { Button, Box } from "@mui/material"
 import SaveAltIcon from "@mui/icons-material/SaveAlt"
-
 
 import { ISelectedManufacturer, TMoldCreate } from "../../types"
 import { minmax } from "../shared/utils"
+import { InputField } from "../shared/FormInput"
 
 const CreateMoldForm = ({ onSubmit, selectedManufacturer }: {
   onSubmit: (mold: TMoldCreate) => any,
@@ -62,28 +61,6 @@ const CreateMoldForm = ({ onSubmit, selectedManufacturer }: {
         </Button>
       </Box>
     </form>
-  )
-}
-
-const InputField = ({ field, label, errors, type }: {
-  field: any,
-  label: string,
-  errors: FieldErrors,
-  type: string
-}) => {
-  const hasError = has(field.name)(errors)
-
-  return (
-    <TextField
-      {...field}
-      error={hasError}
-      margin="normal"
-      autoFocus
-      fullWidth
-      label={label}
-      type={type}
-      helperText={pathOr("", [field.name, "message"], errors)}
-    />
   )
 }
 

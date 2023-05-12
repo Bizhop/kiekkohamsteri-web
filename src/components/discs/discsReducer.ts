@@ -26,6 +26,7 @@ import {
   SEARCH_DISCS_OPERATIONS_SUCCESS,
   SEARCH_DISCS_OPERATIONS_FAILURE,
   CREATE_DISC_SUCCESS,
+  LOST_FAILURE,
 } from "./discsActions"
 import { DROPDOWNS_SUCCESS } from "../dropdown/dropdownActions"
 import { removeFromArrayByUuid } from "../shared/utils"
@@ -38,9 +39,10 @@ const initialState: IDiscsState = {
   isEditOpen: false,
   discInEdit: null,
   oneDiscText: "",
-  lost: null,
-  lostSort: null,
-  lostPagination: null,
+  fetchingLost: false,
+  lost: [],
+  lostSort: defaultSort,
+  lostPagination: defaultPagination,
   imageUploading: false,
   otherUserDiscs: false,
   otherUserName: "",
@@ -177,15 +179,24 @@ const discsReducer = (state: IDiscsState = initialState, action: DiscsActions | 
     case LOST_REQUEST:
       return {
         ...state,
-        lost: null,
+        fetchingLost: true,
+        lost: [],
         lostSort: action.meta.sort,
       }
     case LOST_SUCCESS: {
       const data = action.payload.data
       return {
         ...state,
+        fetchingLost: false,
         lost: data.content,
         lostPagination: pick(["totalElements", "size", "number"], data),
+      }
+    }
+    case LOST_FAILURE: {
+      return {
+        ...state,
+        fetchingLost: false,
+        lost: []
       }
     }
     case FOUND_SUCCESS:

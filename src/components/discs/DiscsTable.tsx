@@ -40,20 +40,26 @@ const parseSort = (input: string): ISort => {
   }
 }
 
-const DiscsTable = ({ filters, sort, pagination, search, sortOptions, discs, lostDiscs, editable, toggleEditModal, username, found, handleAcceptedFiles, deleteDisc }: {
+interface EditableFunctions {
+  toggleEditModal: (disc: TDisc | null) => any,
+  handleAcceptedFiles: (acceptedFiles: File[], uuid: string) => void,
+  deleteDisc: (uuid: string) => any
+}
+
+interface FoundFunctions {
+  discFound: (uuid: string) => any,
+}
+
+const DiscsTable = ({ filters, sort, pagination, search, sortOptions, discs, username, editableFunctions, foundFunctions }: {
   filters: TFilter[],
   sort: ISort,
   pagination: IPagination,
   search: (sort: ISort, pagination: IPagination, criteria: TSearchCriteria[]) => any,
-  sortOptions: ISort[],
+  sortOptions?: ISort[],
   discs: TDisc[],
-  lostDiscs?: boolean,
-  editable: boolean,
-  toggleEditModal: (disc: TDisc | null) => any,
   username?: string,
-  found?: (uuid: string) => any,
-  handleAcceptedFiles: (acceptedFiles: File[], uuid: string) => void,
-  deleteDisc: (uuid: string) => any
+  editableFunctions?: EditableFunctions,
+  foundFunctions?: FoundFunctions
 }): JSX.Element => {
   const handlePageChange = (_event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null, newPage: number) =>
     search(sort, { ...pagination, number: newPage }, filters)
@@ -89,9 +95,7 @@ const DiscsTable = ({ filters, sort, pagination, search, sortOptions, discs, los
                 <TableCell>Kunto</TableCell>
                 <TableCell>Paino</TableCell>
                 <TableCell>Päivitetty</TableCell>
-                {lostDiscs && <TableCell />}
-                {lostDiscs && <TableCell />}
-                {editable && <TableCell />}
+                {(foundFunctions || editableFunctions) && <TableCell />}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -99,14 +103,10 @@ const DiscsTable = ({ filters, sort, pagination, search, sortOptions, discs, los
                 <Disc
                   key={`${index}-${disc.uuid}`}
                   disc={disc}
-                  toggleEditModal={toggleEditModal}
-                  deleteDisc={deleteDisc}
-                  editable={editable}
-                  lostDiscs={lostDiscs}
+                  editableFunctions={editableFunctions}
                   username={username}
-                  found={found}
+                  foundFunctions={foundFunctions}
                   navigate={navigate}
-                  handleAcceptedFiles={handleAcceptedFiles}
                 />
               ))}
             </TableBody>
@@ -159,22 +159,18 @@ const SortSelector = ({ handleNewSort, sortOptions, selectedSort }: {
 
 const clickable = ({ target }) => target.cellIndex !== undefined
 
-const Disc = ({ disc, editable, lostDiscs, username, found, toggleEditModal, deleteDisc, navigate, handleAcceptedFiles}: {
+const Disc = ({ disc, username, navigate, editableFunctions, foundFunctions}: {
   disc: TDisc,
-  editable: boolean,
-  lostDiscs?: boolean,
   username?: string,
-  found?: (uuid: string) => any,
-  toggleEditModal: (disc: TDisc | null) => any,
-  deleteDisc: (uuid: string) => any,
   navigate: NavigateFunction,
-  handleAcceptedFiles: (acceptedFiles: File[], uuid: string) => void
+  editableFunctions?: EditableFunctions,
+  foundFunctions?: FoundFunctions
 }) => {
   return (
     <TableRow
-      className={editable || disc.publicDisc ? "color-on-hover" : ""}
+      className={editableFunctions || disc.publicDisc ? "color-on-hover" : ""}
       onClick={event =>
-        (editable || disc.publicDisc) && clickable(event) && navigate(`/discs/${disc.uuid}`)
+        (editableFunctions || disc.publicDisc) && clickable(event) && navigate(`/discs/${disc.uuid}`)
       }
     >
       <TableCell>
@@ -187,29 +183,28 @@ const Disc = ({ disc, editable, lostDiscs, username, found, toggleEditModal, del
       <TableCell>{disc.condition}/10</TableCell>
       <TableCell>{disc.weight}</TableCell>
       <TableCell>{disc.updatedAt}</TableCell>
-      {lostDiscs && <TableCell>{disc.updatedAt}</TableCell>}
-      {lostDiscs && (
+      {foundFunctions && (
         <TableCell>
           {username === disc.owner.username && (
             <Tooltip title="Löytynyt">
-              <IconButton onClick={() => found && found(disc.uuid)}>
+              <IconButton onClick={() => foundFunctions.discFound(disc.uuid)}>
                 <CheckIcon />
               </IconButton>
             </Tooltip>
           )}
         </TableCell>
       )}
-      {editable && (
+      {editableFunctions && (
         <TableCell sx={{ display: "flex" }}>
-          <Dropzone onDrop={acceptedFiles => handleAcceptedFiles(acceptedFiles, disc.uuid)}>
+          <Dropzone onDrop={acceptedFiles => editableFunctions.handleAcceptedFiles(acceptedFiles, disc.uuid)}>
             {imageDropzone}
           </Dropzone>
-          <IconButton color="secondary" onClick={() => toggleEditModal(disc)}>
+          <IconButton color="secondary" onClick={() => editableFunctions.toggleEditModal(disc)}>
             <EditIcon />
           </IconButton>
           <IconButton
             color="error"
-            onClick={() => handleDelete(disc.uuid, deleteDisc)}
+            onClick={() => handleDelete(disc.uuid, editableFunctions.deleteDisc)}
           >
             <DeleteIcon />
           </IconButton>

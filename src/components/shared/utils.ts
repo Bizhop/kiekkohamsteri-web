@@ -13,15 +13,15 @@ export const pagingAndSortingQueryParams = (sort: ISort, pagination: IPagination
 export const getSortColumn = (action: unknown) =>
   path(["meta", "previousAction", "params", "newSortColumn"], action)
 
-export const removeFromArrayById = <T extends HasId>(array: T[] | null, id: number): T[] | null => {
-  if (array == null || id < 0 || array.length == 0) return array
+export const removeFromArrayById = <T extends HasId>(array: T[] | null, id: number): T[] => {
+  if (array == null || id < 0 || array.length == 0) return []
 
   const index = findIndex((item: HasId) => item.id === id)(array)
   return index < 0 ? array : remove(index, 1, array)
 }
 
-export const removeFromArrayByUuid = <T extends HasUuid>(array: T[] | null, uuid: string): T[] | null => {
-  if (array == null || array.length == 0) return array
+export const removeFromArrayByUuid = <T extends HasUuid>(array: T[] | null, uuid: string): T[] => {
+  if (array == null || array.length == 0) return []
 
   const index = findIndex((item: HasUuid) => item.uuid === uuid)(array)
   return index < 0 ? array : remove(index, 1, array)

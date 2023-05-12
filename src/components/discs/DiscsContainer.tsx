@@ -23,6 +23,7 @@ import DiscsFilter from "./DiscsFilter"
 import { base64Reader, resizeImage } from "../shared/utils"
 import ImageCrop from "./ImageCrop"
 import { IDiscsState, IDropdownsState, IPagination, ISort, IUsersState, TDisc, TDiscInEdit, TFilter, TSearchCriteria } from "../../types"
+import { pick } from "ramda"
 
 const mapState = ({ user, discs, dropdowns }: {
   user: IUsersState,
@@ -121,16 +122,17 @@ export const DiscsContainer = (props: PropsFromRedux): JSX.Element => {
         setFilters={setFilters}
       />
       <DiscsTable
-        discs={props.discs}
-        search={props.search}
-        toggleEditModal={props.toggleEditModal}
-        deleteDisc={props.deleteDisc}
-        editable={true}
-        pagination={props.pagination}
-        sort={props.sort}
         filters={filters}
-        handleAcceptedFiles={handleAcceptedFiles}
+        sort={props.sort}
+        pagination={props.pagination}
+        search={props.search}
         sortOptions={sortOptions}
+        discs={props.discs}
+        editableFunctions={{
+          toggleEditModal: props.toggleEditModal,
+          handleAcceptedFiles,
+          deleteDisc: props.deleteDisc
+        }}
       />
       {!props.loggedIn && <Navigate to="/" />}
     </Box>

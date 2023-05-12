@@ -12,9 +12,11 @@ const sortOptions = [
     sort: "weight,desc"
   }
 ]
-const handleAcceptedFiles = (files, uuid) => alert("Files: " + JSON.stringify(files) + ", uuid: " + uuid)
-const toggleEditModal = (disc) => alert("Toggling edit modal for uuid: " + disc.uuid)
-const deleteDisc = (uuid) => alert("Deleting uuid: " + uuid)
+const editableFunctions = {
+  handleAcceptedFiles: (files, uuid) => alert("Files: " + JSON.stringify(files) + ", uuid: " + uuid),
+  toggleEditModal: (disc) => alert("Toggling edit modal for uuid: " + disc.uuid),
+  deleteDisc: (uuid) => alert("Deleting uuid: " + uuid)
+}
 
 export default {
   title: "Components/Discs Table",
@@ -61,8 +63,5 @@ export const editable = () =>
     pagination={paginationFirst10of27}
     search={search}
     sortOptions={sortOptions}
-    editable
-    handleAcceptedFiles={handleAcceptedFiles}
-    toggleEditModal={toggleEditModal}
-    deleteDisc={deleteDisc}
+    editableFunctions={editableFunctions}
   />

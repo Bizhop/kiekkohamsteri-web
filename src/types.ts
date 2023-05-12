@@ -37,8 +37,9 @@ export interface IShopState {
   summary: TBuySummary
 }
 
-export interface IStatsSate {
-  stats: TStats[] | null,
+export interface IStatsState {
+  fetching: boolean,
+  stats: TStats[],
   sort: ISort
 }
 
@@ -86,9 +87,10 @@ export interface IDiscsState {
   isEditOpen: boolean,
   discInEdit: TDiscInEdit | null,
   oneDiscText: string,
-  lost: TDisc[] | null,
-  lostSort: ISort | null,
-  lostPagination: IPagination | null,
+  fetchingLost: boolean,
+  lost: TDisc[],
+  lostSort: ISort,
+  lostPagination: IPagination,
   imageUploading: boolean,
   otherUserDiscs: boolean,
   otherUserName: string,
