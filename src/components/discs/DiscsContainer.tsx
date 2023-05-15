@@ -67,7 +67,7 @@ export const DiscsContainer = (props: PropsFromRedux): JSX.Element => {
   const [isImageCropOpen, setImageCropOpen] = useState(false)
   const [filters, setFilters] = useState<TFilter[]>([])
 
-  const toggleImageCropModal = () => setImageCropOpen(!isImageCropOpen)
+  const toggleImageCropModal = () => setImageCropOpen(prev => !prev)
 
   const handleAcceptedFiles = (acceptedFiles: File[], uuid: string): void => {
     if (acceptedFiles.length == 1) {
@@ -83,7 +83,7 @@ export const DiscsContainer = (props: PropsFromRedux): JSX.Element => {
     }
   }
 
-  const resizeAndUpdateImage = (uuid: string, base64: string) => {
+  const resizeAndUpdateImage = (uuid: string, base64: string): void => {
     resizeImage(base64).then(resizedImage => {
       props.updateImage(uuid, resizedImage)
       setImageCropOpen(false)
@@ -149,10 +149,10 @@ const sortOptions: ISort[] = [
 
 const ImageCropModal = ({ isOpen, toggleModal, newImage, imageUploading, updateImage }: {
   isOpen: boolean,
-  toggleModal: any,
+  toggleModal: () => void,
   newImage: DiscImage,
   imageUploading: boolean,
-  updateImage: any
+  updateImage: (uuid: string, base64: string) => void
 }): JSX.Element => (
   <Modal isOpen={isOpen} onRequestClose={() => toggleModal()} contentLabel="Kuvan rajaus">
     <ImageCrop image={newImage} imageUploading={imageUploading} updateImage={updateImage} />

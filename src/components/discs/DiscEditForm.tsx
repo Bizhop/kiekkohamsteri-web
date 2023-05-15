@@ -7,10 +7,10 @@ import { TDiscInEdit, TDropdowns } from "../../types"
 import { InputCheckbox, InputField, InputSelectField } from "../shared/FormInput"
 
 const DiscEditForm = ({ onSubmit, initialValues, dropdowns, getDropdownsByManufacturer }: {
-  onSubmit: any,
+  onSubmit: (disc: TDiscInEdit) => any,
   initialValues: TDiscInEdit,
   dropdowns: TDropdowns,
-  getDropdownsByManufacturer: any
+  getDropdownsByManufacturer: (manufacturerId: number) => any
 }): JSX.Element => {
   const { control, handleSubmit, formState: { errors, isDirty, isSubmitting, isValid } } = useForm({ defaultValues: initialValues, mode: "all" })
 

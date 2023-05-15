@@ -4,9 +4,9 @@ import "react-medium-image-zoom/dist/styles.css"
 
 import { imageUrl } from "./images"
 
-const ZoomImage = props => (
+const ZoomImage = ({ image }: { image: string }) => (
   <Zoom>
-    <img src={`${imageUrl}t_kiekko/${props.image}`} width="30" height="30" />
+    <img src={`${imageUrl}t_kiekko/${image}`} width="30" height="30" />
   </Zoom>
 )
 
