@@ -3,7 +3,7 @@ import { Paper, Stack, Box } from "@mui/material"
 
 import powered from "../../images/powered.png"
 
-export default () => (
+const Footer = (): JSX.Element => (
   <Paper sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }} elevation={3}>
     <Stack direction="row" justifyContent="space-evenly" alignItems="center">
       <Box textAlign="center">
@@ -19,3 +19,5 @@ export default () => (
     </Stack>
   </Paper>
 )
+
+export default Footer

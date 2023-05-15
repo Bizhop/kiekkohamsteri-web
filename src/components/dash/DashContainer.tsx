@@ -30,15 +30,11 @@ import { promote, demote, kick } from "../group/groupActions"
 import UserEditModal from "../user/UserEditModal"
 import GroupUsersTable from "../group/GroupUsersTable"
 import { IGroupsState, IUsersState, TGroup, TUser, TUserUpdate } from "../../types"
+import { isGroupAdmin } from "../shared/utils"
 
 interface GroupUser {
   userId: number,
   groupId: number
-}
-
-const isGroupAdmin = ({ user, groupId }: { user: TUser | null, groupId: number }) => {
-  if (!user || !groupId || !user.roles) return false
-  return any(propEq("name", "GROUP_ADMIN") && propEq("groupId", groupId))(user.roles)
 }
 
 const mapState = ({ user, group }: { user: IUsersState, group: IGroupsState }) => ({
@@ -68,7 +64,6 @@ type PropsFromRedux = ConnectedProps<typeof connector>
 
 export const DashContainer = (props: PropsFromRedux): JSX.Element => {
   const { editUser, isEditOpen, userInEdit, loggedIn, user, listUsers, fetchingUsers, users, selectedGroup, promote, demote, kick, login, loginError, toggleEditModal } = props
-  const handleEditUser = (user: TUser) => editUser(user.id, pick(["username", "firstName", "lastName", "pdgaNumber"], user))
 
   return (
     <div>
@@ -76,7 +71,7 @@ export const DashContainer = (props: PropsFromRedux): JSX.Element => {
         isOpen={isEditOpen}
         toggleModal={toggleEditModal}
         user={userInEdit}
-        editUser={handleEditUser}
+        editUser={editUser}
         label="Muokkaa tietojasi"
       />
       {loggedIn ? (
@@ -130,7 +125,7 @@ export const DashContainer = (props: PropsFromRedux): JSX.Element => {
                           >
                             <TableCell>{g.name}</TableCell>
                             <TableCell>
-                              {isGroupAdmin({ user: user, groupId: g.id }) && (
+                              {isGroupAdmin(user, g.id) && (
                                 <Tooltip title="Ylläpitäjä">
                                   <EngineeringIcon />
                                 </Tooltip>

@@ -1,8 +1,7 @@
 import React from "react"
-import { path, any, propEq } from "ramda"
 import { NavLink } from "react-router-dom"
-import { connect } from "react-redux"
-import { Box, Grid, IconButton, Paper, Tooltip } from "@mui/material"
+import { ConnectedProps, connect } from "react-redux"
+import { Box, Grid, IconButton, Tooltip } from "@mui/material"
 import HomeIcon from "@mui/icons-material/Home"
 import LogoutIcon from "@mui/icons-material/Logout"
 import AnimationIcon from "@mui/icons-material/Animation"
@@ -12,17 +11,31 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz"
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings"
 
 import { logout, getMyDetails } from "../user/userActions"
+import { isAdmin } from "./utils"
+import { IUsersState } from "../../types"
 
-const isAdmin = user => {
-  if (!user || !user.roles) return false
-  return any(propEq("name", "ADMIN"))(user.roles)
+const mapState = ({ user }: { user: IUsersState }) => ({
+  loggedIn: user.token,
+  user: user.user,
+})
+
+const mapDispatch = {
+  getMyDetails: getMyDetails(),
+  logout: () => logout(),
 }
 
-const MyNavLink = ({ to, label, icon }) => (
+const connector = connect(mapState, mapDispatch)
+type PropsFromRedux = ConnectedProps<typeof connector>
+
+const MyNavLink = ({ to, label, icon }: {
+  to: string,
+  label: string,
+  icon: JSX.Element
+}) => (
   <Grid item md={1} textAlign="center">
     <NavLink to={to}>
       <Tooltip title={label}>
-        <IconButton variant="outlined" size="small">
+        <IconButton size="small">
           {icon}
         </IconButton>
       </Tooltip>
@@ -30,7 +43,7 @@ const MyNavLink = ({ to, label, icon }) => (
   </Grid>
 )
 
-const Header = props => (
+export const Header = (props: PropsFromRedux): JSX.Element => (
   <Box sx={{ flexGrow: 1 }}>
     <Grid container spacing={1}>
       <MyNavLink to="/" label="Etusivu" icon={<HomeIcon />} />
@@ -45,7 +58,7 @@ const Header = props => (
         <Grid item md>
           <Box display="flex" justifyContent="flex-end">
             <Tooltip title="Kirjaudu ulos">
-              <IconButton onClick={() => props.logout()} variant="contained" color="error">
+              <IconButton onClick={() => props.logout()} color="error">
                 <LogoutIcon />
               </IconButton>
             </Tooltip>
@@ -56,14 +69,4 @@ const Header = props => (
   </Box>
 )
 
-const mapStateToProps = state => ({
-  loggedIn: path(["user", "token"], state),
-  user: path(["user", "user"], state),
-})
-
-const mapDispatchToProps = dispatch => ({
-  getMyDetails: dispatch(getMyDetails()),
-  logout: () => dispatch(logout()),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Header)
+export default connector(Header)
