@@ -45,7 +45,7 @@ const resetToken = () => {
   localStorage.removeItem("hamsteri-token")
 }
 
-const userReducer = (state: IUsersState = initialState, action: UserActions) => {
+const userReducer = (state: IUsersState = initialState, action: UserActions): IUsersState => {
   switch (action.type) {
     case LOGIN_FAILURE:
     case GOOGLE_LOGIN_FAILURE:
@@ -60,7 +60,7 @@ const userReducer = (state: IUsersState = initialState, action: UserActions) => 
       return {
         ...state,
         user: action.payload.data,
-        token: action.payload.data.jwt,
+        token: action.payload.data.jwt || null,
         isEditModalOpen: false,
       }
     case USER_DETAILS_SUCCESS:

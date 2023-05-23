@@ -26,6 +26,7 @@ import {
   SEARCH_DISCS_OPERATIONS_SUCCESS,
   SEARCH_DISCS_OPERATIONS_FAILURE,
   CREATE_DISC_SUCCESS,
+  LOST_FAILURE,
 } from "./discsActions"
 import { DROPDOWNS_SUCCESS } from "../dropdown/dropdownActions"
 import { removeFromArrayByUuid } from "../shared/utils"
@@ -38,9 +39,10 @@ const initialState: IDiscsState = {
   isEditOpen: false,
   discInEdit: null,
   oneDiscText: "",
-  lost: null,
-  lostSort: null,
-  lostPagination: null,
+  fetchingLost: false,
+  lost: [],
+  lostSort: defaultSort,
+  lostPagination: defaultPagination,
   imageUploading: false,
   otherUserDiscs: false,
   otherUserName: "",
@@ -54,7 +56,7 @@ const updateDiscsArray = (inputArray: TDisc[], disc: TDisc): TDisc[] => {
   return update(index, disc, inputArray)
 }
 
-const prepareDiscInEdit = (input: TDisc): TDiscInEdit | null => {
+const prepareDiscInEdit = (input: TDisc | null): TDiscInEdit | null => {
   return input ? {
       ...input,
       manufacturerId: input.mold?.manufacturer.id,
@@ -149,10 +151,12 @@ const discsReducer = (state: IDiscsState = initialState, action: DiscsActions | 
       }
     }
     case CREATE_DISC_SUCCESS: {
+      const disc = action.payload.data
       return {
         ...state,
-        discInEdit: prepareDiscInEdit(action.payload.data),
-        isEditOpen: true
+        discInEdit: prepareDiscInEdit(disc),
+        isEditOpen: true,
+        discs: prepend(disc, state.discs)
       }
     }
     case UPDATE_IMAGE_API:
@@ -177,15 +181,24 @@ const discsReducer = (state: IDiscsState = initialState, action: DiscsActions | 
     case LOST_REQUEST:
       return {
         ...state,
-        lost: null,
+        fetchingLost: true,
+        lost: [],
         lostSort: action.meta.sort,
       }
     case LOST_SUCCESS: {
       const data = action.payload.data
       return {
         ...state,
+        fetchingLost: false,
         lost: data.content,
         lostPagination: pick(["totalElements", "size", "number"], data),
+      }
+    }
+    case LOST_FAILURE: {
+      return {
+        ...state,
+        fetchingLost: false,
+        lost: []
       }
     }
     case FOUND_SUCCESS:

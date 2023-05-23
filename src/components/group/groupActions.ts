@@ -33,7 +33,7 @@ export const DELETE_GROUP_FAILURE = "groups/DELETE_GROUP_FAIL"
 export const RESET_GROUP_USERS = "groups/RESET_USERS"
 
 import { deletePayloadTs, getPayloadTs, postPayloadTs } from "../Api"
-import { IResponsePayload, TGroup, TGroupCreate, TGroupRequest, TUser } from "../../types"
+import { IResponsePagedPayload, IResponsePayload, TGroup, TGroupCreate, TGroupRequest, TUser } from "../../types"
 
 
 export const getGroups = () => action(GET_GROUPS, getPayloadTs("api/v2/groups"))
@@ -41,7 +41,7 @@ export const getGroupsSuccess = (payload: IResponsePayload<TGroup[]>) => action(
 export const getGroupsFailure = () => action(GET_GROUPS_FAILURE)
 
 export const getGroupUsers = (group: TGroup) => action(GET_GROUP_USERS, getPayloadTs(`api/v2/user?groupId=${group.id}`), { group })
-export const getGroupUsersSuccess = (payload: IResponsePayload<TUser[]>) => action(GET_GROUP_USERS_SUCCESS, payload)
+export const getGroupUsersSuccess = (payload: IResponsePagedPayload<TUser>) => action(GET_GROUP_USERS_SUCCESS, payload)
 export const getGroupUsersFailure = () => action(GET_GROUP_USERS_FAILURE)
 
 export const createGroup = (group: TGroupCreate) => action(CREATE_GROUP, postPayloadTs("api/v2/groups", group))

@@ -17,17 +17,14 @@ export const defaultMoldSort: ISort = {
 const initialState: IMoldsState = {
   molds: [],
   isCreateOpen: false,
-  selectedManufacturer: {
-    id: null,
-    name: null,
-  },
+  selectedManufacturer: {},
   sort: defaultMoldSort,
   pagination: defaultPagination
 }
 
-const handleSelectedManufacturer = (id: number | null, molds: TMold[]): ISelectedManufacturer => {
-  if (id === null) return { id: null, name: null }
-  if (molds.length == 0) return { id, name: null }
+const handleSelectedManufacturer = (id: number | undefined, molds: TMold[]): ISelectedManufacturer => {
+  if (id === undefined) return {}
+  if (molds.length == 0) return { id }
   return { id, name: molds[0].manufacturer.name }
 }
 

@@ -107,7 +107,6 @@ export interface components {
       plasticId?: number;
       /** Format: int64 */
       colorId?: number;
-      image?: string;
       /** Format: int32 */
       weight?: number;
       /** Format: int32 */
@@ -250,10 +249,10 @@ export interface components {
       criteria?: (components["schemas"]["SearchCriteria"])[];
     };
     SearchCriteria: {
-      key?: string;
-      value?: Record<string, never>;
+      key: string;
+      value: Record<string, never>;
       /** @enum {string} */
-      operation?: "EQUAL" | "NOT_EQUAL" | "GREATER_THAN" | "GREATER_THAN_EQUAL" | "LESS_THAN" | "LESS_THAN_EQUAL" | "IN" | "NOT_IN";
+      operation: "EQUAL" | "NOT_EQUAL" | "GREATER_THAN" | "GREATER_THAN_EQUAL" | "LESS_THAN" | "LESS_THAN_EQUAL" | "IN" | "NOT_IN";
     };
     PageDiscOutputDto: {
       /** Format: int32 */
@@ -417,9 +416,9 @@ export interface components {
       markings: (components["schemas"]["DropdownOutputDto"])[];
     };
     SupportedOperation: {
-      field?: string;
-      type?: string;
-      operations?: ("EQUAL" | "NOT_EQUAL" | "GREATER_THAN" | "GREATER_THAN_EQUAL" | "LESS_THAN" | "LESS_THAN_EQUAL" | "IN" | "NOT_IN")[];
+      field: string;
+      type: string;
+      operations: ("EQUAL" | "NOT_EQUAL" | "GREATER_THAN" | "GREATER_THAN_EQUAL" | "LESS_THAN" | "LESS_THAN_EQUAL" | "IN" | "NOT_IN")[];
     };
     PagePlasticOutputDto: {
       /** Format: int32 */

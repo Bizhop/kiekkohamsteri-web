@@ -1,6 +1,6 @@
 import { append, reject, path, findIndex, update } from "ramda"
 import { toast } from "react-toastify"
-import { IGroupsState, TUser, GroupActions, TGroupRequest, TGroup } from "../../types"
+import { IGroupsState, TUser, GroupActions, TGroupRequest, TGroup, UserActions } from "../../types"
 import { updateUserArray } from "../shared/utils"
 
 import {
@@ -20,6 +20,7 @@ import {
   PROMOTE_SUCCESS,
   RESET_GROUP_USERS,
 } from "./groupActions"
+import { UPDATE_SUCCESS } from "../user/userActions"
 
 const initialState: IGroupsState = {
   groups: [],
@@ -29,8 +30,13 @@ const initialState: IGroupsState = {
   requests: [],
 }
 
-const groupReducer = (state: IGroupsState = initialState, action: GroupActions): IGroupsState => {
+const groupReducer = (state: IGroupsState = initialState, action: GroupActions | UserActions): IGroupsState => {
   switch (action.type) {
+    case UPDATE_SUCCESS:
+      return {
+        ...state,
+        users: []
+      }
     case GET_GROUPS_SUCCESS:
       return {
         ...state,
@@ -59,7 +65,7 @@ const groupReducer = (state: IGroupsState = initialState, action: GroupActions):
     case GET_GROUP_USERS_SUCCESS:
       return {
         ...state,
-        users: action.payload.data,
+        users: action.payload.data.content,
         fetchingUsers: false,
       }
     case GET_GROUP_USERS_FAILURE:
