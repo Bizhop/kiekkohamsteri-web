@@ -6,7 +6,7 @@ import { TDropdown } from "../../types"
 import { Controller, useForm, useWatch } from "react-hook-form"
 
 const SelectManufacturerForm = ({ manufacturerId, manufacturers, getByManufacturer }: {
-  manufacturerId: number,
+  manufacturerId?: number,
   manufacturers: TDropdown[],
   getByManufacturer: (manufacturerId: number) => any
 }): JSX.Element => {

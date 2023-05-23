@@ -1,5 +1,5 @@
-import React, { useState } from "react"
-import { ConnectedProps, connect } from "react-redux"
+import React, { useEffect, useLayoutEffect, useState } from "react"
+import { ConnectedProps, connect, useDispatch } from "react-redux"
 import { Navigate } from "react-router-dom"
 import { Box, Stack, Button } from "@mui/material"
 import AddIcon from "@mui/icons-material/Add"
@@ -23,7 +23,6 @@ import DiscsFilter from "./DiscsFilter"
 import { base64Reader, resizeImage } from "../shared/utils"
 import ImageCrop from "./ImageCrop"
 import { IDiscsState, IDropdownsState, IPagination, ISort, IUsersState, TDisc, TDiscInEdit, TFilter, TSearchCriteria } from "../../types"
-import { pick } from "ramda"
 
 const mapState = ({ user, discs, dropdowns }: {
   user: IUsersState,
@@ -42,9 +41,6 @@ const mapState = ({ user, discs, dropdowns }: {
 })
 
 const mapDispatch = {
-  getDiscs: getDiscs(defaultSort, defaultPagination),
-  getDropdowns: getDropdowns(),
-  getDiscSearchOperations: getDiscSearchOperations(),
   getDropdownsByManufacturer: (manufacturerId: number) => getDropdownsByManufacturer(manufacturerId),
   updateDisc: (disc: TDiscInEdit) => updateDisc(disc),
   createDisc: () => createDisc(),
@@ -63,6 +59,13 @@ export interface DiscImage {
 }
 
 export const DiscsContainer = (props: PropsFromRedux): JSX.Element => {
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(getDiscs(defaultSort, defaultPagination))
+    dispatch(getDropdowns())
+    dispatch(getDiscSearchOperations())
+  }, [])
+
   const [newImage, setNewImage] = useState<DiscImage>({ uuid: null })
   const [isImageCropOpen, setImageCropOpen] = useState(false)
   const [filters, setFilters] = useState<TFilter[]>([])

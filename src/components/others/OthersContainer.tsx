@@ -1,5 +1,5 @@
-import React from "react"
-import { ConnectedProps, connect } from "react-redux"
+import React, { useEffect } from "react"
+import { ConnectedProps, connect, useDispatch } from "react-redux"
 import { Navigate } from "react-router-dom"
 import { Spinner } from "react-activity"
 import "react-activity/dist/library.css"
@@ -30,8 +30,6 @@ const mapState = ({ user, others, discs }: {
 })
 
 const mapDispatch = {
-  getStats: getStats(defaultStatsSort, defaultStatsPagination),
-  getLost: getLost({ sort: "updatedAt,desc", column: "Pvm" }, defaultPagination),
   updateLost: (sort: ISort, pagination: IPagination) => getLost(sort, pagination),
   updateStats: (sort: ISort, pagination: IPagination) => getStats(sort, pagination),
   found: (uuid: string) => found(uuid),
@@ -41,6 +39,12 @@ const connector = connect(mapState, mapDispatch)
 type PropsFromRedux = ConnectedProps<typeof connector>
 
 export const OthersContainer = (props: PropsFromRedux): JSX.Element => {
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(getStats(defaultStatsSort, defaultStatsPagination))
+    dispatch(getLost({ sort: "updatedAt,desc", column: "Pvm" }, defaultPagination))
+  }, [])
+
   const { loggedIn, username, fetchingStats, statsSort, stats, fetchingLost, lost, lostSort, lostPagination, updateLost, updateStats, found } = props
 
   return (

@@ -14,9 +14,13 @@ import CheckIcon from "@mui/icons-material/Check"
 import CloseIcon from "@mui/icons-material/Close"
 
 import ZoomImage from "../shared/ZoomImage"
+import { INumberAction } from "./ShopContainer"
+import { TBuy } from "../../types"
 
-const MySalesTable = props => {
-  if (props.asSeller.length == 0) return <p>Ei myyntejä</p>
+const MySalesTable = ({ asSeller, confirm, reject }: {
+  asSeller: TBuy[], confirm: INumberAction, reject: INumberAction
+}): JSX.Element => {
+  if (asSeller.length == 0) return <p>Ei myyntejä</p>
   return (
     <TableContainer component={Paper} elevation={3}>
       <Table size="small">
@@ -34,8 +38,8 @@ const MySalesTable = props => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {props.asSeller.map(sale => (
-            <Sale key={sale.id} sale={sale} accept={props.accept} cancel={props.cancel} />
+          {asSeller.map((sale: TBuy) => (
+            <Sale key={sale.id} sale={sale} confirm={confirm} reject={reject} />
           ))}
         </TableBody>
       </Table>
@@ -43,7 +47,11 @@ const MySalesTable = props => {
   )
 }
 
-const Sale = ({ sale, accept, cancel }) => {
+const Sale = ({ sale, confirm, reject }: {
+  sale: TBuy,
+  confirm: INumberAction,
+  reject: INumberAction
+}) => {
   const { disc } = sale
   return (
     <TableRow>
@@ -53,23 +61,23 @@ const Sale = ({ sale, accept, cancel }) => {
       <TableCell>{sale.buyer.username}</TableCell>
       <TableCell>{disc.price} €</TableCell>
       <TableCell>
-        {disc.mold.manufacturer.name} {disc.plastic.name} {disc.mold.name}
+        {disc.mold?.manufacturer.name} {disc.plastic?.name} {disc.mold?.name}
       </TableCell>
       <TableCell>
-        {disc.mold.speed} / {disc.mold.glide} / {disc.mold.stability} / {disc.mold.fade}
+        {disc.mold?.speed} / {disc.mold?.glide} / {disc.mold?.stability} / {disc.mold?.fade}
       </TableCell>
       <TableCell>{disc.condition} / 10</TableCell>
       <TableCell>{disc.weight}</TableCell>
       <TableCell>
-        <Tooltip title={accept.label}>
-          <IconButton variant="contained" onClick={() => accept.action(sale.id)}>
+        <Tooltip title={confirm.label}>
+          <IconButton onClick={() => confirm.action(sale.id)}>
             <CheckIcon />
           </IconButton>
         </Tooltip>
       </TableCell>
       <TableCell>
-        <Tooltip title={cancel.label}>
-          <IconButton variant="contained" onClick={() => cancel.action(sale.id)}>
+        <Tooltip title={reject.label}>
+          <IconButton onClick={() => reject.action(sale.id)}>
             <CloseIcon />
           </IconButton>
         </Tooltip>

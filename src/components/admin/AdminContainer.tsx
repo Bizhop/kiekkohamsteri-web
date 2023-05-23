@@ -1,5 +1,5 @@
-import React, { useState } from "react"
-import { ConnectedProps, connect } from "react-redux"
+import React, { useEffect, useState } from "react"
+import { ConnectedProps, connect, useDispatch } from "react-redux"
 import { Navigate } from "react-router-dom"
 import { Box, Tab, Tabs } from "@mui/material"
 import { pick } from "ramda"
@@ -43,10 +43,6 @@ const mapState = ({ user, mold, plastic, dropdowns }: {
 })
 
 const mapDispatch = {
-  getInitialMolds: getMolds(defaultMoldSort, defaultPagination),
-  getInitialPlastics: getPlastics(defaultPlasticSort, defaultPagination),
-  getInitialUsers: getUsers(defaultUserSort, defaultPagination),
-  getDropdowns: getDropdowns(),
   getMolds: (sort: ISort, pagination: IPagination) => getMolds(sort, pagination),
   getMoldsByManufacturer: (manufacturerId: number, sort: ISort, pagination: IPagination) => getMoldsByManufacturer(manufacturerId, sort, pagination),
   toggleMoldCreateModal: () => toggleMoldCreateModal(),
@@ -66,6 +62,14 @@ const connector = connect(mapState, mapDispatch)
 type PropsFromRedux = ConnectedProps<typeof connector>
 
 export const AdminContainer = (props: PropsFromRedux): JSX.Element => {
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(getMolds(defaultMoldSort, defaultPagination))
+    dispatch(getPlastics(defaultPlasticSort, defaultPagination))
+    dispatch(getUsers(defaultUserSort, defaultPagination))
+    dispatch(getDropdowns())
+  }, [])
+
   const moldsProps = pick([
     "loggedIn",
     "molds",

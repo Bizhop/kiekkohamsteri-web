@@ -41,7 +41,7 @@ export const OneUserContainer = (props: PropsFromRedux): JSX.Element => {
         setUserId(parsed)
       }
     }
-  })
+  }, [])
 
   useEffect(() => {
     if (userId != 0) {

@@ -420,6 +420,21 @@ export const groupAdmin = {
   }]
 }
 
+export const adminUser = {
+  id: 1,
+  email: "testman@example.com",
+  username: "TestMan",
+  firstName: "Test",
+  lastName: "Man",
+  pdgaNumber: 12345,
+  groups: [],
+  roles: [{
+    id: 1,
+    name: "ADMIN",
+    groupId: null
+  }]
+}
+
 export const testGroup = {
   id: 1,
   name: "Test Group"

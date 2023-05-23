@@ -1,6 +1,6 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { any, propEq, pick } from "ramda"
-import { ConnectedProps, connect } from "react-redux"
+import { ConnectedProps, connect, useDispatch } from "react-redux"
 import { CredentialResponse, GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google"
 import { confirmAlert } from "react-confirm-alert"
 import "react-confirm-alert/src/react-confirm-alert.css"
@@ -48,7 +48,6 @@ const mapState = ({ user, group }: { user: IUsersState, group: IGroupsState }) =
 })
 
 const mapDispatch = {
-  resetGroupUsers: resetGroupUsers(),
   login: (response: CredentialResponse) => login(response),
   loginError: () => googleLoginError(),
   toggleEditModal: (user: TUser | null) => toggleEditModal(user),
@@ -63,6 +62,11 @@ const connector = connect(mapState, mapDispatch)
 type PropsFromRedux = ConnectedProps<typeof connector>
 
 export const DashContainer = (props: PropsFromRedux): JSX.Element => {
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(resetGroupUsers())
+  }, [])
+
   const { editUser, isEditOpen, userInEdit, loggedIn, user, listUsers, fetchingUsers, users, selectedGroup, promote, demote, kick, login, loginError, toggleEditModal } = props
 
   return (

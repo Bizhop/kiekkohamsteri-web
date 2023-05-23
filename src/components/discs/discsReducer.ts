@@ -151,10 +151,12 @@ const discsReducer = (state: IDiscsState = initialState, action: DiscsActions | 
       }
     }
     case CREATE_DISC_SUCCESS: {
+      const disc = action.payload.data
       return {
         ...state,
-        discInEdit: prepareDiscInEdit(action.payload.data),
-        isEditOpen: true
+        discInEdit: prepareDiscInEdit(disc),
+        isEditOpen: true,
+        discs: prepend(disc, state.discs)
       }
     }
     case UPDATE_IMAGE_API:

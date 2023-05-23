@@ -24,15 +24,15 @@ const NotFound = () => (
 const MyRoutes = () => (
   <div>
     <Routes>
-      <Route exact path="/" element={<DashContainer />} />
-      <Route exact path="/discs" element={<DiscsContainer />} />
-      <Route exact path="/discs/:id" element={<OneDiscContainer />} />
-      <Route exact path="/users/:id" element={<OneUserContainer />} />
-      <Route exact path="/shop" element={<ShopContainer />} />
-      <Route exact path="/others" element={<MuutContainer />} />
-      <Route exact path="/groups" element={<GroupContainer />} />
-      <Route exact path="/admin" element={<AdminContainer />} />
-      <Route element={NotFound} />
+      <Route path="/" element={<DashContainer />} />
+      <Route path="/discs" element={<DiscsContainer />} />
+      <Route path="/discs/:id" element={<OneDiscContainer />} />
+      <Route path="/users/:id" element={<OneUserContainer />} />
+      <Route path="/shop" element={<ShopContainer />} />
+      <Route path="/others" element={<MuutContainer />} />
+      <Route path="/groups" element={<GroupContainer />} />
+      <Route path="/admin" element={<AdminContainer />} />
+      <Route element={<NotFound />} />
     </Routes>
   </div>
 )

@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { ConnectedProps, connect } from "react-redux"
 import { Navigate, useLocation } from "react-router-dom"
 import { Box, Chip, Paper, Stack, Table, TableBody, TableCell, TableRow } from "@mui/material"
@@ -26,6 +26,22 @@ type PropsFromRedux = ConnectedProps<typeof connector>
 
 export const OneDiscContainer = (props: PropsFromRedux): JSX.Element => {
   const { loggedIn, disc, oneDiscText, getDisc } = props
+
+  const [uuid, setUuid] = useState("")
+  const location = useLocation()
+
+  useEffect(() => {
+    const newUuid = location.pathname.split("/").pop()
+    if (newUuid) {
+      setUuid(newUuid)
+    }
+  }, [])
+
+  useEffect(() => {
+    if(uuid) {
+      props.getDisc(uuid)
+    }
+  }, [uuid])
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -76,17 +92,9 @@ export const OneDiscContainer = (props: PropsFromRedux): JSX.Element => {
           </Stack>
         </div>
       )}
-      {!disc && !oneDiscText && getDiscIdAndDisc(getDisc)}
       {!loggedIn && <Navigate to="/" />}
     </Box>
   )
-}
-
-function getDiscIdAndDisc(getDisc: (uuid: string) => any) {
-  const location = useLocation()
-  const id = location.pathname.split("/").pop()
-  id && getDisc(id)
-  return null
 }
 
 export default connector(OneDiscContainer)

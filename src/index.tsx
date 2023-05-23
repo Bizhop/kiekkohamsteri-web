@@ -1,6 +1,7 @@
+import React from "react"
 import ReactDOM from "react-dom/client"
 import { Provider } from "react-redux"
-import { HashRouter as Router } from "react-router-dom"
+import { BrowserRouter } from "react-router-dom"
 import { CssBaseline, createTheme, ThemeProvider } from "@mui/material"
 import createCache from "@emotion/cache"
 import { CacheProvider } from "@emotion/react"
@@ -21,22 +22,19 @@ const theme = createTheme({
     error: {
       main: red.A700,
     },
-    black: {
-      main: "#000000",
-    },
   },
 })
 
-const app = document.getElementById("app")
+const app = document.getElementById("app")!
 const root = ReactDOM.createRoot(app)
 root.render(
   <Provider store={Store()}>
     <CacheProvider value={emotionCache}>
       <ThemeProvider theme={theme}>
-        <Router>
+        <BrowserRouter>
           <CssBaseline />
           <App />
-        </Router>
+        </BrowserRouter>
       </ThemeProvider>
     </CacheProvider>
   </Provider>

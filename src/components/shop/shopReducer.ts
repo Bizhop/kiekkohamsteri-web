@@ -24,7 +24,7 @@ const initialState: IShopState = {
   }
 }
 
-const shopReducer = (state: IShopState = initialState, action: ShopActions) => {
+const shopReducer = (state: IShopState = initialState, action: ShopActions): IShopState => {
   switch (action.type) {
     case FOR_SALE_REQUEST:
       return {

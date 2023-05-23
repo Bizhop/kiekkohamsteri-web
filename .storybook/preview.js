@@ -1,7 +1,11 @@
 /** @type { import('@storybook/react').Preview } */
 
 import { MemoryRouter } from "react-router-dom"
+import { legacy_createStore as createStore } from "redux"
 import "../src/styles/styles.css"
+import { Provider } from "react-redux"
+
+const store = createStore(state => state)
 
 export const parameters = {
   parameters: {
@@ -16,5 +20,5 @@ export const parameters = {
 }
 
 export const decorators = [
-  story => <MemoryRouter initialEntries={['/']}>{story()}</MemoryRouter>
+  story => <Provider store={store}><MemoryRouter initialEntries={['/']}>{story()}</MemoryRouter></Provider>
 ]

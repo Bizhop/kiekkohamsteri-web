@@ -1,6 +1,6 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { length } from "ramda"
-import { ConnectedProps, connect } from "react-redux"
+import { ConnectedProps, connect, useDispatch } from "react-redux"
 import { Navigate } from "react-router-dom"
 import { Spinner } from "react-activity"
 import "react-activity/dist/library.css"
@@ -53,8 +53,6 @@ const mapState = ({ user, group }: { user: IUsersState, group: IGroupsState }) =
 })
 
 const mapDispatch = {
-  getGroups: getGroups(),
-  getRequests: getGroupRequests(),
   listUsers: (group: TGroup) => getGroupUsers(group),
   newGroup: (group: TGroupCreate) => createGroup(group),
   joinGroup: (userId: number, groupId: number) => joinGroup(userId, groupId),
@@ -69,7 +67,14 @@ const connector = connect(mapState, mapDispatch)
 type PropsFromRedux = ConnectedProps<typeof connector>
 
 export const GroupContainer = (props: PropsFromRedux): JSX.Element => {
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(getGroups())
+    dispatch(getGroupRequests())
+  }, [])
+
   const { loggedIn, groups, fetchingUsers, users, selectedGroup, user, requests, listUsers, newGroup, joinGroup, completeRequest, promote, demote, kick, deleteGroup } = props
+  
   return (
     <Box sx={{ flexGrow: 1 }}>
       <h1>Pyynnöt</h1>

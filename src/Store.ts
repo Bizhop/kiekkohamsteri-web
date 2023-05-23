@@ -118,7 +118,7 @@ const Store = () => {
 
   const store = createStore(rootReducer, enhancer)
 
-  store.sagaTask = sagaMW.run(rootSaga)
+  sagaMW.run(rootSaga)
 
   return store
 }

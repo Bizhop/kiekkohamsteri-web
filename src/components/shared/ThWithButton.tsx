@@ -7,14 +7,14 @@ import { defaultPagination } from "../shared/constants"
 const ThWithButton = ({ sort, label, update, pagination, previousSort }: {
   sort?: string,
   label: string,
-  update: (sort: ISort, pagination: IPagination) => any,
+  update?: (sort: ISort, pagination: IPagination) => any,
   pagination?: IPagination,
   previousSort?: ISort
 }) => (
   <TableCell>
     {sort ? (
       <Button
-        onClick={() => update(
+        onClick={() => update && update(
             {
               sort: sort,
               column: label,
